@@ -1,18 +1,21 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Eye, Edit, Trash2, Plus } from "lucide-react";
 import Layout from "../../reuseable/Layout";
 import { IMAGE_BASE_URL } from "../../config/apiRoutes";
 import csvIcon from "../../assets/icons/csv.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBlogPostsRequest } from "../../redux/actions/blogActions";
+import type { RootState } from "../../redux/reducers/rootReducers";
 
 interface BlogPost {
   _id: string;
   title: string;
   slug: string;
   description: string;
-  author: { name: string };
-  category: { name: string };
-  tags: { name: string }[];
+  author: { name?: string } | null;
+  category: { name?: string } | null;
+  tags: { name?: string }[];
   featuredImage: string;
   galleryImages: string[];
   metaTitle?: string;
@@ -24,57 +27,50 @@ interface BlogPost {
 }
 
 const ManageBlogs: React.FC = () => {
-  const [blogs] = useState<BlogPost[]>([
-    {
-      _id: "1",
-      title: "How to Use React",
-      slug: "how-to-use-react",
-      description:
-        "A beginner's guide to using React for building web applications.",
-      author: { name: "John Doe" },
-      category: { name: "Web Development" },
-      tags: [{ name: "React" }, { name: "Frontend" }],
-      featuredImage: "sample1.jpg",
-      galleryImages: ["gallery1.jpg", "gallery2.jpg"],
-      metaTitle: "React Guide",
-      metaDescription: "Learn React step by step.",
-      canonicalUrl: "https://example.com/how-to-use-react",
-      status: "published",
-      createdAt: "2025-08-01T10:00:00Z",
-      updatedAt: "2025-08-10T12:00:00Z",
-    },
-    {
-      _id: "2",
-      title: "Understanding TypeScript",
-      slug: "understanding-typescript",
-      description:
-        "TypeScript brings type safety to JavaScript. Learn how to use it.",
-      author: { name: "Jane Smith" },
-      category: { name: "Programming" },
-      tags: [{ name: "TypeScript" }, { name: "JavaScript" }],
-      featuredImage: "sample2.jpg",
-      galleryImages: ["gallery3.jpg"],
-      metaTitle: "TypeScript Basics",
-      metaDescription: "Why TypeScript matters.",
-      canonicalUrl: "https://example.com/understanding-typescript",
-      status: "draft",
-      createdAt: "2025-07-15T09:00:00Z",
-      updatedAt: "2025-07-20T14:00:00Z",
-    },
-  ]);
-  const [loading] = useState(false);
+  const dispatch = useDispatch();
   const Navigate = useNavigate();
+
+  // Redux state
+  const { posts, loading, error, total, page, pages, limit } = useSelector(
+    (state: RootState) => ({
+      posts: state.blog.posts,
+      loading: state.blog.loading,
+      error: state.blog.error,
+      total: state.blog.total,
+      page: state.blog.page,
+      pages: state.blog.pages,
+      limit: state.blog.limit,
+    })
+  );
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [error] = useState<string | null>(null);
+  const limitOptions = [5, 10, 20, 50, 100];
+
+  useEffect(() => {
+    dispatch(getAllBlogPostsRequest({ page: 1, limit: 100, search: "" }));
+  }, [dispatch]);
+
+  const handlePageChange = (newPage: number) => {
+    dispatch(getAllBlogPostsRequest({ page: newPage, limit, search: searchTerm }));
+  };
+
+  const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(getAllBlogPostsRequest({ page: 1, limit: Number(e.target.value), search: searchTerm }));
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    dispatch(getAllBlogPostsRequest({ page: 1, limit, search: e.target.value }));
+  };
 
   const exportUsers = () => {
-    alert("Exporting users as CSV (static demo)");
+    alert("Exporting blogs as CSV (static demo)");
   };
-  const handleDeleteUser = (userId: string) => {
-    alert(`Delete user with ID: ${userId}`);
+  const handleDeleteBlog = (blogId: string) => {
+    alert(`Delete blog with ID: ${blogId}`);
   };
 
-  const handleAddNewUser = () => {
+  const handleAddNewBlog = () => {
     Navigate("/add-new-blog");
   };
 
@@ -82,7 +78,7 @@ const ManageBlogs: React.FC = () => {
     () => (
       <>
         <button
-          onClick={handleAddNewUser}
+          onClick={handleAddNewBlog}
           className="flex items-center px-4 py-2.5 bg-[#FFE5E5] text-[#DA0808] rounded-xl hover:bg-red-600 hover:text-white transition-colors font-medium border border-red-500"
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -97,7 +93,7 @@ const ManageBlogs: React.FC = () => {
         </button>
       </>
     ),
-    [exportUsers]
+    []
   );
 
   return (
@@ -105,7 +101,7 @@ const ManageBlogs: React.FC = () => {
       title="Manage Blogs"
       subtitle="View, edit, and manage blog posts"
       searchValue={searchTerm}
-      onSearchChange={(e) => setSearchTerm(e.target.value)}
+      onSearchChange={handleSearchChange}
       searchPlaceholder="Search by Page Name"
       actionButtons={actionButtons}
       isHeaderFixed={true}
@@ -119,7 +115,7 @@ const ManageBlogs: React.FC = () => {
             </div>
           ) : error ? (
             <div className="text-red-500 p-8 text-center">{error}</div>
-          ) : blogs.length === 0 ? (
+          ) : posts.length === 0 ? (
             <div className="py-12 text-center">
               <h3 className="text-lg font-medium text-gray-900 mb-2">
                 No blogs found
@@ -157,42 +153,49 @@ const ManageBlogs: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {blogs.map((blog) => (
+                {posts.map((blog: BlogPost) => (
                   <tr
                     key={blog._id}
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <td className="py-4 px-6">
                       <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
-                        <img
-                          src={IMAGE_BASE_URL + blog.featuredImage}
-                          alt={blog.title}
-                          className="w-full h-full object-cover rounded"
-                        />
+                        {blog.featuredImage ? (
+                          <img
+                            src={IMAGE_BASE_URL + blog.featuredImage}
+                            alt={blog.title}
+                            className="w-full h-full object-cover rounded"
+                          />
+                        ) : (
+                          <span className="text-gray-400 text-xs">No Image</span>
+                        )}
                       </div>
                     </td>
                     <td className="py-4 px-6 font-medium text-[#14133B] whitespace-nowrap">
                       {blog.title}
                     </td>
                     <td className="py-4 px-6 text-sm text-gray-600">
-                      {blog.description.slice(0, 80)}...
+                      {blog.description?.slice(0, 80)}...
                     </td>
                     <td className="py-4 px-6 text-xs text-gray-500">
-                      {blog.author?.name}
+                      {blog.author?.name || "-"}
                     </td>
                     <td className="py-4 px-6 text-xs text-gray-500">
-                      {blog.category?.name}
+                      {blog.category?.name || "-"}
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex flex-wrap gap-1">
-                        {blog.tags?.map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="bg-gray-200 px-2 py-0.5 rounded text-xs"
-                          >
-                            {tag.name}
-                          </span>
-                        ))}
+                        {blog.tags?.length > 0
+                          ? blog.tags.map((tag, idx) => (
+                              <span
+                                key={idx}
+                                className="bg-gray-200 px-2 py-0.5 rounded text-xs"
+                              >
+                                {tag.name}
+                              </span>
+                            ))
+                          : <span className="text-gray-400 text-xs">No Tags</span>
+                        }
                       </div>
                     </td>
                     <td className="py-4 px-6 text-xs text-gray-400">
@@ -215,7 +218,7 @@ const ManageBlogs: React.FC = () => {
                         <button
                           className="p-1.5 text-red-600 hover:bg-red-100 rounded transition-colors"
                           title="Delete"
-                          onClick={() => handleDeleteUser(blog._id)}
+                          onClick={() => handleDeleteBlog(blog._id)}
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
@@ -226,6 +229,51 @@ const ManageBlogs: React.FC = () => {
               </tbody>
             </table>
           )}
+        </div>
+      </div>
+      {/* Pagination Controls */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg">
+        <div className="flex flex-col md:flex-row justify-between items-center px-6 py-3 max-w-full mx-auto">
+          <span className="text-sm text-gray-700 mb-2 md:mb-0"></span>
+          <div className="flex gap-2 items-center">
+            <strong className="text-[#DA0808]">Page {page}</strong> of{" "}
+            <strong>{pages}</strong> &nbsp;|&nbsp;
+            <span className="text-gray-500">Total Blogs:</span>{" "}
+            <strong>{total}</strong>
+            <label
+              className="text-sm text-gray-600 mr-2"
+              htmlFor="limit-select"
+            >
+              Rows per page:
+            </label>
+            <select
+              id="limit-select"
+              value={limit}
+              onChange={handleLimitChange}
+              className="px-2 py-1 rounded border bg-gray-100 text-gray-700"
+              style={{ minWidth: 60 }}
+            >
+              {limitOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+            <button
+              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-red-600 transition disabled:opacity-50"
+              disabled={page <= 1}
+              onClick={() => handlePageChange(page - 1)}
+            >
+              Previous
+            </button>
+            <button
+              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-red-600 transition disabled:opacity-50"
+              disabled={page >= pages}
+              onClick={() => handlePageChange(page + 1)}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </Layout>

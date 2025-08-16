@@ -3,9 +3,12 @@ import {
   CREATE_BLOG_POST_REQUEST,
   CREATE_BLOG_POST_SUCCESS,
   CREATE_BLOG_POST_FAILURE,
+  GET_ALL_BLOG_POSTS_REQUEST,
+  GET_ALL_BLOG_POSTS_SUCCESS,
+  GET_ALL_BLOG_POSTS_FAILURE,
 } from "../actions/actionTypes";
 import { API_ENDPOINTS, BASE_URL } from "../../config/apiRoutes";
-import { postRequest } from "../../config/apihelpers";
+import { getRequest, postRequest } from "../../config/apihelpers";
 
 function* createBlogPostSaga(action: any): any {
   try {
@@ -23,6 +26,24 @@ function* createBlogPostSaga(action: any): any {
   }
 }
 
+function* getAllBlogPostsSaga(action: any): any {
+  try {
+    const { page = 1, limit = 100, search = "" } = action.payload || {};
+    const url = `${BASE_URL}${
+      API_ENDPOINTS.GET_ALL_BLOG_POSTS
+    }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;    
+    const data = yield call(getRequest, url);
+    console.log("Fetched blog posts:", data);
+    yield put({ type: GET_ALL_BLOG_POSTS_SUCCESS, payload: data });
+  } catch (error: any) {
+    yield put({
+      type: GET_ALL_BLOG_POSTS_FAILURE,
+      payload: error.message || "Network error",
+    });
+  }
+}
+
 export default function* blogSaga() {
   yield takeLatest(CREATE_BLOG_POST_REQUEST, createBlogPostSaga);
+  yield takeLatest(GET_ALL_BLOG_POSTS_REQUEST, getAllBlogPostsSaga);
 }
