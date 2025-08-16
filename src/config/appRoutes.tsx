@@ -8,6 +8,8 @@ import Login from "../component/Auth/login";
 import MyAccount from "../component/Auth/myAccount";
 import ManagePages from "../component/Pages/managePages";
 import ManageTeam from "../component/Team/manageTeam";
+import ManageBlogs from "../component/Blogs/manageBlogs";
+import AddNewBlog from "../component/Blogs/addNewBlog";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -138,6 +140,23 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
             <ManageTeam />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/blogs"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageBlogs />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/add-new-blog"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <AddNewBlog />
           </ProtectedRoute>
         }
       />
