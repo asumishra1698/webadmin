@@ -68,7 +68,7 @@ const ManageSubCategory: React.FC = () => {
       actionButtons={actionButtons}
       isHeaderFixed={true}
     >
-      <div className="p-6">
+      <div className="p-4">
         <div className="flex flex-wrap items-center justify-between border-b border-gray-200 gap-4 mb-4">
           <div className="flex items-center space-x-6">
             <button
