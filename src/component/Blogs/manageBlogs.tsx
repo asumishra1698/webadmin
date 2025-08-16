@@ -7,9 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBlogPostsRequest } from "../../redux/actions/blogActions";
 import type { RootState } from "../../redux/reducers/rootReducers";
-import CategoryTab from "./CategoryTab";
-import TagTab from "./TagTab";
-import SubCategoryTab from "./SubCategoryTab";
 
 interface BlogPost {
   _id: string;
@@ -122,51 +119,63 @@ const ManageBlogs: React.FC = () => {
       actionButtons={actionButtons}
       isHeaderFixed={true}
     >
-      <div className="flex flex-wrap items-center justify-between p-4 border-b border-gray-200 gap-4">
-        <div className="flex items-center space-x-6">
-          <button
-            onClick={() => setActiveTab("all blogs")}
-            className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
-              activeTab === "all blogs"
-                ? "text-red-500 border-b-2 border-red-500"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            All Blogs
-          </button>
-          <button
-            onClick={() => setActiveTab("category")}
-            className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
-              activeTab === "category"
-                ? "text-red-500 border-b-2 border-red-500"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            Category
-          </button>
-          <button
-            onClick={() => setActiveTab("tag")}
-            className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
-              activeTab === "tag"
-                ? "text-red-500 border-b-2 border-red-500"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            Tag
-          </button>
-          <button
-            onClick={() => setActiveTab("sub category")}
-            className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
-              activeTab === "sub category"
-                ? "text-red-500 border-b-2 border-red-500"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            Sub Category
-          </button>
+      <div className="p-6">
+        <div className="flex flex-wrap items-center justify-between border-b border-gray-200 gap-4 mb-4">
+          <div className="flex items-center space-x-6">
+            <button
+              onClick={() => {
+                setActiveTab("all blogs");
+                Navigate("/blogs");
+              }}
+              className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
+                activeTab === "all blogs"
+                  ? "text-red-500 border-b-2 border-red-500"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              All Blogs
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab("category");
+                Navigate("/blog-category");
+              }}
+              className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
+                activeTab === "category"
+                  ? "text-red-500 border-b-2 border-red-500"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Category
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab("tag");
+                Navigate("/blog-tag");
+              }}
+              className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
+                activeTab === "tag"
+                  ? "text-red-500 border-b-2 border-red-500"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Tag
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab("sub category");
+                Navigate("/blog-sub-category");
+              }}
+              className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
+                activeTab === "sub category"
+                  ? "text-red-500 border-b-2 border-red-500"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Sub Category
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="p-4">
         {activeTab === "all blogs" && (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-20">
             {loading ? (
@@ -297,9 +306,6 @@ const ManageBlogs: React.FC = () => {
             )}
           </div>
         )}
-        {activeTab === "category" && <CategoryTab />}
-        {activeTab === "tag" && <TagTab />}
-        {activeTab === "sub category" && <SubCategoryTab />}
       </div>
       {/* Pagination Controls */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg">

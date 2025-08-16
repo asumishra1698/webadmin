@@ -81,151 +81,153 @@ const AddNewBlog: React.FC = () => {
       showBackButton={true}
       backButtonLink="/blogs"
     >
-      <div className="mx-8 my-8 max-w-full mx-auto bg-white rounded-lg shadow p-8">
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Title</label>
-            <input
-              type="text"
-              name="title"
-              value={form.title}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded w-full"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Description</label>
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded w-full"
-              rows={4}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Category</label>
-            <input
-              type="text"
-              name="category"
-              value={form.category}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded w-full"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Tags</label>
-            <div className="flex gap-2 mb-2">
+      <div className="p-4">
+        <div className="max-w-full mx-auto bg-white rounded-lg shadow p-8">
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
+            <div className="mb-4">
+              <label className="block font-medium mb-1">Title</label>
               <input
                 type="text"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
+                name="title"
+                value={form.title}
+                onChange={handleChange}
                 className="border px-3 py-2 rounded w-full"
-                placeholder="Add tag"
+                required
               />
-              <button
-                type="button"
-                onClick={handleAddTag}
-                className="px-3 py-2 bg-blue-500 text-white rounded"
+            </div>
+            <div className="mb-4">
+              <label className="block font-medium mb-1">Description</label>
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                className="border px-3 py-2 rounded w-full"
+                rows={4}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-medium mb-1">Category</label>
+              <input
+                type="text"
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                className="border px-3 py-2 rounded w-full"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-medium mb-1">Tags</label>
+              <div className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  className="border px-3 py-2 rounded w-full"
+                  placeholder="Add tag"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddTag}
+                  className="px-3 py-2 bg-blue-500 text-white rounded"
+                >
+                  Add
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {form.tags.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="bg-gray-200 px-2 py-1 rounded text-xs flex items-center"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      className="ml-2 text-red-500"
+                      onClick={() => handleRemoveTag(idx)}
+                    >
+                      &times;
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="block font-medium mb-1">Featured Image</label>
+              <input
+                type="file"
+                name="featuredImage"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="border px-3 py-2 rounded w-full"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-medium mb-1">Gallery Images</label>
+              <input
+                type="file"
+                name="galleryImages"
+                accept="image/*"
+                multiple
+                onChange={handleFileChange}
+                className="border px-3 py-2 rounded w-full"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-medium mb-1">Meta Title</label>
+              <input
+                type="text"
+                name="metaTitle"
+                value={form.metaTitle}
+                onChange={handleChange}
+                className="border px-3 py-2 rounded w-full"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-medium mb-1">Meta Description</label>
+              <input
+                type="text"
+                name="metaDescription"
+                value={form.metaDescription}
+                onChange={handleChange}
+                className="border px-3 py-2 rounded w-full"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-medium mb-1">Canonical URL</label>
+              <input
+                type="text"
+                name="canonicalUrl"
+                value={form.canonicalUrl}
+                onChange={handleChange}
+                className="border px-3 py-2 rounded w-full"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-medium mb-1">Status</label>
+              <select
+                name="status"
+                value={form.status}
+                onChange={handleChange}
+                className="border px-3 py-2 rounded w-full"
               >
-                Add
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+                <option value="archived">Archived</option>
+              </select>
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="px-6 py-2 bg-[#DA0808] text-white rounded"
+              >
+                Create Blog
               </button>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {form.tags.map((tag, idx) => (
-                <span
-                  key={idx}
-                  className="bg-gray-200 px-2 py-1 rounded text-xs flex items-center"
-                >
-                  {tag}
-                  <button
-                    type="button"
-                    className="ml-2 text-red-500"
-                    onClick={() => handleRemoveTag(idx)}
-                  >
-                    &times;
-                  </button>
-                </span>
-              ))}
-            </div>
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Featured Image</label>
-            <input
-              type="file"
-              name="featuredImage"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="border px-3 py-2 rounded w-full"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Gallery Images</label>
-            <input
-              type="file"
-              name="galleryImages"
-              accept="image/*"
-              multiple
-              onChange={handleFileChange}
-              className="border px-3 py-2 rounded w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Meta Title</label>
-            <input
-              type="text"
-              name="metaTitle"
-              value={form.metaTitle}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Meta Description</label>
-            <input
-              type="text"
-              name="metaDescription"
-              value={form.metaDescription}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Canonical URL</label>
-            <input
-              type="text"
-              name="canonicalUrl"
-              value={form.canonicalUrl}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Status</label>
-            <select
-              name="status"
-              value={form.status}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded w-full"
-            >
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-              <option value="archived">Archived</option>
-            </select>
-          </div>
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="px-6 py-2 bg-[#DA0808] text-white rounded"
-            >
-              Create Blog
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </Layout>
   );

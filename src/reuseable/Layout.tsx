@@ -207,7 +207,7 @@ const Layout: React.FC<LayoutProps> = ({
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       <div className="flex-1 flex flex-col">
         <header
-          className="p-4 flex justify-between items-center bg-white border-b border-gray-200 fixed z-30 top-0"
+          className="p-2 flex justify-between items-center bg-white border-b border-gray-200 fixed z-30 top-0"
           style={{
             left: leftOffset,
             right: 0,
@@ -380,7 +380,7 @@ const Layout: React.FC<LayoutProps> = ({
 
         {hasSearchOrActions && (
           <div
-            className={`${isHeaderFixed ? "fixed" : "sticky"} z-20 bg-gray-100`}
+            className={`${isHeaderFixed ? "fixed" : "sticky"} z-20 bg-gray-100 p-2`}
             style={{
               top: HEADER_HEIGHT,
               left: leftOffset,
@@ -390,8 +390,7 @@ const Layout: React.FC<LayoutProps> = ({
             }}
           >
             <div className="p-4">
-              <div className="flex justify-between items-center">
-                {/* Search */}
+              <div className="flex justify-between items-center">                
                 {searchPlaceholder && (
                   <div className="relative max-w-xl">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -419,7 +418,7 @@ const Layout: React.FC<LayoutProps> = ({
         {/* Legacy header support */}
         {header && (
           <div
-            className="fixed z-10 dark:bg-gray-900"
+            className="fixed z-10 dark:bg-gray-900 p-4"
             style={{
               top: totalHeaderHeight,
               left: leftOffset,
@@ -434,7 +433,7 @@ const Layout: React.FC<LayoutProps> = ({
 
         {/* Main Content */}
         <main
-          className="flex-1 p-0 bg-gray-100 dark:bg-gray-900"
+          className="flex-1 p-0 bg-gray-100 dark:bg-gray-900 mt-2 p-4"
           style={{
             marginLeft: leftOffset,
             paddingTop: header

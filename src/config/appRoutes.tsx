@@ -10,6 +10,9 @@ import ManagePages from "../component/Pages/managePages";
 import ManageTeam from "../component/Team/manageTeam";
 import ManageBlogs from "../component/Blogs/manageBlogs";
 import AddNewBlog from "../component/Blogs/addNewBlog";
+import ManageBlogCategory from "../component/Blogs/manageBlogCategory";
+import ManageSubCategory from "../component/Blogs/manageSubCategory";
+import ManageTag from "../component/Blogs/manageTag";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -157,6 +160,33 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
             <AddNewBlog />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/blog-category"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageBlogCategory />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/blog-sub-category"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageSubCategory />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/blog-tag"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageTag />
           </ProtectedRoute>
         }
       />
