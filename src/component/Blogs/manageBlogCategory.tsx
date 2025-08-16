@@ -15,16 +15,14 @@ const manageBlogCategory: React.FC = () => {
     "all blogs" | "category" | "tag" | "sub category"
   >("category");
 
-  // Fetch categories from Redux
   const categories = useSelector((state: any) => state.blog?.categories || []);
   const loading = useSelector((state: any) => state.blog?.loading);
   const error = useSelector((state: any) => state.blog?.error);
 
   useEffect(() => {
     dispatch(getBlogCategoryRequest());
-  }, [dispatch]); 
+  }, [dispatch]);
 
-  // Filtered categories for search
   const filteredCategories = categories.filter((cat: any) => {
     const parentName = cat.parent?.name || "";
     return (
