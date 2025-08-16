@@ -15,22 +15,60 @@ const manageBlogCategory: React.FC = () => {
     "all blogs" | "category" | "tag" | "sub category"
   >("category");
 
-  const categories = useSelector((state: any) => state.blog?.categories || []);
-  const loading = useSelector((state: any) => state.blog?.loading);
-  const error = useSelector((state: any) => state.blog?.error);
+  // const [limit, setLimit] = useState(10);
+
+  // Redux state for paginated categories
+ const {
+  categories = [],
+  totalCategories = 0,
+  page = 1,
+  pages = 1,
+  limit = 10,
+  loading,
+  error,
+} = useSelector((state: any) => {
+  const catState = state.blog?.categories || {};
+  return {
+    categories: Array.isArray(catState.categories) ? catState.categories : [],
+    totalCategories: catState.totalCategories || 0,
+    page: catState.page || 1,
+    pages: catState.pages || 1,
+    limit: catState.limit || 10,
+    loading: state.blog?.loading,
+    error: state.blog?.error,
+  };
+});
 
   useEffect(() => {
-    dispatch(getBlogCategoryRequest());
-  }, [dispatch]);
+    dispatch(getBlogCategoryRequest({ page: 1, limit, search: "" }));
+  }, [dispatch, limit]);
 
-  const filteredCategories = categories.filter((cat: any) => {
-    const parentName = cat.parent?.name || "";
-    return (
-      cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      cat.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      parentName.toLowerCase().includes(searchTerm.toLowerCase())
+  // Search handler
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    dispatch(
+      getBlogCategoryRequest({ page: 1, limit, search: e.target.value })
     );
-  });
+  };
+
+  // Pagination handler
+  const handlePageChange = (newPage: number) => {
+    dispatch(
+      getBlogCategoryRequest({ page: newPage, limit, search: searchTerm })
+    );
+  };
+
+  // Limit handler
+  const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // setLimit(Number(e.target.value));
+    dispatch(
+      getBlogCategoryRequest({
+        page: 1,
+        limit: Number(e.target.value),
+        search: searchTerm,
+      })
+    );
+  };
 
   const actionButtons = (
     <button
@@ -68,7 +106,7 @@ const manageBlogCategory: React.FC = () => {
       title="Category Management"
       subtitle="Manage all categories here"
       searchValue={searchTerm}
-      onSearchChange={(e) => setSearchTerm(e.target.value)}
+      onSearchChange={handleSearchChange}
       searchPlaceholder="Search Category"
       actionButtons={actionButtons}
       isHeaderFixed={true}
@@ -163,14 +201,14 @@ const manageBlogCategory: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {filteredCategories.length === 0 ? (
+                {categories.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-4 text-gray-500 text-center">
                       No categories found.
                     </td>
                   </tr>
                 ) : (
-                  filteredCategories.map((cat: any) => (
+                  categories.map((cat: any) => (
                     <tr
                       key={cat._id}
                       className="hover:bg-gray-50 transition-colors"
@@ -206,6 +244,52 @@ const manageBlogCategory: React.FC = () => {
               </tbody>
             </table>
           )}
+          {/* Pagination Controls */}
+          <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg">
+            <div className="flex flex-col md:flex-row justify-between items-center px-6 py-3 max-w-full mx-auto">
+              <span className="text-sm text-gray-700 mb-2 md:mb-0">
+               
+              </span>
+              <div className="flex gap-2 items-center">
+                 Total Categories: <strong>{totalCategories}</strong>
+                <strong className="text-[#DA8708]">Page {page}</strong> of{" "}
+                <strong>{pages}</strong> &nbsp;|&nbsp;
+                <label
+                  className="text-sm text-gray-600 mr-2"
+                  htmlFor="limit-select"
+                >
+                  Rows per page:
+                </label>
+                <select
+                  id="limit-select"
+                  value={limit}
+                  onChange={handleLimitChange}
+                  className="px-2 py-1 rounded border bg-gray-100 text-gray-700"
+                  style={{ minWidth: 60 }}
+                >
+                  {[5, 10, 20, 50, 100].map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  className="px-4 py-2 rounded-lg border bg-yellow-500 text-white hover:bg-yellow-600 transition disabled:opacity-50"
+                  disabled={page <= 1}
+                  onClick={() => handlePageChange(page - 1)}
+                >
+                  Previous
+                </button>
+                <button
+                  className="px-4 py-2 rounded-lg border bg-yellow-500 text-white hover:bg-yellow-600 transition disabled:opacity-50"
+                  disabled={page >= pages}
+                  onClick={() => handlePageChange(page + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
           {/* Modal */}
           {showModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">

@@ -18,6 +18,13 @@ const initialState = {
   page: 1,
   pages: 1,
   limit: 100,
+  categories: {
+    categories: [],
+    totalCategories: 0,
+    page: 1,
+    pages: 1,
+    limit: 10,
+  },
 };
 
 export default function blogReducer(state = initialState, action: any) {
@@ -47,6 +54,7 @@ export default function blogReducer(state = initialState, action: any) {
     case GET_BLOG_CATEGORY_REQUEST:
       return { ...state, loading: true, error: null };
     case GET_BLOG_CATEGORY_SUCCESS:
+      // Store the whole response object for categories
       return { ...state, loading: false, categories: action.payload };
     case GET_BLOG_CATEGORY_FAILURE:
       return { ...state, loading: false, error: action.payload };

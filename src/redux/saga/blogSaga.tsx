@@ -46,14 +46,12 @@ function* getAllBlogPostsSaga(action: any): any {
   }
 }
 
-function* getBlogCategorySaga(): any {
+function* getBlogCategorySaga(action: any): any {
   try {
-    const data = yield call(
-      getRequest,
-      `${BASE_URL}${API_ENDPOINTS.GET_BLOG_CATEGORY}`
-    );
+    const { page = 1, limit = 10, search = "" } = action.payload || {};
+    const url = `${BASE_URL}${API_ENDPOINTS.GET_BLOG_CATEGORY}?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
+    const data = yield call(getRequest, url);
     yield put({ type: GET_BLOG_CATEGORY_SUCCESS, payload: data });
-    console.log("Fetched blog categories:", data);
   } catch (error: any) {
     yield put({
       type: GET_BLOG_CATEGORY_FAILURE,

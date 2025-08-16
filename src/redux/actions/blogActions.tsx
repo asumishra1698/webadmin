@@ -44,8 +44,13 @@ export const getAllBlogPostsFailure = (error: string) => ({
   payload: error,
 });
 
-export const getBlogCategoryRequest = () => ({
+export const getBlogCategoryRequest = (payload: {
+  page: number;
+  limit: number;
+  search: string;
+}) => ({
   type: GET_BLOG_CATEGORY_REQUEST,
+  payload,
 });
 
 export const getBlogCategorySuccess = (data: any) => ({
