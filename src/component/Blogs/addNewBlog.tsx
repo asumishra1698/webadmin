@@ -9,7 +9,6 @@ import {
   getBlogTagRequest,
 } from "../../redux/actions/blogActions";
 import Select from "react-select";
-import Swal from "sweetalert2";
 
 const initialState = {
   title: "",
@@ -33,7 +32,7 @@ const AddNewBlog: React.FC = () => {
   useEffect(() => {
     dispatch(getBlogCategoryRequest({ page: 1, limit: 10, search: "" }));
     dispatch(getBlogTagRequest({ page: 1, limit: 10, search: "" }));
-  }, [dispatch]);  
+  }, [dispatch]);
 
   // Select categories and tags from redux
   const categories = useSelector((state: any) =>
