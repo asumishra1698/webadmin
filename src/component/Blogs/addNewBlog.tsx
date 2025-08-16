@@ -111,6 +111,25 @@ const AddNewBlog: React.FC = () => {
     }
   }, [form.galleryImages]);
 
+  useEffect(() => {
+    if (form.title) {
+      const slug = form.title
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9\-]/g, "");
+      setForm((prev) => ({
+        ...prev,
+        canonicalUrl: slug,
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        canonicalUrl: "",
+      }));
+    }
+  }, [form.title]);
+
   // Remove featured image
   const handleRemoveFeatured = () => {
     setForm((prev) => ({ ...prev, featuredImage: null }));
