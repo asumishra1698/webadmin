@@ -1,19 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../reuseable/Layout";
-import { Plus, X } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { Plus, X, Edit, Trash2 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-// Dummy parent categories for dropdown
-const parentCategories = [
-  { value: "parent1", label: "Parent Category 1" },
-  { value: "parent2", label: "Parent Category 2" },
-];
-
-const initialTags = [
-  { id: "tag1", name: "Tag 1", parent: "Parent Category 1" },
-  { id: "tag2", name: "Tag 2", parent: "Parent Category 2" },
-];
+import { getBlogTagRequest } from "../../redux/actions/blogActions";
 
 const ManageTag: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,32 +11,63 @@ const ManageTag: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [tagName, setTagName] = useState("");
   const [parentCategory, setParentCategory] = useState("");
-  const [tags, setTags] = useState(initialTags);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState<"all blogs" | "category" | "tag">(
     "tag"
   );
 
-  const handleAddTag = (e: React.FormEvent) => {
-    e.preventDefault();
-    setTags([
-      ...tags,
-      {
-        id: Date.now().toString(),
-        name: tagName,
-        parent: parentCategory,
-      },
-    ]);
-    setTagName("");
-    setParentCategory("");
-    setShowModal(false);
+  // Redux state for paginated tags and categories
+  const {
+    tags = [],
+    totalTags = 0,
+    page = 1,
+    pages = 1,
+    limit = 10,
+    loading,
+    error,
+  } = useSelector((state: any) => {
+    const tagState = state.blog?.tags || {};
+    return {
+      tags: Array.isArray(tagState.tags) ? tagState.tags : [],
+      totalTags: tagState.totalTags || 0,
+      page: tagState.page || 1,
+      pages: tagState.pages || 1,
+      limit: tagState.limit || 10,
+      loading: state.blog?.loading,
+      error: state.blog?.error,
+    };
+  });
+  
+  const parentCategories = useSelector((state: any) => {
+    const catState = state.blog?.categories || {};
+    return Array.isArray(catState.categories) ? catState.categories : [];
+  });
+
+  useEffect(() => {
+    dispatch(getBlogTagRequest({ page: 1, limit, search: "" }));   
+  }, [dispatch, limit]);
+
+  // Search handler
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    dispatch(getBlogTagRequest({ page: 1, limit, search: e.target.value }));
   };
 
-  const filteredTags = tags.filter(
-    (tag) =>
-      tag.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      tag.parent.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Pagination handler
+  const handlePageChange = (newPage: number) => {
+    dispatch(getBlogTagRequest({ page: newPage, limit, search: searchTerm }));
+  };
+
+  // Limit handler
+  const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(
+      getBlogTagRequest({
+        page: 1,
+        limit: Number(e.target.value),
+        search: searchTerm,
+      })
+    );
+  };
 
   const actionButtons = (
     <button
@@ -58,12 +79,34 @@ const ManageTag: React.FC = () => {
     </button>
   );
 
+  const handleAddTag = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Dispatch create tag action here if needed, include parentCategory if needed
+    setTagName("");
+    setParentCategory("");
+    setShowModal(false);
+  };
+
+  const handleEdit = (id: string) => {
+    alert(`Edit tag: ${id}`);
+  };
+
+  const handleDelete = (id: string) => {
+    alert(`Delete tag: ${id}`);
+  };
+
+  // Helper to format date
+  const formatDate = (dateStr: string) => {
+    const d = new Date(dateStr);
+    return d.toLocaleString();
+  };
+
   return (
     <Layout
       title="Tag Management"
       subtitle="Manage all tags here"
       searchValue={searchTerm}
-      onSearchChange={(e) => setSearchTerm(e.target.value)}
+      onSearchChange={handleSearchChange}
       searchPlaceholder="Search Tag"
       actionButtons={actionButtons}
       isHeaderFixed={true}
@@ -108,27 +151,127 @@ const ManageTag: React.FC = () => {
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
-              Tag
+              Tags
             </button>
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-8">
-          <ul className="mb-4">
-            {filteredTags.length === 0 ? (
-              <li className="py-2 text-gray-500">No tags found.</li>
-            ) : (
-              filteredTags.map((tag) => (
-                <li key={tag.id} className="py-2 border-b flex justify-between">
-                  <span>
-                    {tag.name}{" "}
-                    <span className="text-xs text-gray-500">
-                      ({tag.parent})
-                    </span>
-                  </span>
-                </li>
-              ))
-            )}
-          </ul>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-20">
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#08DA87]"></div>
+              <span className="ml-4 text-gray-600">Loading...</span>
+            </div>
+          ) : error ? (
+            <div className="text-red-500 p-8 text-center">{error}</div>
+          ) : (
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    NAME
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    PARENT
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    CREATED AT
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    UPDATED AT
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    ACTION
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {tags.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-4 text-gray-500 text-center">
+                      No tags found.
+                    </td>
+                  </tr>
+                ) : (
+                  tags.map((tag: any) => (
+                    <tr
+                      key={tag._id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
+                      <td className="py-4 px-6">{tag.name}</td>
+                      <td className="py-4 px-6">
+                        {tag.parent ? tag.parent.name : "-"}
+                      </td>
+                      <td className="py-4 px-6">{formatDate(tag.createdAt)}</td>
+                      <td className="py-4 px-6">{formatDate(tag.updatedAt)}</td>
+                      <td className="py-4 px-6">
+                        <div className="flex items-center space-x-2">
+                          <button
+                            className="p-1.5 text-green-600 hover:bg-green-100 rounded transition-colors"
+                            title="Edit"
+                            onClick={() => handleEdit(tag._id)}
+                          >
+                            <Edit className="w-5 h-5" />
+                          </button>
+                          <button
+                            className="p-1.5 text-red-600 hover:bg-red-100 rounded transition-colors"
+                            title="Delete"
+                            onClick={() => handleDelete(tag._id)}
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          )}
+          {/* Pagination Controls */}
+          <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg">
+            <div className="flex flex-col md:flex-row justify-between items-center px-6 py-3 max-w-full mx-auto">
+              <span className="text-sm text-gray-700 mb-2 md:mb-0">
+                Total Tags: <strong>{totalTags}</strong>
+              </span>
+              <div className="flex gap-2 items-center">
+                <strong className="text-[#08DA87]">Page {page}</strong> of{" "}
+                <strong>{pages}</strong> &nbsp;|&nbsp;
+                <label
+                  className="text-sm text-gray-600 mr-2"
+                  htmlFor="limit-select"
+                >
+                  Rows per page:
+                </label>
+                <select
+                  id="limit-select"
+                  value={limit}
+                  onChange={handleLimitChange}
+                  className="px-2 py-1 rounded border bg-gray-100 text-gray-700"
+                  style={{ minWidth: 60 }}
+                >
+                  {[5, 10, 20, 50, 100].map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  className="px-4 py-2 rounded-lg border bg-green-500 text-white hover:bg-green-600 transition disabled:opacity-50"
+                  disabled={page <= 1}
+                  onClick={() => handlePageChange(page - 1)}
+                >
+                  Previous
+                </button>
+                <button
+                  className="px-4 py-2 rounded-lg border bg-green-500 text-white hover:bg-green-600 transition disabled:opacity-50"
+                  disabled={page >= pages}
+                  onClick={() => handlePageChange(page + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
           {/* Modal */}
           {showModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
@@ -148,12 +291,11 @@ const ManageTag: React.FC = () => {
                     value={parentCategory}
                     onChange={(e) => setParentCategory(e.target.value)}
                     className="border px-3 py-2 rounded w-full mb-4"
-                    required
                   >
                     <option value="">Select Parent Category</option>
-                    {parentCategories.map((opt) => (
-                      <option key={opt.value} value={opt.label}>
-                        {opt.label}
+                    {parentCategories.map((cat: any) => (
+                      <option key={cat._id} value={cat._id}>
+                        {cat.name}
                       </option>
                     ))}
                   </select>

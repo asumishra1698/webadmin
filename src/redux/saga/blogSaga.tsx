@@ -9,6 +9,9 @@ import {
   GET_BLOG_CATEGORY_REQUEST,
   GET_BLOG_CATEGORY_SUCCESS,
   GET_BLOG_CATEGORY_FAILURE,
+  GET_BLOG_TAG_REQUEST,
+  GET_BLOG_TAG_SUCCESS,
+  GET_BLOG_TAG_FAILURE,
 } from "../actions/actionTypes";
 import { API_ENDPOINTS, BASE_URL } from "../../config/apiRoutes";
 import { getRequest, postRequest } from "../../config/apihelpers";
@@ -31,7 +34,7 @@ function* createBlogPostSaga(action: any): any {
 
 function* getAllBlogPostsSaga(action: any): any {
   try {
-    const { page = 1, limit = 100, search = "" } = action.payload || {};
+    const { page = 1, limit = 10, search = "" } = action.payload || {};
     const url = `${BASE_URL}${
       API_ENDPOINTS.GET_ALL_BLOG_POSTS
     }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
@@ -62,8 +65,25 @@ function* getBlogCategorySaga(action: any): any {
   }
 }
 
+function* getBlogTagSaga(action: any): any {
+  try {
+    const { page = 1, limit = 10, search = "" } = action.payload || {};
+    const url = `${BASE_URL}${
+      API_ENDPOINTS.GET_BLOG_TAG
+    }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
+    const data = yield call(getRequest, url);
+    yield put({ type: GET_BLOG_TAG_SUCCESS, payload: data });
+  } catch (error: any) {
+    yield put({
+      type: GET_BLOG_TAG_FAILURE,
+      payload: error.message || "Network error",
+    });
+  }
+}
+
 export default function* blogSaga() {
   yield takeLatest(CREATE_BLOG_POST_REQUEST, createBlogPostSaga);
   yield takeLatest(GET_ALL_BLOG_POSTS_REQUEST, getAllBlogPostsSaga);
   yield takeLatest(GET_BLOG_CATEGORY_REQUEST, getBlogCategorySaga);
+  yield takeLatest(GET_BLOG_TAG_REQUEST, getBlogTagSaga);
 }

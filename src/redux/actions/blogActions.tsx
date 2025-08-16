@@ -7,7 +7,10 @@ import {
   GET_ALL_BLOG_POSTS_FAILURE,
   GET_BLOG_CATEGORY_REQUEST,
   GET_BLOG_CATEGORY_SUCCESS,
-  GET_BLOG_CATEGORY_FAILURE,    
+  GET_BLOG_CATEGORY_FAILURE,
+  GET_BLOG_TAG_REQUEST,
+  GET_BLOG_TAG_SUCCESS,
+  GET_BLOG_TAG_FAILURE,
 } from "./actionTypes";
 
 export const createBlogPostRequest = (formData: FormData) => ({
@@ -60,5 +63,24 @@ export const getBlogCategorySuccess = (data: any) => ({
 
 export const getBlogCategoryFailure = (error: string) => ({
   type: GET_BLOG_CATEGORY_FAILURE,
+  payload: error,
+});
+
+export const getBlogTagRequest = (payload: {
+  page: number;
+  limit: number;
+  search: string;
+}) => ({
+  type: GET_BLOG_TAG_REQUEST,
+  payload,
+});
+
+export const getBlogTagSuccess = (data: any) => ({
+  type: GET_BLOG_TAG_SUCCESS,
+  payload: data,
+});
+
+export const getBlogTagFailure = (error: string) => ({
+  type: GET_BLOG_TAG_FAILURE,
   payload: error,
 });

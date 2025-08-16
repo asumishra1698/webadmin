@@ -1,12 +1,17 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../reuseable/Layout";
-import { createBlogPostRequest } from "../../redux/actions/blogActions";
+import {
+  createBlogPostRequest,
+  getBlogCategoryRequest,
+  getBlogTagRequest,
+} from "../../redux/actions/blogActions";
+import Select from "react-select";
 
 const initialState = {
   title: "",
   description: "",
-  category: "",
+  category: [] as string[],
   tags: [] as string[],
   featuredImage: null as File | null,
   galleryImages: [] as File[],
@@ -19,7 +24,46 @@ const initialState = {
 const AddNewBlog: React.FC = () => {
   const dispatch = useDispatch();
   const [form, setForm] = useState(initialState);
-  const [tagInput, setTagInput] = useState("");
+
+  useEffect(() => {
+    dispatch(getBlogCategoryRequest({ page: 1, limit: 10, search: "" }));
+    dispatch(getBlogTagRequest({ page: 1, limit: 10, search: "" }));
+  }, [dispatch]);
+
+  // Select categories and tags from redux
+  const categories = useSelector((state: any) =>
+    Array.isArray(state.blog?.categories?.categories)
+      ? state.blog.categories.categories
+      : []
+  );
+  const tags = useSelector((state: any) =>
+    Array.isArray(state.blog?.tags?.tags) ? state.blog.tags.tags : []
+  );
+
+  // Prepare options for react-select
+  const categoryOptions = categories.map((cat: any) => ({
+    value: cat._id,
+    label: cat.name,
+  }));
+  const tagOptions = tags.map((tag: any) => ({
+    value: tag._id,
+    label: tag.name,
+  }));
+
+  // React Select handlers
+  const handleCategorySelect = (selected: any) => {
+    setForm((prev) => ({
+      ...prev,
+      category: selected ? selected.map((opt: any) => opt.value) : [],
+    }));
+  };
+
+  const handleTagSelect = (selected: any) => {
+    setForm((prev) => ({
+      ...prev,
+      tags: selected ? selected.map((opt: any) => opt.value) : [],
+    }));
+  };
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -41,27 +85,13 @@ const AddNewBlog: React.FC = () => {
     }
   };
 
-  const handleAddTag = () => {
-    if (tagInput.trim()) {
-      setForm((prev) => ({ ...prev, tags: [...prev.tags, tagInput.trim()] }));
-      setTagInput("");
-    }
-  };
-
-  const handleRemoveTag = (idx: number) => {
-    setForm((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((_, i) => i !== idx),
-    }));
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", form.title);
     formData.append("description", form.description);
-    formData.append("category", form.category);
-    form.tags.forEach((tag) => formData.append("tags[]", tag));
+    form.category.forEach((catId) => formData.append("category[]", catId));
+    form.tags.forEach((tagId) => formData.append("tags[]", tagId));
     if (form.featuredImage)
       formData.append("featuredImage", form.featuredImage);
     form.galleryImages.forEach((file) =>
@@ -73,6 +103,14 @@ const AddNewBlog: React.FC = () => {
     formData.append("status", form.status);
     dispatch(createBlogPostRequest(formData));
   };
+
+  // For react-select value
+  const selectedCategoryOptions = categoryOptions.filter((opt: any) =>
+    form.category.includes(opt.value)
+  );
+  const selectedTagOptions = tagOptions.filter((opt: any) =>
+    form.tags.includes(opt.value)
+  );
 
   return (
     <Layout
@@ -108,50 +146,27 @@ const AddNewBlog: React.FC = () => {
             </div>
             <div className="mb-4">
               <label className="block font-medium mb-1">Category</label>
-              <input
-                type="text"
-                name="category"
-                value={form.category}
-                onChange={handleChange}
-                className="border px-3 py-2 rounded w-full"
-                required
+              <Select
+                isMulti
+                options={categoryOptions}
+                value={selectedCategoryOptions}
+                onChange={handleCategorySelect}
+                className="react-select-container"
+                classNamePrefix="react-select"
+                placeholder="Select categories..."
               />
             </div>
             <div className="mb-4">
               <label className="block font-medium mb-1">Tags</label>
-              <div className="flex gap-2 mb-2">
-                <input
-                  type="text"
-                  value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
-                  className="border px-3 py-2 rounded w-full"
-                  placeholder="Add tag"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddTag}
-                  className="px-3 py-2 bg-blue-500 text-white rounded"
-                >
-                  Add
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {form.tags.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className="bg-gray-200 px-2 py-1 rounded text-xs flex items-center"
-                  >
-                    {tag}
-                    <button
-                      type="button"
-                      className="ml-2 text-red-500"
-                      onClick={() => handleRemoveTag(idx)}
-                    >
-                      &times;
-                    </button>
-                  </span>
-                ))}
-              </div>
+              <Select
+                isMulti
+                options={tagOptions}
+                value={selectedTagOptions}
+                onChange={handleTagSelect}
+                className="react-select-container"
+                classNamePrefix="react-select"
+                placeholder="Select tags..."
+              />
             </div>
             <div className="mb-4">
               <label className="block font-medium mb-1">Featured Image</label>

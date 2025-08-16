@@ -12,9 +12,9 @@ const manageBlogCategory: React.FC = () => {
   const [categoryName, setCategoryName] = useState("");
   const [parentCategory, setParentCategory] = useState(""); // <-- Add this state
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeTab, setActiveTab] = useState<
-    "all blogs" | "category" | "tag"
-  >("category");
+  const [activeTab, setActiveTab] = useState<"all blogs" | "category" | "tag">(
+    "category"
+  );
   const [limit, setLimit] = useState(10);
 
   // Redux state for paginated categories
@@ -151,8 +151,8 @@ const manageBlogCategory: React.FC = () => {
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
-              Tag
-            </button>            
+              Tags
+            </button>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-20">
@@ -234,10 +234,9 @@ const manageBlogCategory: React.FC = () => {
           {/* Pagination Controls */}
           <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg">
             <div className="flex flex-col md:flex-row justify-between items-center px-6 py-3 max-w-full mx-auto">
-              <span className="text-sm text-gray-700 mb-2 md:mb-0">
-                Total Categories: <strong>{totalCategories}</strong>
-              </span>
+              <span className="text-sm text-gray-700 mb-2 md:mb-0"></span>
               <div className="flex gap-2 items-center">
+                Total Categories: <strong>{totalCategories}</strong>
                 <strong className="text-[#DA8708]">Page {page}</strong> of{" "}
                 <strong>{pages}</strong> &nbsp;|&nbsp;
                 <label
@@ -297,13 +296,11 @@ const manageBlogCategory: React.FC = () => {
                     className="border px-3 py-2 rounded w-full mb-4"
                   >
                     <option value="">Select Parent Category</option>
-                    {categories
-                      .filter((cat: any) => !cat.parent)
-                      .map((cat: any) => (
-                        <option key={cat._id} value={cat._id}>
-                          {cat.name}
-                        </option>
-                      ))}
+                    {categories.map((cat: any) => (
+                      <option key={cat._id} value={cat._id}>
+                        {cat.name}
+                      </option>
+                    ))}
                   </select>
                   <label className="block mb-2 font-medium">
                     Category Name
