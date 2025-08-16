@@ -75,7 +75,12 @@ const AddNewBlog: React.FC = () => {
   };
 
   return (
-    <Layout title="Add New Blog" subtitle="Create a new blog post">
+    <Layout
+      title="Add New Blog"
+      subtitle="Create a new blog post"
+      showBackButton={true}
+      backButtonLink="/blogs"
+    >
       <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-8 mt-8">
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="mb-4">
