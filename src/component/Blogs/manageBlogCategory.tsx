@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import Layout from "../../reuseable/Layout";
 import { Plus, X, Edit, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -103,9 +104,20 @@ const manageBlogCategory: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
-      dispatch(deleteBlogCategoryRequest(id));
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DA8708",
+      cancelButtonColor: "#aaa",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteBlogCategoryRequest(id));
+        Swal.fire("Deleted!", "Category has been deleted.", "success");
+      }
+    });
   };
 
   // Helper to format date
@@ -189,13 +201,13 @@ const manageBlogCategory: React.FC = () => {
                   <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
                     PARENT
                   </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase whitespace-nowrap">
                     POST COUNT
                   </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase whitespace-nowrap">
                     CREATED AT
                   </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase whitespace-nowrap">
                     UPDATED AT
                   </th>
                   <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
@@ -216,14 +228,14 @@ const manageBlogCategory: React.FC = () => {
                       key={cat._id}
                       className="hover:bg-gray-50 transition-colors"
                     >
-                      <td className="py-4 px-6">{cat.name}</td>
-                      <td className="py-4 px-6">{cat.slug}</td>
-                      <td className="py-4 px-6">
+                      <td className="py-4 px-6 whitespace-nowrap">{cat.name}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">{cat.slug}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">
                         {cat.parent ? cat.parent.name : "-"}
                       </td>
-                      <td className="py-4 px-6">{cat.postCount || 0}</td>
-                      <td className="py-4 px-6">{formatDate(cat.createdAt)}</td>
-                      <td className="py-4 px-6">{formatDate(cat.updatedAt)}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">{cat.postCount || 0}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">{formatDate(cat.createdAt)}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">{formatDate(cat.updatedAt)}</td>
                       <td className="py-4 px-6">
                         <div className="flex items-center space-x-2">
                           <button

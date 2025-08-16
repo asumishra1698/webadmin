@@ -25,7 +25,7 @@ interface BlogPost {
   metaTitle?: string;
   metaDescription?: string;
   canonicalUrl?: string;
-  status: "draft" | "published" | "archived";
+  status: "draft" | "published";
   createdAt: string;
   updatedAt: string;
 }
@@ -73,6 +73,14 @@ const ManageBlogs: React.FC = () => {
     );
   };
 
+  const handleStatusToggle = (blog: BlogPost) => {
+  const newStatus = blog.status === "published" ? "draft" : "published";
+  dispatch({
+    type: "UPDATE_BLOG_STATUS_REQUEST",
+    payload: { id: blog._id, status: newStatus },
+  });
+};
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     dispatch(
@@ -83,7 +91,7 @@ const ManageBlogs: React.FC = () => {
   const exportUsers = () => {
     alert("Exporting blogs as CSV (static demo)");
   };
-  
+
   const handleDeleteBlog = (blogId: string) => {
     Swal.fire({
       title: "Are you sure?",
@@ -207,9 +215,9 @@ const ManageBlogs: React.FC = () => {
                   <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
                     TITLE
                   </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                  {/* <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
                     DESCRIPTION
-                  </th>
+                  </th> */}
                   <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
                     AUTHOR
                   </th>
@@ -251,24 +259,63 @@ const ManageBlogs: React.FC = () => {
                     <td className="py-4 px-6 font-medium text-[#14133B] whitespace-nowrap">
                       {blog.title}
                     </td>
-                    <td className="py-4 px-6 text-sm text-gray-600">
+                    {/* <td className="py-4 px-6 text-sm text-gray-600 whitespace-nowrap">
                       {blog.description?.slice(0, 80)}...
-                    </td>
-                    <td className="py-4 px-6 text-xs text-gray-500">
+                    </td> */}
+                    <td className="py-4 px-6 text-xs text-gray-500 whitespace-nowrap">
                       {blog.author?.name || "-"}
                     </td>
-                    <td className="py-4 px-6 text-xs text-gray-500">
-                      {blog.category && blog.category.length > 0
-                        ? blog.category.map((cat) => cat.name).join(", ")
-                        : "-"}
+                    <td className="py-4 px-6 text-xs text-gray-500 whitespace-nowrap">
+                      <div className="flex flex-wrap gap-1">
+                        {blog.category && blog.category.length > 0 ? (
+                          blog.category.map((cat, idx) => (
+                            <span
+                              key={cat._id || idx}
+                              className="px-2 py-0.5 rounded text-xs font-medium"
+                              style={{
+                                background: [
+                                  "#FDE68A", // yellow
+                                  "#A7F3D0", // green
+                                  "#BFDBFE", // blue
+                                  "#FCA5A5", // red
+                                  "#C4B5FD", // purple
+                                  "#F9A8D4", // pink
+                                  "#FECACA", // light red
+                                  "#D1FAE5", // teal
+                                ][idx % 8],
+                                color: "#222",
+                              }}
+                            >
+                              {cat.name}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-gray-400 text-xs">
+                            No Category
+                          </span>
+                        )}
+                      </div>
                     </td>
-                    <td className="py-4 px-6">
+                    <td className="py-4 px-6 text-xs text-gray-500 whitespace-nowrap">
                       <div className="flex flex-wrap gap-1">
                         {blog.tags?.length > 0 ? (
                           blog.tags.map((tag, idx) => (
                             <span
-                              key={idx}
-                              className="bg-gray-200 px-2 py-0.5 rounded text-xs"
+                              key={tag._id || idx}
+                              className={`px-2 py-0.5 rounded text-xs font-medium`}
+                              style={{
+                                background: [
+                                  "#FDE68A", // yellow
+                                  "#A7F3D0", // green
+                                  "#BFDBFE", // blue
+                                  "#FCA5A5", // red
+                                  "#C4B5FD", // purple
+                                  "#F9A8D4", // pink
+                                  "#FECACA", // light red
+                                  "#D1FAE5", // teal
+                                ][idx % 8],
+                                color: "#222",
+                              }}
                             >
                               {tag.name}
                             </span>
@@ -279,8 +326,18 @@ const ManageBlogs: React.FC = () => {
                       </div>
                     </td>
                     <td className="py-4 px-6 text-xs text-gray-400">
-                      {blog.status}
-                    </td>
+  <button
+    onClick={() => handleStatusToggle(blog)}
+    className={`px-3 py-1 rounded-full font-semibold transition-colors text-xs ${
+      blog.status === "published"
+        ? "bg-green-100 text-green-700 border border-green-300"
+        : "bg-yellow-100 text-yellow-700 border border-yellow-300"
+    }`}
+    title="Toggle status"
+  >
+    {blog.status === "published" ? "Published" : "Draft"}
+  </button>
+</td>
                     <td className="py-4 px-6">
                       <div className="flex items-center space-x-2">
                         <button

@@ -9,6 +9,9 @@ import {
   DELETE_BLOG_POST_REQUEST,
   DELETE_BLOG_POST_SUCCESS,
   DELETE_BLOG_POST_FAILURE,
+  UPDATE_BLOG_STATUS_REQUEST,
+  UPDATE_BLOG_STATUS_SUCCESS,
+  UPDATE_BLOG_STATUS_FAILURE,
 
   // Blog category
   CREATE_BLOG_CATEGORY_REQUEST,
@@ -81,6 +84,21 @@ export const deleteBlogPostSuccess = (id: string) => ({
 
 export const deleteBlogPostFailure = (error: string) => ({
   type: DELETE_BLOG_POST_FAILURE,
+  payload: error,
+});
+
+export const updateBlogStatusRequest = (id: string, status: string) => ({
+  type: UPDATE_BLOG_STATUS_REQUEST,
+  payload: { id, status },
+});
+
+export const updateBlogStatusSuccess = (data: any) => ({
+  type: UPDATE_BLOG_STATUS_SUCCESS,
+  payload: data,
+});
+
+export const updateBlogStatusFailure = (error: string) => ({
+  type: UPDATE_BLOG_STATUS_FAILURE,
   payload: error,
 });
 

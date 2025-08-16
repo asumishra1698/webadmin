@@ -9,6 +9,9 @@ import {
   DELETE_BLOG_POST_REQUEST,
   DELETE_BLOG_POST_SUCCESS,
   DELETE_BLOG_POST_FAILURE,
+  UPDATE_BLOG_STATUS_REQUEST,
+  UPDATE_BLOG_STATUS_SUCCESS,
+  UPDATE_BLOG_STATUS_FAILURE,
 
   // Blog category reducer
   CREATE_BLOG_CATEGORY_REQUEST,
@@ -91,6 +94,21 @@ export default function blogReducer(state = initialState, action: any) {
     case DELETE_BLOG_POST_FAILURE:
       return { ...state, loading: false, error: action.payload };
 
+    case UPDATE_BLOG_STATUS_REQUEST:
+      return { ...state, loading: true, error: null };
+    case UPDATE_BLOG_STATUS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        posts: state.posts.map((post: any) =>
+          post._id === action.payload.id
+            ? { ...post, status: action.payload.status }
+            : post
+        ),
+      };
+    case UPDATE_BLOG_STATUS_FAILURE:
+      return { ...state, loading: false, error: action.payload };
+
     // Blog category reducer
 
     case CREATE_BLOG_CATEGORY_REQUEST:
@@ -158,7 +176,9 @@ export default function blogReducer(state = initialState, action: any) {
         loading: false,
         tags: {
           ...state.tags,
-          tags: state.tags.tags.filter((tag: any) => tag._id !== action.payload),
+          tags: state.tags.tags.filter(
+            (tag: any) => tag._id !== action.payload
+          ),
         },
       };
     case DELETE_BLOG_TAG_FAILURE:

@@ -18,4 +18,5 @@ export const API_ENDPOINTS = {
   CREATE_BLOG_TAG: "/api/blog/tags",
   GET_BLOG_TAG: "/api/blog/tags",
   DELETE_BLOG_TAG: "/api/blog/tags/",
+  UPDATE_BLOG_STATUS: "/api/blog/posts/",
 };
