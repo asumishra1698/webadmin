@@ -1,11 +1,11 @@
 {
-  "name": "iqsetters",
+  "name": "webadmin",
   "version": "0.0.0",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
-      "name": "iqsetters",
+      "name": "webadmin",
       "version": "0.0.0",
       "dependencies": {
         "@headlessui/react": "^2.2.4",

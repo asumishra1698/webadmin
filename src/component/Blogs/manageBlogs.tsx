@@ -5,7 +5,7 @@ import { IMAGE_BASE_URL } from "../../config/apiRoutes";
 import csvIcon from "../../assets/icons/csv.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBlogPostsRequest } from "../../redux/actions/blogActions";
+import { deleteBlogPostRequest, getAllBlogPostsRequest } from "../../redux/actions/blogActions";
 import type { RootState } from "../../redux/reducers/rootReducers";
 
 interface BlogPost {
@@ -80,7 +80,11 @@ const ManageBlogs: React.FC = () => {
     alert("Exporting blogs as CSV (static demo)");
   };
   const handleDeleteBlog = (blogId: string) => {
-    alert(`Delete blog with ID: ${blogId}`);
+    if (window.confirm("Are you sure you want to delete this blog?")) {
+      // Dispatch delete action here
+      dispatch(deleteBlogPostRequest(blogId));
+      console.log(`Blog with ID ${blogId} deleted`);
+    }
   };
 
   const handleAddNewBlog = () => {

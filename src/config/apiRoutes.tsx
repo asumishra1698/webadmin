@@ -13,4 +13,5 @@ export const API_ENDPOINTS = {
   GET_ALL_BLOG_POSTS: "/api/blog/posts",
   GET_BLOG_CATEGORY: "/api/blog/categories",
   GET_BLOG_TAG: "/api/blog/tags",
+  DELETE_BLOG_POST: "/api/blog/posts/",
 };

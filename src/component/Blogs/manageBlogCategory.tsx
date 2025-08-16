@@ -177,6 +177,9 @@ const manageBlogCategory: React.FC = () => {
                     PARENT
                   </th>
                   <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    POST COUNT
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
                     CREATED AT
                   </th>
                   <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
@@ -204,6 +207,9 @@ const manageBlogCategory: React.FC = () => {
                       <td className="py-4 px-6">{cat.slug}</td>
                       <td className="py-4 px-6">
                         {cat.parent ? cat.parent.name : "-"}
+                      </td>
+                      <td className="py-4 px-6">
+                        {cat.postCount || 0}
                       </td>
                       <td className="py-4 px-6">{formatDate(cat.createdAt)}</td>
                       <td className="py-4 px-6">{formatDate(cat.updatedAt)}</td>

@@ -5,6 +5,10 @@ import {
   GET_ALL_BLOG_POSTS_REQUEST,
   GET_ALL_BLOG_POSTS_SUCCESS,
   GET_ALL_BLOG_POSTS_FAILURE,
+  DELETE_BLOG_POST_REQUEST,
+  DELETE_BLOG_POST_SUCCESS,
+  DELETE_BLOG_POST_FAILURE,
+
   GET_BLOG_CATEGORY_REQUEST,
   GET_BLOG_CATEGORY_SUCCESS,
   GET_BLOG_CATEGORY_FAILURE,
@@ -44,6 +48,21 @@ export const getAllBlogPostsSuccess = (data: any) => ({
 
 export const getAllBlogPostsFailure = (error: string) => ({
   type: GET_ALL_BLOG_POSTS_FAILURE,
+  payload: error,
+});
+
+export const deleteBlogPostRequest = (id: string) => ({
+  type: DELETE_BLOG_POST_REQUEST,
+  payload: id,
+});
+
+export const deleteBlogPostSuccess = (id: string) => ({
+  type: DELETE_BLOG_POST_SUCCESS,
+  payload: id,
+});
+
+export const deleteBlogPostFailure = (error: string) => ({
+  type: DELETE_BLOG_POST_FAILURE,
   payload: error,
 });
 

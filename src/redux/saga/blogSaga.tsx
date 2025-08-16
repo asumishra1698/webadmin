@@ -6,6 +6,9 @@ import {
   GET_ALL_BLOG_POSTS_REQUEST,
   GET_ALL_BLOG_POSTS_SUCCESS,
   GET_ALL_BLOG_POSTS_FAILURE,
+  DELETE_BLOG_POST_REQUEST,
+  DELETE_BLOG_POST_SUCCESS,
+  DELETE_BLOG_POST_FAILURE,
   GET_BLOG_CATEGORY_REQUEST,
   GET_BLOG_CATEGORY_SUCCESS,
   GET_BLOG_CATEGORY_FAILURE,
@@ -14,7 +17,7 @@ import {
   GET_BLOG_TAG_FAILURE,
 } from "../actions/actionTypes";
 import { API_ENDPOINTS, BASE_URL } from "../../config/apiRoutes";
-import { getRequest, postRequest } from "../../config/apihelpers";
+import { deleteRequest, getRequest, postRequest } from "../../config/apihelpers";
 
 function* createBlogPostSaga(action: any): any {
   try {
@@ -44,6 +47,19 @@ function* getAllBlogPostsSaga(action: any): any {
   } catch (error: any) {
     yield put({
       type: GET_ALL_BLOG_POSTS_FAILURE,
+      payload: error.message || "Network error",
+    });
+  }
+}
+
+function* deleteBlogPostSaga(action: any): any {
+  try {
+    const url = `${BASE_URL}${API_ENDPOINTS.DELETE_BLOG_POST}/${action.payload}`;
+    yield call(deleteRequest, url);
+    yield put({ type: DELETE_BLOG_POST_SUCCESS, payload: action.payload });
+  } catch (error: any) {
+    yield put({
+      type: DELETE_BLOG_POST_FAILURE,
       payload: error.message || "Network error",
     });
   }
@@ -84,6 +100,7 @@ function* getBlogTagSaga(action: any): any {
 export default function* blogSaga() {
   yield takeLatest(CREATE_BLOG_POST_REQUEST, createBlogPostSaga);
   yield takeLatest(GET_ALL_BLOG_POSTS_REQUEST, getAllBlogPostsSaga);
+  yield takeLatest(DELETE_BLOG_POST_REQUEST, deleteBlogPostSaga);
   yield takeLatest(GET_BLOG_CATEGORY_REQUEST, getBlogCategorySaga);
   yield takeLatest(GET_BLOG_TAG_REQUEST, getBlogTagSaga);
 }
