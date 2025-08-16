@@ -49,7 +49,9 @@ function* getAllBlogPostsSaga(action: any): any {
 function* getBlogCategorySaga(action: any): any {
   try {
     const { page = 1, limit = 10, search = "" } = action.payload || {};
-    const url = `${BASE_URL}${API_ENDPOINTS.GET_BLOG_CATEGORY}?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
+    const url = `${BASE_URL}${
+      API_ENDPOINTS.GET_BLOG_CATEGORY
+    }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
     const data = yield call(getRequest, url);
     yield put({ type: GET_BLOG_CATEGORY_SUCCESS, payload: data });
   } catch (error: any) {

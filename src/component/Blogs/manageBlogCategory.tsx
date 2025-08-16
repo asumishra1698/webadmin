@@ -10,34 +10,33 @@ const manageBlogCategory: React.FC = () => {
   const Navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [categoryName, setCategoryName] = useState("");
+  const [parentCategory, setParentCategory] = useState(""); // <-- Add this state
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState<
-    "all blogs" | "category" | "tag" | "sub category"
+    "all blogs" | "category" | "tag"
   >("category");
-
-  // const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(10);
 
   // Redux state for paginated categories
- const {
-  categories = [],
-  totalCategories = 0,
-  page = 1,
-  pages = 1,
-  limit = 10,
-  loading,
-  error,
-} = useSelector((state: any) => {
-  const catState = state.blog?.categories || {};
-  return {
-    categories: Array.isArray(catState.categories) ? catState.categories : [],
-    totalCategories: catState.totalCategories || 0,
-    page: catState.page || 1,
-    pages: catState.pages || 1,
-    limit: catState.limit || 10,
-    loading: state.blog?.loading,
-    error: state.blog?.error,
-  };
-});
+  const {
+    categories = [],
+    totalCategories = 0,
+    page = 1,
+    pages = 1,
+    loading,
+    error,
+  } = useSelector((state: any) => {
+    const catState = state.blog?.categories || {};
+    return {
+      categories: Array.isArray(catState.categories) ? catState.categories : [],
+      totalCategories: catState.totalCategories || 0,
+      page: catState.page || 1,
+      pages: catState.pages || 1,
+      limit: catState.limit || 10,
+      loading: state.blog?.loading,
+      error: state.blog?.error,
+    };
+  });
 
   useEffect(() => {
     dispatch(getBlogCategoryRequest({ page: 1, limit, search: "" }));
@@ -60,7 +59,7 @@ const manageBlogCategory: React.FC = () => {
 
   // Limit handler
   const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    // setLimit(Number(e.target.value));
+    setLimit(Number(e.target.value));
     dispatch(
       getBlogCategoryRequest({
         page: 1,
@@ -82,8 +81,9 @@ const manageBlogCategory: React.FC = () => {
 
   const handleAddCategory = (e: React.FormEvent) => {
     e.preventDefault();
-    // Dispatch create category action here if needed
+    // Dispatch create category action here if needed, include parentCategory if needed
     setCategoryName("");
+    setParentCategory("");
     setShowModal(false);
   };
 
@@ -152,20 +152,7 @@ const manageBlogCategory: React.FC = () => {
               }`}
             >
               Tag
-            </button>
-            <button
-              onClick={() => {
-                setActiveTab("sub category");
-                Navigate("/blog-sub-category");
-              }}
-              className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
-                activeTab === "sub category"
-                  ? "text-red-500 border-b-2 border-red-500"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Sub Category
-            </button>
+            </button>            
           </div>
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-20">
@@ -248,10 +235,9 @@ const manageBlogCategory: React.FC = () => {
           <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg">
             <div className="flex flex-col md:flex-row justify-between items-center px-6 py-3 max-w-full mx-auto">
               <span className="text-sm text-gray-700 mb-2 md:mb-0">
-               
+                Total Categories: <strong>{totalCategories}</strong>
               </span>
               <div className="flex gap-2 items-center">
-                 Total Categories: <strong>{totalCategories}</strong>
                 <strong className="text-[#DA8708]">Page {page}</strong> of{" "}
                 <strong>{pages}</strong> &nbsp;|&nbsp;
                 <label
@@ -302,6 +288,23 @@ const manageBlogCategory: React.FC = () => {
                 </button>
                 <h2 className="text-xl font-semibold mb-4">Create Category</h2>
                 <form onSubmit={handleAddCategory}>
+                  <label className="block mb-2 font-medium">
+                    Parent Category
+                  </label>
+                  <select
+                    value={parentCategory}
+                    onChange={(e) => setParentCategory(e.target.value)}
+                    className="border px-3 py-2 rounded w-full mb-4"
+                  >
+                    <option value="">Select Parent Category</option>
+                    {categories
+                      .filter((cat: any) => !cat.parent)
+                      .map((cat: any) => (
+                        <option key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                  </select>
                   <label className="block mb-2 font-medium">
                     Category Name
                   </label>

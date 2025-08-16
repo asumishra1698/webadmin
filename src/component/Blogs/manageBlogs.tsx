@@ -45,9 +45,9 @@ const ManageBlogs: React.FC = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const limitOptions = [5, 10, 20, 50, 100];
-  const [activeTab, setActiveTab] = useState<
-    "all blogs" | "category" | "tag" | "sub category"
-  >("all blogs");
+  const [activeTab, setActiveTab] = useState<"all blogs" | "category" | "tag">(
+    "all blogs"
+  );
 
   useEffect(() => {
     dispatch(getAllBlogPostsRequest({ page: 1, limit: 100, search: "" }));
@@ -160,19 +160,6 @@ const ManageBlogs: React.FC = () => {
               }`}
             >
               Tag
-            </button>
-            <button
-              onClick={() => {
-                setActiveTab("sub category");
-                Navigate("/blog-sub-category");
-              }}
-              className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
-                activeTab === "sub category"
-                  ? "text-red-500 border-b-2 border-red-500"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Sub Category
             </button>
           </div>
         </div>
