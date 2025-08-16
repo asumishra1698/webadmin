@@ -5,6 +5,9 @@ import {
   GET_ALL_BLOG_POSTS_REQUEST,
   GET_ALL_BLOG_POSTS_SUCCESS,
   GET_ALL_BLOG_POSTS_FAILURE,
+  GET_BLOG_CATEGORY_REQUEST,
+  GET_BLOG_CATEGORY_SUCCESS,
+  GET_BLOG_CATEGORY_FAILURE,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -39,6 +42,13 @@ export default function blogReducer(state = initialState, action: any) {
         limit: action.payload.pagination.limit,
       };
     case GET_ALL_BLOG_POSTS_FAILURE:
+      return { ...state, loading: false, error: action.payload };
+
+    case GET_BLOG_CATEGORY_REQUEST:
+      return { ...state, loading: true, error: null };
+    case GET_BLOG_CATEGORY_SUCCESS:
+      return { ...state, loading: false, categories: action.payload };
+    case GET_BLOG_CATEGORY_FAILURE:
       return { ...state, loading: false, error: action.payload };
 
     default:

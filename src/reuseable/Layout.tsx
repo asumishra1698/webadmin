@@ -54,8 +54,7 @@ const Layout: React.FC<LayoutProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  const profile = useSelector((state: RootState) => state.auth.user);
-  console.log("Profile Data:", profile);
+  const profile = useSelector((state: RootState) => state.auth.user); 
 
   useEffect(() => {
     dispatch(getUserProfileRequest());

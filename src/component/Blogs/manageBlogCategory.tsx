@@ -1,52 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../reuseable/Layout";
-import { Plus, X } from "lucide-react";
+import { Plus, X, Edit, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
-// Dummy parent categories for dropdown
-const parentCategories = [
-  { value: "parent1", label: "Parent Category 1" },
-  { value: "parent2", label: "Parent Category 2" },
-];
-
-const initialCategories = [
-  { id: "cat1", name: "Category 1", parent: "Parent Category 1" },
-  { id: "cat2", name: "Category 2", parent: "Parent Category 2" },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { getBlogCategoryRequest } from "../../redux/actions/blogActions";
 
 const manageBlogCategory: React.FC = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [categoryName, setCategoryName] = useState("");
-  const [parentCategory, setParentCategory] = useState("");
-  const [categories, setCategories] = useState(initialCategories);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState<
     "all blogs" | "category" | "tag" | "sub category"
   >("category");
 
-  const handleAddCategory = (e: React.FormEvent) => {
-    e.preventDefault();
-    setCategories([
-      ...categories,
-      {
-        id: Date.now().toString(),
-        name: categoryName,
-        parent: parentCategory,
-      },
-    ]);
-    setCategoryName("");
-    setParentCategory("");
-    setShowModal(false);
-  };
+  // Fetch categories from Redux
+  const categories = useSelector((state: any) => state.blog?.categories || []);
+  const loading = useSelector((state: any) => state.blog?.loading);
+  const error = useSelector((state: any) => state.blog?.error);
 
-  const filteredCategories = categories.filter(
-    (cat) =>
+  useEffect(() => {
+    dispatch(getBlogCategoryRequest());
+  }, [dispatch]); 
+
+  // Filtered categories for search
+  const filteredCategories = categories.filter((cat: any) => {
+    const parentName = cat.parent?.name || "";
+    return (
       cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      cat.parent.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+      cat.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      parentName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   const actionButtons = (
     <button
@@ -57,6 +43,27 @@ const manageBlogCategory: React.FC = () => {
       Create Category
     </button>
   );
+
+  const handleAddCategory = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Dispatch create category action here if needed
+    setCategoryName("");
+    setShowModal(false);
+  };
+
+  const handleEdit = (id: string) => {
+    alert(`Edit category: ${id}`);
+  };
+
+  const handleDelete = (id: string) => {
+    alert(`Delete category: ${id}`);
+  };
+
+  // Helper to format date
+  const formatDate = (dateStr: string) => {
+    const d = new Date(dateStr);
+    return d.toLocaleString();
+  };
 
   return (
     <Layout
@@ -125,23 +132,82 @@ const manageBlogCategory: React.FC = () => {
             </button>
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-8">
-          <ul className="mb-4">
-            {filteredCategories.length === 0 ? (
-              <li className="py-2 text-gray-500">No categories found.</li>
-            ) : (
-              filteredCategories.map((cat) => (
-                <li key={cat.id} className="py-2 border-b flex justify-between">
-                  <span>
-                    {cat.name}{" "}
-                    <span className="text-xs text-gray-500">
-                      ({cat.parent})
-                    </span>
-                  </span>
-                </li>
-              ))
-            )}
-          </ul>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-20">
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#DA8708]"></div>
+              <span className="ml-4 text-gray-600">Loading...</span>
+            </div>
+          ) : error ? (
+            <div className="text-red-500 p-8 text-center">{error}</div>
+          ) : (
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    NAME
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    SLUG
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    PARENT
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    CREATED AT
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    UPDATED AT
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                    ACTION
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {filteredCategories.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-4 text-gray-500 text-center">
+                      No categories found.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredCategories.map((cat: any) => (
+                    <tr
+                      key={cat._id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
+                      <td className="py-4 px-6">{cat.name}</td>
+                      <td className="py-4 px-6">{cat.slug}</td>
+                      <td className="py-4 px-6">
+                        {cat.parent ? cat.parent.name : "-"}
+                      </td>
+                      <td className="py-4 px-6">{formatDate(cat.createdAt)}</td>
+                      <td className="py-4 px-6">{formatDate(cat.updatedAt)}</td>
+                      <td className="py-4 px-6">
+                        <div className="flex items-center space-x-2">
+                          <button
+                            className="p-1.5 text-green-600 hover:bg-green-100 rounded transition-colors"
+                            title="Edit"
+                            onClick={() => handleEdit(cat._id)}
+                          >
+                            <Edit className="w-5 h-5" />
+                          </button>
+                          <button
+                            className="p-1.5 text-red-600 hover:bg-red-100 rounded transition-colors"
+                            title="Delete"
+                            onClick={() => handleDelete(cat._id)}
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          )}
           {/* Modal */}
           {showModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
@@ -154,22 +220,6 @@ const manageBlogCategory: React.FC = () => {
                 </button>
                 <h2 className="text-xl font-semibold mb-4">Create Category</h2>
                 <form onSubmit={handleAddCategory}>
-                  <label className="block mb-2 font-medium">
-                    Parent Category
-                  </label>
-                  <select
-                    value={parentCategory}
-                    onChange={(e) => setParentCategory(e.target.value)}
-                    className="border px-3 py-2 rounded w-full mb-4"
-                    required
-                  >
-                    <option value="">Select Parent Category</option>
-                    {parentCategories.map((opt) => (
-                      <option key={opt.value} value={opt.label}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
                   <label className="block mb-2 font-medium">
                     Category Name
                   </label>

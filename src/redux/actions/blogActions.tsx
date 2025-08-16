@@ -5,6 +5,9 @@ import {
   GET_ALL_BLOG_POSTS_REQUEST,
   GET_ALL_BLOG_POSTS_SUCCESS,
   GET_ALL_BLOG_POSTS_FAILURE,
+  GET_BLOG_CATEGORY_REQUEST,
+  GET_BLOG_CATEGORY_SUCCESS,
+  GET_BLOG_CATEGORY_FAILURE,    
 } from "./actionTypes";
 
 export const createBlogPostRequest = (formData: FormData) => ({
@@ -38,5 +41,19 @@ export const getAllBlogPostsSuccess = (data: any) => ({
 
 export const getAllBlogPostsFailure = (error: string) => ({
   type: GET_ALL_BLOG_POSTS_FAILURE,
+  payload: error,
+});
+
+export const getBlogCategoryRequest = () => ({
+  type: GET_BLOG_CATEGORY_REQUEST,
+});
+
+export const getBlogCategorySuccess = (data: any) => ({
+  type: GET_BLOG_CATEGORY_SUCCESS,
+  payload: data,
+});
+
+export const getBlogCategoryFailure = (error: string) => ({
+  type: GET_BLOG_CATEGORY_FAILURE,
   payload: error,
 });
