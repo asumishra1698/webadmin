@@ -1,5 +1,6 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import {
+  // Blog post sagas
   CREATE_BLOG_POST_REQUEST,
   CREATE_BLOG_POST_SUCCESS,
   CREATE_BLOG_POST_FAILURE,
@@ -9,16 +10,37 @@ import {
   DELETE_BLOG_POST_REQUEST,
   DELETE_BLOG_POST_SUCCESS,
   DELETE_BLOG_POST_FAILURE,
+
+  // Blog category sagas
+  CREATE_BLOG_CATEGORY_REQUEST,
+  CREATE_BLOG_CATEGORY_SUCCESS,
+  CREATE_BLOG_CATEGORY_FAILURE,
   GET_BLOG_CATEGORY_REQUEST,
   GET_BLOG_CATEGORY_SUCCESS,
   GET_BLOG_CATEGORY_FAILURE,
+  DELETE_BLOG_CATEGORY_REQUEST,
+  DELETE_BLOG_CATEGORY_SUCCESS,
+  DELETE_BLOG_CATEGORY_FAILURE,
+
+  // Blog tag sagas
+  CREATE_BLOG_TAG_REQUEST,
+  CREATE_BLOG_TAG_SUCCESS,
+  CREATE_BLOG_TAG_FAILURE,
   GET_BLOG_TAG_REQUEST,
   GET_BLOG_TAG_SUCCESS,
   GET_BLOG_TAG_FAILURE,
+  DELETE_BLOG_TAG_REQUEST,
+  DELETE_BLOG_TAG_SUCCESS,
+  DELETE_BLOG_TAG_FAILURE,
 } from "../actions/actionTypes";
 import { API_ENDPOINTS, BASE_URL } from "../../config/apiRoutes";
-import { deleteRequest, getRequest, postRequest } from "../../config/apihelpers";
+import {
+  deleteRequest,
+  getRequest,
+  postRequest,
+} from "../../config/apihelpers";
 
+// Blog post sagas
 function* createBlogPostSaga(action: any): any {
   try {
     const data = yield call(
@@ -65,6 +87,25 @@ function* deleteBlogPostSaga(action: any): any {
   }
 }
 
+// Blog category sagas
+
+function* createBlogCategorySaga(action: any): any {
+  try {
+    const data = yield call(
+      postRequest,
+      `${BASE_URL}${API_ENDPOINTS.CREATE_BLOG_CATEGORY}`,
+      action.payload
+    );
+    yield put({ type: CREATE_BLOG_CATEGORY_SUCCESS, payload: data });
+    yield put({ type: GET_BLOG_CATEGORY_REQUEST, payload: {} });
+  } catch (error: any) {
+    yield put({
+      type: CREATE_BLOG_CATEGORY_FAILURE,
+      payload: error.message || "Network error",
+    });
+  }
+}
+
 function* getBlogCategorySaga(action: any): any {
   try {
     const { page = 1, limit = 10, search = "" } = action.payload || {};
@@ -76,6 +117,37 @@ function* getBlogCategorySaga(action: any): any {
   } catch (error: any) {
     yield put({
       type: GET_BLOG_CATEGORY_FAILURE,
+      payload: error.message || "Network error",
+    });
+  }
+}
+
+function* deleteBlogCategorySaga(action: any): any {
+  try {
+    const url = `${BASE_URL}${API_ENDPOINTS.DELETE_BLOG_CATEGORY}/${action.payload}`;
+    yield call(deleteRequest, url);
+    yield put({ type: DELETE_BLOG_CATEGORY_SUCCESS, payload: action.payload });
+  } catch (error: any) {
+    yield put({
+      type: DELETE_BLOG_CATEGORY_FAILURE,
+      payload: error.message || "Network error",
+    });
+  }
+}
+
+// Blog tag sagas
+function* createBlogTagSaga(action: any): any {
+  try {
+    const data = yield call(
+      postRequest,
+      `${BASE_URL}${API_ENDPOINTS.CREATE_BLOG_TAG}`,
+      action.payload
+    );
+    yield put({ type: CREATE_BLOG_TAG_SUCCESS, payload: data });
+    yield put({ type: GET_BLOG_TAG_REQUEST, payload: {} });
+  } catch (error: any) {
+    yield put({
+      type: CREATE_BLOG_TAG_FAILURE,
       payload: error.message || "Network error",
     });
   }
@@ -97,10 +169,27 @@ function* getBlogTagSaga(action: any): any {
   }
 }
 
+function* deleteBlogTagSaga(action: any): any {
+  try {
+    const url = `${BASE_URL}${API_ENDPOINTS.DELETE_BLOG_TAG}/${action.payload}`;
+    yield call(deleteRequest, url);
+    yield put({ type: DELETE_BLOG_TAG_SUCCESS, payload: action.payload });
+  } catch (error: any) {
+    yield put({
+      type: DELETE_BLOG_TAG_FAILURE,
+      payload: error.message || "Network error",
+    });
+  }
+}
+
 export default function* blogSaga() {
   yield takeLatest(CREATE_BLOG_POST_REQUEST, createBlogPostSaga);
   yield takeLatest(GET_ALL_BLOG_POSTS_REQUEST, getAllBlogPostsSaga);
   yield takeLatest(DELETE_BLOG_POST_REQUEST, deleteBlogPostSaga);
+  yield takeLatest(CREATE_BLOG_CATEGORY_REQUEST, createBlogCategorySaga);
   yield takeLatest(GET_BLOG_CATEGORY_REQUEST, getBlogCategorySaga);
+  yield takeLatest(DELETE_BLOG_CATEGORY_REQUEST, deleteBlogCategorySaga);
+  yield takeLatest(CREATE_BLOG_TAG_REQUEST, createBlogTagSaga);
   yield takeLatest(GET_BLOG_TAG_REQUEST, getBlogTagSaga);
+  yield takeLatest(DELETE_BLOG_TAG_REQUEST, deleteBlogTagSaga);
 }

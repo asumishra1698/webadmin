@@ -3,14 +3,18 @@ import Layout from "../../reuseable/Layout";
 import { Plus, X, Edit, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getBlogCategoryRequest } from "../../redux/actions/blogActions";
+import {
+  createBlogCategoryRequest,
+  deleteBlogCategoryRequest,
+  getBlogCategoryRequest,
+} from "../../redux/actions/blogActions";
 
 const manageBlogCategory: React.FC = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [categoryName, setCategoryName] = useState("");
-  const [parentCategory, setParentCategory] = useState(""); // <-- Add this state
+  const [parentCategory, setParentCategory] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState<"all blogs" | "category" | "tag">(
     "category"
@@ -81,7 +85,14 @@ const manageBlogCategory: React.FC = () => {
 
   const handleAddCategory = (e: React.FormEvent) => {
     e.preventDefault();
-    // Dispatch create category action here if needed, include parentCategory if needed
+    if (!categoryName.trim()) {
+      alert("Category name is required");
+      return;
+    }
+
+    dispatch(
+      createBlogCategoryRequest({ name: categoryName, parent: parentCategory })
+    );
     setCategoryName("");
     setParentCategory("");
     setShowModal(false);
@@ -92,7 +103,9 @@ const manageBlogCategory: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    alert(`Delete category: ${id}`);
+    if (window.confirm("Are you sure you want to delete this category?")) {
+      dispatch(deleteBlogCategoryRequest(id));
+    }
   };
 
   // Helper to format date
@@ -208,9 +221,7 @@ const manageBlogCategory: React.FC = () => {
                       <td className="py-4 px-6">
                         {cat.parent ? cat.parent.name : "-"}
                       </td>
-                      <td className="py-4 px-6">
-                        {cat.postCount || 0}
-                      </td>
+                      <td className="py-4 px-6">{cat.postCount || 0}</td>
                       <td className="py-4 px-6">{formatDate(cat.createdAt)}</td>
                       <td className="py-4 px-6">{formatDate(cat.updatedAt)}</td>
                       <td className="py-4 px-6">

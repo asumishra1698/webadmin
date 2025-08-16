@@ -1,11 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Eye, Edit, Trash2, Plus } from "lucide-react";
+import Swal from "sweetalert2";
 import Layout from "../../reuseable/Layout";
 import { IMAGE_BASE_URL } from "../../config/apiRoutes";
 import csvIcon from "../../assets/icons/csv.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteBlogPostRequest, getAllBlogPostsRequest } from "../../redux/actions/blogActions";
+import {
+  deleteBlogPostRequest,
+  getAllBlogPostsRequest,
+} from "../../redux/actions/blogActions";
 import type { RootState } from "../../redux/reducers/rootReducers";
 
 interface BlogPost {
@@ -79,12 +83,22 @@ const ManageBlogs: React.FC = () => {
   const exportUsers = () => {
     alert("Exporting blogs as CSV (static demo)");
   };
+  
   const handleDeleteBlog = (blogId: string) => {
-    if (window.confirm("Are you sure you want to delete this blog?")) {
-      // Dispatch delete action here
-      dispatch(deleteBlogPostRequest(blogId));
-      console.log(`Blog with ID ${blogId} deleted`);
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DA0808",
+      cancelButtonColor: "#aaa",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteBlogPostRequest(blogId));
+        Swal.fire("Deleted!", "Blog has been deleted.", "success");
+      }
+    });
   };
 
   const handleAddNewBlog = () => {

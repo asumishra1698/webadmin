@@ -3,14 +3,17 @@ import Layout from "../../reuseable/Layout";
 import { Plus, X, Edit, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getBlogTagRequest } from "../../redux/actions/blogActions";
+import {
+  createBlogTagRequest,
+  deleteBlogTagRequest,
+  getBlogTagRequest,
+} from "../../redux/actions/blogActions";
 
 const ManageTag: React.FC = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [tagName, setTagName] = useState("");
-  const [parentCategory, setParentCategory] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState<"all blogs" | "category" | "tag">(
     "tag"
@@ -37,14 +40,9 @@ const ManageTag: React.FC = () => {
       error: state.blog?.error,
     };
   });
-  
-  const parentCategories = useSelector((state: any) => {
-    const catState = state.blog?.categories || {};
-    return Array.isArray(catState.categories) ? catState.categories : [];
-  });
 
   useEffect(() => {
-    dispatch(getBlogTagRequest({ page: 1, limit, search: "" }));   
+    dispatch(getBlogTagRequest({ page: 1, limit, search: "" }));
   }, [dispatch, limit]);
 
   // Search handler
@@ -81,9 +79,12 @@ const ManageTag: React.FC = () => {
 
   const handleAddTag = (e: React.FormEvent) => {
     e.preventDefault();
-    // Dispatch create tag action here if needed, include parentCategory if needed
+    if (!tagName.trim()) {
+      alert("Tag name is required");
+      return;
+    }
+    dispatch(createBlogTagRequest({ name: tagName }));
     setTagName("");
-    setParentCategory("");
     setShowModal(false);
   };
 
@@ -92,7 +93,10 @@ const ManageTag: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    alert(`Delete tag: ${id}`);
+    if (window.confirm("Are you sure you want to delete this tag?")) {
+      // Dispatch delete action here
+      dispatch(deleteBlogTagRequest(id));
+    }
   };
 
   // Helper to format date
@@ -284,21 +288,6 @@ const ManageTag: React.FC = () => {
                 </button>
                 <h2 className="text-xl font-semibold mb-4">Create Tag</h2>
                 <form onSubmit={handleAddTag}>
-                  <label className="block mb-2 font-medium">
-                    Parent Category
-                  </label>
-                  <select
-                    value={parentCategory}
-                    onChange={(e) => setParentCategory(e.target.value)}
-                    className="border px-3 py-2 rounded w-full mb-4"
-                  >
-                    <option value="">Select Parent Category</option>
-                    {parentCategories.map((cat: any) => (
-                      <option key={cat._id} value={cat._id}>
-                        {cat.name}
-                      </option>
-                    ))}
-                  </select>
                   <label className="block mb-2 font-medium">Tag Name</label>
                   <input
                     type="text"
