@@ -81,7 +81,7 @@ const AddNewBlog: React.FC = () => {
       showBackButton={true}
       backButtonLink="/blogs"
     >
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-8 mt-8">
+      <div className="mx-8 my-8 max-w-full mx-auto bg-white rounded-lg shadow p-8">
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="mb-4">
             <label className="block font-medium mb-1">Title</label>

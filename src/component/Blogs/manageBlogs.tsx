@@ -45,22 +45,33 @@ const ManageBlogs: React.FC = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const limitOptions = [5, 10, 20, 50, 100];
+  const [activeTab, setActiveTab] = useState<"all blogs" | "category" | "tag" | "sub category">("all blogs");
 
   useEffect(() => {
     dispatch(getAllBlogPostsRequest({ page: 1, limit: 100, search: "" }));
   }, [dispatch]);
 
   const handlePageChange = (newPage: number) => {
-    dispatch(getAllBlogPostsRequest({ page: newPage, limit, search: searchTerm }));
+    dispatch(
+      getAllBlogPostsRequest({ page: newPage, limit, search: searchTerm })
+    );
   };
 
   const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(getAllBlogPostsRequest({ page: 1, limit: Number(e.target.value), search: searchTerm }));
+    dispatch(
+      getAllBlogPostsRequest({
+        page: 1,
+        limit: Number(e.target.value),
+        search: searchTerm,
+      })
+    );
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    dispatch(getAllBlogPostsRequest({ page: 1, limit, search: e.target.value }));
+    dispatch(
+      getAllBlogPostsRequest({ page: 1, limit, search: e.target.value })
+    );
   };
 
   const exportUsers = () => {
@@ -106,6 +117,50 @@ const ManageBlogs: React.FC = () => {
       actionButtons={actionButtons}
       isHeaderFixed={true}
     >
+      <div className="flex flex-wrap items-center justify-between p-4 border-b border-gray-200 gap-4">
+        <div className="flex items-center space-x-6">
+          <button
+            onClick={() => setActiveTab("all blogs")}
+            className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
+              activeTab === "all blogs"
+                ? "text-red-500 border-b-2 border-red-500"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            All Blogs
+          </button>
+          <button
+            onClick={() => setActiveTab("category")}
+            className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
+              activeTab === "category"
+                ? "text-red-500 border-b-2 border-red-500"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            Category
+          </button>
+          <button
+            onClick={() => setActiveTab("tag")}
+            className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
+              activeTab === "tag"
+                ? "text-red-500 border-b-2 border-red-500"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            Tag
+          </button>
+          <button
+            onClick={() => setActiveTab("sub category")}
+            className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
+              activeTab === "sub category"
+                ? "text-red-500 border-b-2 border-red-500"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            Sub Category
+          </button>
+        </div>
+      </div>
       <div className="p-4">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-20">
           {loading ? (
@@ -167,7 +222,9 @@ const ManageBlogs: React.FC = () => {
                             className="w-full h-full object-cover rounded"
                           />
                         ) : (
-                          <span className="text-gray-400 text-xs">No Image</span>
+                          <span className="text-gray-400 text-xs">
+                            No Image
+                          </span>
                         )}
                       </div>
                     </td>
@@ -185,17 +242,18 @@ const ManageBlogs: React.FC = () => {
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex flex-wrap gap-1">
-                        {blog.tags?.length > 0
-                          ? blog.tags.map((tag, idx) => (
-                              <span
-                                key={idx}
-                                className="bg-gray-200 px-2 py-0.5 rounded text-xs"
-                              >
-                                {tag.name}
-                              </span>
-                            ))
-                          : <span className="text-gray-400 text-xs">No Tags</span>
-                        }
+                        {blog.tags?.length > 0 ? (
+                          blog.tags.map((tag, idx) => (
+                            <span
+                              key={idx}
+                              className="bg-gray-200 px-2 py-0.5 rounded text-xs"
+                            >
+                              {tag.name}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-gray-400 text-xs">No Tags</span>
+                        )}
                       </div>
                     </td>
                     <td className="py-4 px-6 text-xs text-gray-400">
