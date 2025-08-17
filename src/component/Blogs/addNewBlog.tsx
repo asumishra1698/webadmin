@@ -18,8 +18,7 @@ const initialState = {
   featuredImage: null as File | null,
   galleryImages: [] as File[],
   metaTitle: "",
-  metaDescription: "",
-  canonicalUrl: "",
+  metaDescription: "",  
   status: "draft",
 };
 
@@ -158,8 +157,7 @@ const AddNewBlog: React.FC = () => {
       formData.append("galleryImages", file)
     );
     formData.append("metaTitle", form.metaTitle);
-    formData.append("metaDescription", form.metaDescription);
-    formData.append("canonicalUrl", form.canonicalUrl);
+    formData.append("metaDescription", form.metaDescription);    
     formData.append("status", form.status);
     dispatch(createBlogPostRequest(formData));
   };
@@ -308,16 +306,7 @@ const AddNewBlog: React.FC = () => {
                 className="border px-3 py-2 rounded w-full"
               />
             </div>
-            <div className="mb-4">
-              <label className="block font-medium mb-1">Canonical URL</label>
-              <input
-                type="text"
-                name="canonicalUrl"
-                value={form.canonicalUrl}
-                onChange={handleChange}
-                className="border px-3 py-2 rounded w-full"
-              />
-            </div>
+
             <div className="mb-4">
               <label className="block font-medium mb-1">Status</label>
               <select

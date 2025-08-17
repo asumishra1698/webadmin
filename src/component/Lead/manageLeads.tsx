@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../reuseable/Layout";
-import { Download, Eye, Trash2, User } from "lucide-react";
+import { Download, Eye, Trash2, User, Phone, MessageCircle } from "lucide-react";
 import { getLeadRequest } from "../../redux/actions/leadsAction";
 import type { RootState } from "../../redux/reducers/rootReducers";
 
@@ -120,10 +120,36 @@ const ManageLeads: React.FC = () => {
                       <td className="py-4 px-6 font-medium text-[#14133B] whitespace-nowrap">
                         {lead.name}
                       </td>
-                      <td className="py-4 px-6 whitespace-nowrap">{lead.email}</td>
-                      <td className="py-4 px-6 whitespace-nowrap">{lead.number}</td>
-                      <td className="py-4 px-6 whitespace-nowrap">{lead.city}</td>
-                      <td className="py-4 px-6 whitespace-nowrap">{lead.message}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">
+                        {lead.email}
+                      </td>
+                      <td className="py-4 px-6 whitespace-nowrap flex items-center gap-2">
+                        {lead.number}
+                        <a
+                          href={`tel:${lead.number}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-green-600 hover:bg-green-100 rounded-full p-1"
+                          title="Call"
+                        >
+                          <Phone className="w-4 h-4" />
+                        </a>
+                        <a
+                          href={`https://wa.me/${lead.number}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#25D366] hover:bg-green-100 rounded-full p-1"
+                          title="WhatsApp"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                        </a>
+                      </td>
+                      <td className="py-4 px-6 whitespace-nowrap">
+                        {lead.city}
+                      </td>
+                      <td className="py-4 px-6 whitespace-nowrap">
+                        {lead.message}
+                      </td>
                       <td className="py-4 px-6 whitespace-nowrap">
                         {new Date(lead.createdAt).toLocaleDateString("en-IN", {
                           year: "numeric",
