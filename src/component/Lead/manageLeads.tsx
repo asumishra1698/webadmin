@@ -25,46 +25,46 @@ const ManageLeads: React.FC = () => {
   };
 
   const actionButtons = useMemo(
-  () => (
-    <button
-      type="button"
-      className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-      onClick={() => {
-        // Export leads as CSV
-        if (!leads || leads.length === 0) return;
-        const csvRows = [
-          ["Name", "Email", "Number", "City", "Message", "Date"],
-          ...leads.map((lead: any) => [
-            `"${lead.name}"`,
-            `"${lead.email}"`,
-            `"${lead.number}"`,
-            `"${lead.city}"`,
-            `"${lead.message}"`,
-            `"${new Date(lead.createdAt).toLocaleDateString("en-IN", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}"`,
-          ]),
-        ];
-        const csvContent = csvRows.map((row) => row.join(",")).join("\n");
-        const blob = new Blob([csvContent], { type: "text/csv" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "leads.csv";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }}
-    >
-      <Download className="w-4 h-4" />
-      Export
-    </button>
-  ),
-  [leads]
-);
+    () => (
+      <button
+        type="button"
+        className="flex items-center px-4 py-2.5 bg-[#FFE5E5] text-[#DA0808] rounded-xl hover:bg-red-600 hover:text-white transition-colors font-medium border border-red-500"
+        onClick={() => {
+          // Export leads as CSV
+          if (!leads || leads.length === 0) return;
+          const csvRows = [
+            ["Name", "Email", "Number", "City", "Message", "Date"],
+            ...leads.map((lead: any) => [
+              `"${lead.name}"`,
+              `"${lead.email}"`,
+              `"${lead.number}"`,
+              `"${lead.city}"`,
+              `"${lead.message}"`,
+              `"${new Date(lead.createdAt).toLocaleDateString("en-IN", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}"`,
+            ]),
+          ];
+          const csvContent = csvRows.map((row) => row.join(",")).join("\n");
+          const blob = new Blob([csvContent], { type: "text/csv" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "leads.csv";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }}
+      >
+        <Download className="w-4 h-4" />
+        Export All Leads
+      </button>
+    ),
+    [leads]
+  );
 
   return (
     <Layout
@@ -120,10 +120,10 @@ const ManageLeads: React.FC = () => {
                       <td className="py-4 px-6 font-medium text-[#14133B] whitespace-nowrap">
                         {lead.name}
                       </td>
-                      <td className="py-4 px-6">{lead.email}</td>
-                      <td className="py-4 px-6">{lead.number}</td>
-                      <td className="py-4 px-6">{lead.city}</td>
-                      <td className="py-4 px-6">{lead.message}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">{lead.email}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">{lead.number}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">{lead.city}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">{lead.message}</td>
                       <td className="py-4 px-6 whitespace-nowrap">
                         {new Date(lead.createdAt).toLocaleDateString("en-IN", {
                           year: "numeric",
