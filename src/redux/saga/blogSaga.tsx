@@ -185,7 +185,7 @@ function* createBlogTagSaga(action: any): any {
 
 function* getBlogTagSaga(action: any): any {
   try {
-    const { page = 1, limit = 10, search = "" } = action.payload || {};
+    const { page = "", limit = "", search = "" } = action.payload || {};
     const url = `${BASE_URL}${
       API_ENDPOINTS.GET_BLOG_TAG
     }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;

@@ -18,7 +18,7 @@ const initialState = {
   featuredImage: null as File | null,
   galleryImages: [] as File[],
   metaTitle: "",
-  metaDescription: "",  
+  metaDescription: "",
   status: "draft",
 };
 
@@ -29,8 +29,8 @@ const AddNewBlog: React.FC = () => {
   const [galleryPreviews, setGalleryPreviews] = useState<string[]>([]);
 
   useEffect(() => {
-    dispatch(getBlogCategoryRequest({ page: 1, limit: 10, search: "" }));
-    dispatch(getBlogTagRequest({ page: 1, limit: 10, search: "" }));
+    dispatch(getBlogCategoryRequest({ page: 1, search: "" }));
+    dispatch(getBlogTagRequest({ page: 1, search: "" }));
   }, [dispatch]);
 
   // Select categories and tags from redux
@@ -157,7 +157,7 @@ const AddNewBlog: React.FC = () => {
       formData.append("galleryImages", file)
     );
     formData.append("metaTitle", form.metaTitle);
-    formData.append("metaDescription", form.metaDescription);    
+    formData.append("metaDescription", form.metaDescription);
     formData.append("status", form.status);
     dispatch(createBlogPostRequest(formData));
   };

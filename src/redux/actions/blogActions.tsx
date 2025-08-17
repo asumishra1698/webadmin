@@ -124,7 +124,7 @@ export const createBlogCategoryFailure = (error: string) => ({
 
 export const getBlogCategoryRequest = (payload: {
   page: number;
-  limit: number;
+  limit?: number;
   search: string;
 }) => ({
   type: GET_BLOG_CATEGORY_REQUEST,
@@ -175,7 +175,7 @@ export const createBlogTagFailure = (error: string) => ({
 
 export const getBlogTagRequest = (payload: {
   page: number;
-  limit: number;
+  limit?: number;
   search: string;
 }) => ({
   type: GET_BLOG_TAG_REQUEST,
