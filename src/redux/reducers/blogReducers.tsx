@@ -51,8 +51,8 @@ const initialState = {
     pages: 1,
     limit: 10,
   },
-  tags: {
-    tags: [],
+  blogtags: {
+    blogTags: [],
     totalTags: 0,
     page: 1,
     pages: 1,
@@ -154,19 +154,49 @@ export default function blogReducer(state = initialState, action: any) {
       return {
         ...state,
         loading: false,
-        tags: {
-          ...state.tags,
-          tags: [...state.tags.tags, action.payload],
+        blogtags: {
+          ...state.blogtags,
+          blogTags: [...state.blogtags.blogTags, action.payload],
         },
       };
     case CREATE_BLOG_TAG_FAILURE:
       return { ...state, loading: false, error: action.payload };
+
     case GET_BLOG_TAG_REQUEST:
-      return { ...state, loading: true, error: null };
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
     case GET_BLOG_TAG_SUCCESS:
-      return { ...state, loading: false, tags: action.payload };
+      return {
+        ...state,
+        blogtags: {
+          ...state.blogtags,
+          blogTags: Array.isArray(action.payload.blogTags)
+            ? action.payload.blogTags
+            : [],
+          totalTags: action.payload.totalTags || 0,
+          page: action.payload.page || 1,
+          pages: action.payload.pages || 1,
+          limit: action.payload.limit || 10,
+          loading: false,
+          error: null,
+        },
+        loading: false, // <-- add this line
+        error: null,
+      };
     case GET_BLOG_TAG_FAILURE:
-      return { ...state, loading: false, error: action.payload };
+      return {
+        ...state,
+        blogtags: {
+          ...state.blogtags,
+          loading: false,
+          error: action.payload,
+        },
+        loading: false, // <-- add this line
+        error: action.payload,
+      };
 
     case DELETE_BLOG_TAG_REQUEST:
       return { ...state, loading: true, error: null };
@@ -174,9 +204,9 @@ export default function blogReducer(state = initialState, action: any) {
       return {
         ...state,
         loading: false,
-        tags: {
-          ...state.tags,
-          tags: state.tags.tags.filter(
+        blogtags: {
+          ...state.blogtags,
+          blogTags: state.blogtags.blogTags.filter(
             (tag: any) => tag._id !== action.payload
           ),
         },

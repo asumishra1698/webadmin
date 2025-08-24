@@ -190,6 +190,7 @@ function* getBlogTagSaga(action: any): any {
       API_ENDPOINTS.GET_BLOG_TAG
     }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
     const data = yield call(getRequest, url);
+    console.log("Fetched blog tags:", data);
     yield put({ type: GET_BLOG_TAG_SUCCESS, payload: data });
   } catch (error: any) {
     yield put({

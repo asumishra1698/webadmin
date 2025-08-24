@@ -14,7 +14,7 @@ const initialState = {
   title: "",
   description: "",
   category: [] as string[],
-  tags: [] as string[],
+  blogtags: [] as string[],
   featuredImage: null as File | null,
   galleryImages: [] as File[],
   metaTitle: "",
@@ -39,16 +39,20 @@ const AddNewBlog: React.FC = () => {
       ? state.blog.categories.categories
       : []
   );
-  const tags = useSelector((state: any) =>
-    Array.isArray(state.blog?.tags?.tags) ? state.blog.tags.tags : []
+  const blogTags = useSelector((state: any) =>
+    Array.isArray(state.blog?.blogtags?.blogTags)
+      ? state.blog.blogtags.blogTags
+      : []
   );
+  // console.log("Categories from redux:", categories);
+  console.log("Blogtags from redux786:", blogTags);
 
   // Prepare options for react-select
   const categoryOptions = categories.map((cat: any) => ({
     value: cat._id,
     label: cat.name,
   }));
-  const tagOptions = tags.map((tag: any) => ({
+  const tagOptions = blogTags.map((tag: any) => ({
     value: tag._id,
     label: tag.name,
   }));
@@ -64,7 +68,7 @@ const AddNewBlog: React.FC = () => {
   const handleTagSelect = (selected: any) => {
     setForm((prev) => ({
       ...prev,
-      tags: selected ? selected.map((opt: any) => opt.value) : [],
+      blogtags: selected ? selected.map((opt: any) => opt.value) : [],
     }));
   };
 
@@ -150,7 +154,7 @@ const AddNewBlog: React.FC = () => {
     formData.append("title", form.title);
     formData.append("description", form.description);
     form.category.forEach((catId) => formData.append("category[]", catId));
-    form.tags.forEach((tagId) => formData.append("tags[]", tagId));
+    form.blogtags.forEach((tagId) => formData.append("tags[]", tagId));
     if (form.featuredImage)
       formData.append("featuredImage", form.featuredImage);
     form.galleryImages.forEach((file) =>
@@ -167,7 +171,7 @@ const AddNewBlog: React.FC = () => {
     form.category.includes(opt.value)
   );
   const selectedTagOptions = tagOptions.filter((opt: any) =>
-    form.tags.includes(opt.value)
+    form.blogtags.includes(opt.value)
   );
 
   return (

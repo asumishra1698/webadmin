@@ -21,25 +21,26 @@ const ManageTag: React.FC = () => {
 
   // Redux state for paginated tags and categories
   const {
-    tags = [],
-    totalTags = 0,
-    page = 1,
-    pages = 1,
-    limit = 10,
-    loading,
-    error,
-  } = useSelector((state: any) => {
-    const tagState = state.blog?.tags || {};
-    return {
-      tags: Array.isArray(tagState.tags) ? tagState.tags : [],
-      totalTags: tagState.totalTags || 0,
-      page: tagState.page || 1,
-      pages: tagState.pages || 1,
-      limit: tagState.limit || 10,
-      loading: state.blog?.loading,
-      error: state.blog?.error,
-    };
-  });
+  blogTags = [],
+  totalTags = 0,
+  page = 1,
+  pages = 1,
+  limit = 10,
+  loading,
+  error,
+} = useSelector((state: any) => {
+  const tagState = state.blog.blogtags || {};
+  return {
+    blogTags: Array.isArray(tagState.blogTags) ? tagState.blogTags : [],
+    totalTags: tagState.totalTags || 0,
+    page: tagState.page || 1,
+    pages: tagState.pages || 1,
+    limit: tagState.limit || 10,
+    loading: state.blog.loading,
+    error: state.blog.error,
+  };
+});
+  console.log("Tags from Redux:", blogTags);
 
   useEffect(() => {
     dispatch(getBlogTagRequest({ page: 1, limit, search: "" }));
@@ -125,7 +126,7 @@ const ManageTag: React.FC = () => {
               }}
               className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
                 activeTab === "all blogs"
-                  ? "text-red-500 border-b-2 border-gray-500"
+                  ? "text-red-500 border-b-2 border-red-500"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
@@ -138,7 +139,7 @@ const ManageTag: React.FC = () => {
               }}
               className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
                 activeTab === "category"
-                  ? "text-red-500 border-b-2 border-gray-500"
+                  ? "text-red-500 border-b-2 border-red-500"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
@@ -151,7 +152,7 @@ const ManageTag: React.FC = () => {
               }}
               className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
                 activeTab === "tag"
-                  ? "text-red-500 border-b-2 border-gray-500"
+                  ? "text-red-500 border-b-2 border-red-500"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
@@ -189,14 +190,14 @@ const ManageTag: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {tags.length === 0 ? (
+                {blogTags.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="py-4 text-gray-500 text-center">
                       No tags found.
                     </td>
                   </tr>
                 ) : (
-                  tags.map((tag: any) => (
+                  blogTags.map((tag: any) => (
                     <tr
                       key={tag._id}
                       className="hover:bg-gray-50 transition-colors"
