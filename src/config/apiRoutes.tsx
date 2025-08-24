@@ -21,4 +21,5 @@ export const API_ENDPOINTS = {
   UPDATE_BLOG_STATUS: "/api/blog/posts/",
   GET_LEAD: "/api/contact/all",
   DELETE_LEAD: "/api/contact/",
+  GET_PRODUCTS: "/api/products",
 };

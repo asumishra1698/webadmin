@@ -1,5 +1,4 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import Swal from "sweetalert2";
 import {
   GET_LEAD_REQUEST,
   GET_LEAD_SUCCESS,
