@@ -99,7 +99,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
                   to={item.path}
                   className={`flex items-center px-4 py-4 rounded-lg transition-all duration-200 group ${
                     isActive(item.path)
-                      ? "bg-red-50 text-red-600 border-r-2 border-red-500"
+                      ? "bg-gray-100 text-gray-600 border-r-2 border-gray-500"
                       : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                   }`}
                 >

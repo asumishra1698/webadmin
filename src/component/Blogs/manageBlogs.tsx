@@ -98,7 +98,7 @@ const ManageBlogs: React.FC = () => {
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#DA0808",
+      confirmButtonColor: "#000000",
       cancelButtonColor: "#aaa",
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
@@ -118,7 +118,7 @@ const ManageBlogs: React.FC = () => {
       <>
         <button
           onClick={handleAddNewBlog}
-          className="flex items-center px-4 py-2.5 bg-[#FFE5E5] text-[#DA0808] rounded-xl hover:bg-red-600 hover:text-white transition-colors font-medium border border-red-500"
+          className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500"
         >
           <Plus className="w-4 h-4 mr-2" />
           Add New Blog
@@ -155,7 +155,7 @@ const ManageBlogs: React.FC = () => {
               }}
               className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
                 activeTab === "all blogs"
-                  ? "text-red-500 border-b-2 border-red-500"
+                  ? "text-red-500 border-b-2 border-gray-500"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
@@ -168,7 +168,7 @@ const ManageBlogs: React.FC = () => {
               }}
               className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
                 activeTab === "category"
-                  ? "text-red-500 border-b-2 border-red-500"
+                  ? "text-red-500 border-b-2 border-gray-500"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
@@ -181,7 +181,7 @@ const ManageBlogs: React.FC = () => {
               }}
               className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
                 activeTab === "tag"
-                  ? "text-red-500 border-b-2 border-red-500"
+                  ? "text-red-500 border-b-2 border-gray-500"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
@@ -193,7 +193,7 @@ const ManageBlogs: React.FC = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-20">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#DA0808]"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#000000]"></div>
               <span className="ml-4 text-gray-600">Loading...</span>
             </div>
           ) : error ? (
@@ -373,7 +373,7 @@ const ManageBlogs: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-center px-6 py-3 max-w-full mx-auto">
           <span className="text-sm text-gray-700 mb-2 md:mb-0"></span>
           <div className="flex gap-2 items-center">
-            <strong className="text-[#DA0808]">Page {page}</strong> of{" "}
+            <strong className="text-[#000000]">Page {page}</strong> of{" "}
             <strong>{pages}</strong> &nbsp;|&nbsp;
             <span className="text-gray-500">Total Blogs:</span>{" "}
             <strong>{total}</strong>
@@ -397,14 +397,14 @@ const ManageBlogs: React.FC = () => {
               ))}
             </select>
             <button
-              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-red-600 transition disabled:opacity-50"
+              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-gray-600 transition disabled:opacity-50"
               disabled={page <= 1}
               onClick={() => handlePageChange(page - 1)}
             >
               Previous
             </button>
             <button
-              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-red-600 transition disabled:opacity-50"
+              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-gray-600 transition disabled:opacity-50"
               disabled={page >= pages}
               onClick={() => handlePageChange(page + 1)}
             >

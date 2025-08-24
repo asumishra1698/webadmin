@@ -89,7 +89,7 @@ const ManagePages: React.FC = () => {
       <>
         <button
           onClick={handleAddNewPage}
-          className="flex items-center px-4 py-2.5 bg-[#FFE5E5] text-[#DA0808] rounded-xl hover:bg-red-600 hover:text-white transition-colors font-medium border border-red-500"
+          className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500"
         >
           <Plus className="w-4 h-4 mr-2" />
           Add New Page
@@ -238,7 +238,7 @@ const ManagePages: React.FC = () => {
                             <CheckCircle className="w-3 h-3" />
                           </button>
                           <button
-                            className="p-1 text-white bg-red-500 hover:bg-red-600 rounded transition-colors rounded-full"
+                            className="p-1 text-white bg-red-500 hover:bg-gray-600 rounded transition-colors rounded-full"
                             title="Reject Page"
                           >
                             <X className="w-3 h-3" />

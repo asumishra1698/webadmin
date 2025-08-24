@@ -259,7 +259,7 @@ const Layout: React.FC<LayoutProps> = ({
               >
                 <BsBell className="w-6 h-6" />
                 {notifications.length > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-[#DA0808] rounded-full border-2 border-white dark:border-gray-800"></span>
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-[#000000] rounded-full border-2 border-white dark:border-gray-800"></span>
                 )}
               </button>
               {isNotifOpen && (
@@ -367,7 +367,7 @@ const Layout: React.FC<LayoutProps> = ({
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center w-full py-2 px-4 bg-[#DA0808] text-white rounded hover:bg-red-600"
+                  className="flex items-center w-full py-2 px-4 bg-[#000000] text-white rounded hover:bg-gray-600"
                 >
                   <BsBoxArrowRight className="w-5 h-5 text-white" />
                   <span className="ml-3">Logout</span>

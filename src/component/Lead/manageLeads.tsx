@@ -28,7 +28,7 @@ const ManageLeads: React.FC = () => {
     () => (
       <button
         type="button"
-        className="flex items-center px-4 py-2.5 bg-[#FFE5E5] text-[#DA0808] rounded-xl hover:bg-red-600 hover:text-white transition-colors font-medium border border-red-500"
+        className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500"
         onClick={() => {
           // Export leads as CSV
           if (!leads || leads.length === 0) return;
@@ -80,7 +80,7 @@ const ManageLeads: React.FC = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-20">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#DA0808]"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#000000]"></div>
               <span className="ml-4 text-gray-600">Loading...</span>
             </div>
           ) : (
@@ -201,7 +201,7 @@ const ManageLeads: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-center px-6 py-3 max-w-full mx-auto">
           <span className="text-sm text-gray-700 mb-2 md:mb-0"></span>
           <div className="flex gap-2 items-center">
-            <strong className="text-[#DA0808]">
+            <strong className="text-[#000000]">
               Page {pagination?.page || page}
             </strong>{" "}
             of <strong>{pagination?.pages || 1}</strong> &nbsp;|&nbsp;
@@ -230,14 +230,14 @@ const ManageLeads: React.FC = () => {
               ))}
             </select>
             <button
-              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-red-600 transition disabled:opacity-50"
+              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-gray-600 transition disabled:opacity-50"
               disabled={page <= 1}
               onClick={() => handlePageChange(page - 1)}
             >
               Previous
             </button>
             <button
-              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-red-600 transition disabled:opacity-50"
+              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-gray-600 transition disabled:opacity-50"
               disabled={page >= (pagination?.pages || 1)}
               onClick={() => handlePageChange(page + 1)}
             >

@@ -170,7 +170,7 @@ const Dashboard: React.FC = () => {
     return (
       <Layout>
         <div className="flex items-center justify-center h-full">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-500"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-500"></div>
         </div>
       </Layout>
     );

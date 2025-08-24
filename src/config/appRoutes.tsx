@@ -55,7 +55,7 @@ const NotFound: React.FC = () => (
       <div className="space-x-4">
         <a
           href="/dashboard"
-          className="inline-flex items-center px-6 py-3 bg-[#DA0808] text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
+          className="inline-flex items-center px-6 py-3 bg-[#000000] text-white rounded-lg hover:bg-gray-600 transition-colors font-medium"
         >
           Go to Dashboard
         </a>

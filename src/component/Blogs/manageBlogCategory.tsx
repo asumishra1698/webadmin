@@ -146,7 +146,7 @@ const manageBlogCategory: React.FC = () => {
               }}
               className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
                 activeTab === "all blogs"
-                  ? "text-red-500 border-b-2 border-red-500"
+                  ? "text-red-500 border-b-2 border-gray-500"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
@@ -159,7 +159,7 @@ const manageBlogCategory: React.FC = () => {
               }}
               className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
                 activeTab === "category"
-                  ? "text-red-500 border-b-2 border-red-500"
+                  ? "text-red-500 border-b-2 border-gray-500"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
@@ -172,7 +172,7 @@ const manageBlogCategory: React.FC = () => {
               }}
               className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
                 activeTab === "tag"
-                  ? "text-red-500 border-b-2 border-red-500"
+                  ? "text-red-500 border-b-2 border-gray-500"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >

@@ -322,7 +322,7 @@ const AddNewBlog: React.FC = () => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="px-6 py-2 bg-[#DA0808] text-white rounded"
+                className="px-6 py-2 bg-[#000000] text-white rounded"
               >
                 Create Blog
               </button>
