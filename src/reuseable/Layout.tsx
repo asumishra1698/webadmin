@@ -20,7 +20,6 @@ interface LayoutProps {
   header?: ReactNode;
   title?: string;
   subtitle?: string;
-  // New props for search and actions
   searchPlaceholder?: string;
   searchValue?: string;
   onSearchChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -54,7 +53,7 @@ const Layout: React.FC<LayoutProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  const profile = useSelector((state: RootState) => state.auth.user); 
+  const profile = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
     dispatch(getUserProfileRequest());
@@ -206,7 +205,7 @@ const Layout: React.FC<LayoutProps> = ({
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       <div className="flex-1 flex flex-col">
         <header
-          className="p-2 flex justify-between items-center bg-white border-b border-gray-200 fixed z-30 top-0"
+          className="p-2 flex justify-between items-center bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 fixed z-30 top-0"
           style={{
             left: leftOffset,
             right: 0,
@@ -228,10 +227,10 @@ const Layout: React.FC<LayoutProps> = ({
               </button>
             )}
             <div className={!showBackButton ? "pl-4" : ""}>
-              <h1 className="text-xl font-semibold text-gray-900">
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                 {getPageTitle()}
               </h1>
-              <p className="text-sm text-gray-600 mt-0.5">
+              <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">
                 {getPageSubtitle()}
               </p>
             </div>
@@ -320,7 +319,7 @@ const Layout: React.FC<LayoutProps> = ({
                 aria-label="Profile menu"
                 tabIndex={0}
               >
-                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden">
+                <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center overflow-hidden">
                   {profile?.user?.profilePic ? (
                     <img
                       src={`${IMAGE_BASE_URL}/profile/${profile?.user?.profilePic}`}
@@ -328,7 +327,7 @@ const Layout: React.FC<LayoutProps> = ({
                       className="w-full h-full object-cover rounded-full"
                     />
                   ) : (
-                    <User className="w-6 h-6 text-gray-500" />
+                    <User className="w-6 h-6 text-gray-500 dark:text-gray-300" />
                   )}
                 </div>
                 <div className="text-left hidden sm:block">
@@ -379,7 +378,9 @@ const Layout: React.FC<LayoutProps> = ({
 
         {hasSearchOrActions && (
           <div
-            className={`${isHeaderFixed ? "fixed" : "sticky"} z-20 bg-gray-100 p-2`}
+            className={`${
+              isHeaderFixed ? "fixed" : "sticky"
+            } z-20 bg-gray-100 dark:bg-gray-900 p-2`}
             style={{
               top: HEADER_HEIGHT,
               left: leftOffset,
@@ -389,16 +390,16 @@ const Layout: React.FC<LayoutProps> = ({
             }}
           >
             <div className="p-4">
-              <div className="flex justify-between items-center">                
+              <div className="flex justify-between items-center">
                 {searchPlaceholder && (
                   <div className="relative max-w-xl">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                     <input
                       type="text"
                       placeholder={searchPlaceholder}
                       value={searchValue || ""}
                       onChange={onSearchChange}
-                      className="pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent w-[410px]"
+                      className="pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent w-[410px] bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                     />
                   </div>
                 )}
@@ -417,7 +418,7 @@ const Layout: React.FC<LayoutProps> = ({
         {/* Legacy header support */}
         {header && (
           <div
-            className="fixed z-10 dark:bg-gray-900 p-4"
+            className="fixed z-10 bg-white dark:bg-gray-900 p-4"
             style={{
               top: totalHeaderHeight,
               left: leftOffset,

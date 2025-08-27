@@ -177,12 +177,12 @@ const Dashboard: React.FC = () => {
   }
   return (
     <Layout>
-      <div className="p-3 sm:p-6 bg-gray-50 min-h-screen">
+      <div className="p-3 sm:p-6 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
             Overview
           </h1>
-          <div className="flex items-center mt-2 text-xs sm:text-sm text-gray-600">
+          <div className="flex items-center mt-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
             <span>Real-time visitor management statistics</span>
           </div>
         </div>

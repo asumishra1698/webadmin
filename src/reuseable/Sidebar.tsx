@@ -51,25 +51,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
     <aside
       className={`fixed top-0 left-0 h-full flex flex-col transition-all duration-300 z-50 ${
         isCollapsed ? "w-18" : "w-64"
-      }`}
-      style={{
-        background: "#FFFFFF",
-        borderRight: "1px solid #E5E7EB",
-        boxShadow: "0 0 10px rgba(0,0,0,0.05)",
-      }}
+      } bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow`}
     >
       <button
         onClick={handleCollapseToggle}
-        className="absolute bottom-6 -right-3 z-50 bg-white border border-gray-200 rounded-full p-1 shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center"
+        className="absolute bottom-6 -right-3 z-50 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-full p-1 shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center"
       >
         {isCollapsed ? (
-          <ArrowRight className="h-4 w-4 text-gray-600" />
+          <ArrowRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
         ) : (
-          <ArrowLeft className="h-4 w-4 text-gray-600" />
+          <ArrowLeft className="h-4 w-4 text-gray-600 dark:text-gray-300" />
         )}
       </button>
 
-      <div className="p-6 border-b border-gray-100">
+      <div className="p-6 border-b border-gray-100 dark:border-gray-800">
         <div className="flex items-center space-x-3">
           <img
             src="https://gonardweb.com/wp-content/uploads/2025/08/fav.png"
@@ -99,8 +94,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
                   to={item.path}
                   className={`flex items-center px-4 py-4 rounded-lg transition-all duration-200 group ${
                     isActive(item.path)
-                      ? "bg-gray-100 text-gray-600 border-r-2 border-gray-500"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      ? "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-100 border-r-2 border-gray-500 dark:border-gray-700"
+                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                   }`}
                 >
                   <img
