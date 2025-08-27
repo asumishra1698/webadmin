@@ -20,9 +20,9 @@ const FootfallTrends: React.FC<FootfallTrendsProps> = ({
   setSelectedPeriod,
   getCurrentData,
 }) => (
-  <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+  <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700">
     <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
-      <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">
         Daily Footfall Trends
       </h3>
       <div className="flex items-center space-x-2 sm:space-x-4 text-xs sm:text-sm">
@@ -30,8 +30,8 @@ const FootfallTrends: React.FC<FootfallTrendsProps> = ({
           onClick={() => setSelectedPeriod("daily")}
           className={`px-2 sm:px-3 py-1 rounded ${
             selectedPeriod === "daily"
-              ? "text-blue-600 font-medium bg-blue-50"
-              : "text-gray-400"
+              ? "text-blue-600 font-medium bg-blue-50 dark:bg-blue-900"
+              : "text-gray-400 dark:text-gray-500"
           }`}
         >
           Daily
@@ -40,8 +40,8 @@ const FootfallTrends: React.FC<FootfallTrendsProps> = ({
           onClick={() => setSelectedPeriod("weekly")}
           className={`px-2 sm:px-3 py-1 rounded ${
             selectedPeriod === "weekly"
-              ? "text-blue-600 font-medium bg-blue-50"
-              : "text-gray-400"
+              ? "text-blue-600 font-medium bg-blue-50 dark:bg-blue-900"
+              : "text-gray-400 dark:text-gray-500"
           }`}
         >
           Weekly
@@ -50,8 +50,8 @@ const FootfallTrends: React.FC<FootfallTrendsProps> = ({
           onClick={() => setSelectedPeriod("monthly")}
           className={`px-2 sm:px-3 py-1 rounded ${
             selectedPeriod === "monthly"
-              ? "text-blue-600 font-medium bg-blue-50"
-              : "text-gray-400"
+              ? "text-blue-600 font-medium bg-blue-50 dark:bg-blue-900"
+              : "text-gray-400 dark:text-gray-500"
           }`}
         >
           Monthly
@@ -65,10 +65,14 @@ const FootfallTrends: React.FC<FootfallTrendsProps> = ({
         <YAxis stroke="#666" fontSize={10} />
         <Tooltip
           contentStyle={{
-            backgroundColor: "#fff",
+            backgroundColor: "var(--tw-bg-opacity,1) #fff",
             border: "1px solid #e5e7eb",
             borderRadius: "8px",
             boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+            color: "#111827",
+          }}
+          wrapperStyle={{
+            color: "inherit",
           }}
         />
         <Line

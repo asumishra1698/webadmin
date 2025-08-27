@@ -14,12 +14,12 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
   recentActivities,
   getActivityDotColor,
 }) => (
-  <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+  <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700">
     <div className="flex items-center justify-between mb-3 sm:mb-4">
-      <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">
         Recent Activity
       </h3>
-      <button className="text-red-600 text-xs sm:text-sm font-medium">
+      <button className="text-red-600 dark:text-red-400 text-xs sm:text-sm font-medium">
         View All →
       </button>
     </div>
@@ -35,10 +35,10 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
             )}`}
           ></div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs sm:text-sm font-medium text-gray-900 leading-tight">
+            <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-gray-100 leading-tight">
               {activity.message}
             </p>
-            <p className="text-xs text-gray-500 mt-1">{activity.timestamp}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{activity.timestamp}</p>
           </div>
         </div>
       ))}

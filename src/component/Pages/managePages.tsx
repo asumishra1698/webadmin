@@ -50,7 +50,7 @@ const ManagePages: React.FC = () => {
 
   const [pages, setPages] = useState(staticPages);
   const [loading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");  
+  const [searchTerm, setSearchTerm] = useState("");
 
   const getStatusColor = useMemo(
     () => (status: string) => {
@@ -100,7 +100,7 @@ const ManagePages: React.FC = () => {
         >
           <img src={csvIcon} alt="CSV" className="w-5 h-5 mr-2" />
           Export CSV
-        </button>       
+        </button>
       </>
     ),
     [exportPages]
@@ -116,42 +116,42 @@ const ManagePages: React.FC = () => {
       actionButtons={actionButtons}
       isHeaderFixed={true}
     >
-      <div className="p-4">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-20">
+     <div className="p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-20">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
               <tr>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
                   Banner
                 </th>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase whitespace-nowrap">
+                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase whitespace-nowrap">
                   Page Name
                 </th>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
                   Meta Title
                 </th>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
                   Meta Description
                 </th>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
                   Author Name
                 </th>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
                   Status
                 </th>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
                   Action
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {pages.map((pageItem) => (
                 <tr
                   key={pageItem._id}
-                  className="hover:bg-gray-50 transition-colors"
+                  className="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
                 >
                   <td className="py-4 px-6">
-                    <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
+                    <div className="w-10 h-10 bg-gray-300 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden">
                       <img
                         src={
                           pageItem.documents?.find(
@@ -167,29 +167,29 @@ const ManagePages: React.FC = () => {
                   </td>
                   <td className="py-4 px-6">
                     <div
-                      className="font-medium text-[#14133B] whitespace-nowrap hover:text-red-600 cursor-pointer transition-colors"
+                      className="font-medium text-[#14133B] dark:text-gray-100 whitespace-nowrap hover:text-red-600 dark:hover:text-red-400 cursor-pointer transition-colors"
                       onClick={() =>
                         navigate(`/pages/page-detail/${pageItem._id}`)
                       }
                     >
                       {pageItem.page_name}
-                      <span className="block text-xs text-gray-500">
+                      <span className="block text-xs text-gray-500 dark:text-gray-400">
                         {pageItem.page_code}
                       </span>
                     </div>
                   </td>
                   <td className="py-4 px-6 whitespace-nowrap">
-                    <div className="text-gray-900 whitespace-nowrap">
+                    <div className="text-gray-900 dark:text-gray-100 whitespace-nowrap">
                       {pageItem.meta_title}
                     </div>
                   </td>
                   <td className="py-4 px-6 whitespace-nowrap">
-                    <div className="text-gray-900 whitespace-nowrap">
+                    <div className="text-gray-900 dark:text-gray-100 whitespace-nowrap">
                       {pageItem.meta_description}
                     </div>
                   </td>
                   <td className="py-4 px-6 whitespace-nowrap">
-                    <div className="text-gray-900 whitespace-nowrap">
+                    <div className="text-gray-900 dark:text-gray-100 whitespace-nowrap">
                       {pageItem.author_name}
                     </div>
                   </td>
@@ -208,7 +208,7 @@ const ManagePages: React.FC = () => {
                         onClick={() =>
                           navigate(`/pages/page-detail/${pageItem._id}`)
                         }
-                        className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors"
+                        className="p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 rounded transition-colors"
                         title="View Details"
                       >
                         <Eye className="w-4 h-4" />
@@ -217,14 +217,14 @@ const ManagePages: React.FC = () => {
                         onClick={() =>
                           navigate(`/pages/edit-page/${pageItem._id}`)
                         }
-                        className="p-1.5 text-green-600 hover:bg-green-100 rounded transition-colors"
+                        className="p-1.5 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded transition-colors"
                         title="Edit Page"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDeletePage(pageItem._id)}
-                        className="p-1.5 text-red-600 hover:bg-red-100 rounded transition-colors"
+                        className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded transition-colors"
                         title="Delete Page"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -232,13 +232,13 @@ const ManagePages: React.FC = () => {
                       {pageItem.status === "pending" && (
                         <>
                           <button
-                            className="p-1 text-white bg-green-500 hover:bg-green-600 rounded transition-colors rounded-full"
+                            className="p-1 text-white bg-green-500 hover:bg-green-600 dark:hover:bg-green-700 rounded transition-colors rounded-full"
                             title="Approve Page"
                           >
                             <CheckCircle className="w-3 h-3" />
                           </button>
                           <button
-                            className="p-1 text-white bg-red-500 hover:bg-gray-600 rounded transition-colors rounded-full"
+                            className="p-1 text-white bg-red-500 hover:bg-gray-600 dark:hover:bg-gray-700 rounded transition-colors rounded-full"
                             title="Reject Page"
                           >
                             <X className="w-3 h-3" />

@@ -11,14 +11,14 @@ const DashboardStats: React.FC = () => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
       <div
-        className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 cursor-pointer"
+        className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer"
         onClick={() => navigate("/visits")}
       >
         <div className="flex items-center justify-between">
-          <h3 className="text-gray-600 text-xs sm:text-sm font-medium">
+          <h3 className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm font-medium">
             Total Users
           </h3>
-          <div className="p-2 sm:p-3 bg-red-100 rounded-full">
+          <div className="p-2 sm:p-3 bg-red-100 dark:bg-red-900 rounded-full">
             <img
               src={totalvisitorsIcons}
               alt="Total Users"
@@ -27,21 +27,21 @@ const DashboardStats: React.FC = () => {
           </div>
         </div>
         <div className="mb-2">
-          <span className="text-2xl sm:text-3xl font-bold text-gray-900">
+          <span className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
             3,847
           </span>
         </div>
-        <div className="flex items-center text-green-600 text-xs sm:text-sm">
+        <div className="flex items-center text-green-600 dark:text-green-400 text-xs sm:text-sm">
           <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
           <span>12% from last month</span>
         </div>
       </div>
-      <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700">
         <div className="flex items-center justify-between">
-          <h3 className="text-gray-600 text-xs sm:text-sm font-medium">
+          <h3 className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm font-medium">
             Active Products
           </h3>
-          <div className="p-2 sm:p-3 bg-blue-100 rounded-full">
+          <div className="p-2 sm:p-3 bg-blue-100 dark:bg-blue-900 rounded-full">
             <img
               src={activtagsIcon}
               alt="Active Products"
@@ -50,21 +50,21 @@ const DashboardStats: React.FC = () => {
           </div>
         </div>
         <div className="mb-2">
-          <span className="text-2xl sm:text-3xl font-bold text-gray-900">
+          <span className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
             1,264
           </span>
         </div>
-        <div className="flex items-center text-green-600 text-xs sm:text-sm">
+        <div className="flex items-center text-green-600 dark:text-green-400 text-xs sm:text-sm">
           <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
           <span>8.3% from last month</span>
         </div>
       </div>
-      <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700">
         <div className="flex items-center justify-between">
-          <h3 className="text-gray-600 text-xs sm:text-sm font-medium">
+          <h3 className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm font-medium">
             Total Orders
           </h3>
-          <div className="p-2 sm:p-3 bg-yellow-100 rounded-full">
+          <div className="p-2 sm:p-3 bg-yellow-100 dark:bg-yellow-900 rounded-full">
             <img
               src={expiredtagsIcon}
               alt="Total Orders"
@@ -73,21 +73,21 @@ const DashboardStats: React.FC = () => {
           </div>
         </div>
         <div className="mb-2">
-          <span className="text-2xl sm:text-3xl font-bold text-gray-900">
+          <span className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
             586
           </span>
         </div>
-        <div className="flex items-center text-red-600 text-xs sm:text-sm">
+        <div className="flex items-center text-red-600 dark:text-red-400 text-xs sm:text-sm">
           <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1 rotate-180" />
           <span>4.2% from last month</span>
         </div>
       </div>
-      <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700">
         <div className="flex items-center justify-between">
-          <h3 className="text-gray-600 text-xs sm:text-sm font-medium">
+          <h3 className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm font-medium">
             Site-wise Footfall
           </h3>
-          <div className="p-2 sm:p-3 bg-green-100 rounded-full">
+          <div className="p-2 sm:p-3 bg-green-100 dark:bg-green-900 rounded-full">
             <img
               src={sitewisefootfallIcon}
               alt="Site-wise Footfall"
@@ -96,11 +96,11 @@ const DashboardStats: React.FC = () => {
           </div>
         </div>
         <div className="mb-2">
-          <span className="text-2xl sm:text-3xl font-bold text-gray-900">
+          <span className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
             12
           </span>
         </div>
-        <div className="flex items-center text-green-600 text-xs sm:text-sm">
+        <div className="flex items-center text-green-600 dark:text-green-400 text-xs sm:text-sm">
           <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
           <span>2 new sites added</span>
         </div>
