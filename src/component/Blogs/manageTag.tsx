@@ -3,6 +3,8 @@ import Layout from "../../reuseable/Layout";
 import { Plus, X, Edit, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "../../reuseable/formatDate";
+
 import {
   createBlogTagRequest,
   deleteBlogTagRequest,
@@ -101,12 +103,6 @@ const ManageTag: React.FC = () => {
       // Dispatch delete action here
       dispatch(deleteBlogTagRequest(id));
     }
-  };
-
-  // Helper to format date
-  const formatDate = (dateStr: string) => {
-    const d = new Date(dateStr);
-    return d.toLocaleString();
   };
 
   return (

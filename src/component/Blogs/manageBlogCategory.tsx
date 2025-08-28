@@ -12,6 +12,7 @@ import {
 import TablePagination from "../../reuseable/TablePagination";
 import Tabs from "../../reuseable/Tabs";
 import DataTable from "../../reuseable/DataTable";
+import { formatDate } from "../../reuseable/formatDate";
 
 const manageBlogCategory: React.FC = () => {
   const dispatch = useDispatch();
@@ -119,12 +120,6 @@ const manageBlogCategory: React.FC = () => {
         Swal.fire("Deleted!", "Category has been deleted.", "success");
       }
     });
-  };
-
-  // Helper to format date
-  const formatDate = (dateStr: string) => {
-    const d = new Date(dateStr);
-    return d.toLocaleString();
   };
 
   return (
