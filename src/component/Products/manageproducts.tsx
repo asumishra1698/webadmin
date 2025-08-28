@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Eye, Trash2, Edit, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
+import DataTable from "../../reuseable/DataTable";
+import { Eye, Edit, Trash2 } from "lucide-react";
+
 import Layout from "../../reuseable/Layout";
 import { getProductsRequest } from "../../redux/actions/productActions";
 import { useNavigate } from "react-router-dom";
@@ -57,7 +60,6 @@ const ManageProducts: React.FC = () => {
 
   const handleDelete = (id: string) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
-      // dispatch(deleteProductRequest(id));
       alert("Delete logic here");
     }
   };
@@ -130,85 +132,72 @@ const ManageProducts: React.FC = () => {
               </p>
             </div>
           ) : (
-            <table className="w-full">
-              <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-                <tr>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    NAME
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    CATEGORY
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    BRAND
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    PRICE
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    STOCK
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    ACTION
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {products.map((product: any) => (
-                  <tr
-                    key={product._id}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
-                  >
-                    <td className="py-4 px-6 font-medium text-[#14133B] dark:text-gray-100 whitespace-nowrap">
-                      {product.name}
-                    </td>
-                    <td className="py-4 px-6 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                      {Array.isArray(product.productcategory)
-                        ? product.productcategory
-                            .filter((cat: any) => cat && cat.name)
-                            .map((cat: any) => cat.name)
-                            .join(", ")
-                        : "-"}
-                    </td>
-                    <td className="py-4 px-6 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                      {product.brand && product.brand.name
-                        ? product.brand.name
-                        : "-"}
-                    </td>
-                    <td className="py-4 px-6 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                      ₹{product.price}
-                    </td>
-                    <td className="py-4 px-6 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                      {product.stock}
-                    </td>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center space-x-2">
-                        <button
-                          className="p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 rounded transition-colors"
-                          title="View"
-                        >
-                          <Eye className="w-5 h-5" />
-                        </button>
-                        <button
-                          className="p-1.5 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded transition-colors"
-                          title="Edit"
-                          onClick={() => handleEdit(product._id)}
-                        >
-                          <Edit className="w-5 h-5" />
-                        </button>
-                        <button
-                          className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded transition-colors"
-                          title="Delete"
-                          onClick={() => handleDelete(product._id)}
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
+            <DataTable
+              columns={[
+                { key: "name", header: "NAME" },
+                { key: "name", header: "NAME" },
+                {
+                  key: "productcategory",
+                  header: "CATEGORY",
+                  render: (row) =>
+                    Array.isArray(row.productcategory)
+                      ? row.productcategory
+                          .map((cat: any) => cat.name)
+                          .join(", ")
+                      : "-",
+                },
+                {
+                  key: "brand",
+                  header: "BRAND",
+                  render: (row) =>
+                    row.brand ? (
+                      <div className="flex flex-col text-xs">
+                        <span className="font-semibold">{row.brand.name}</span>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          {row.brand.name}
+                        </span>
+                        <span className="text-gray-400 dark:text-gray-500">
+                          {row.brand.description}
+                        </span>
                       </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    ) : (
+                      "-"
+                    ),
+                },
+                {
+                  key: "price",
+                  header: "PRICE",
+                  render: (row) => `₹${row.price}`,
+                },
+                { key: "stock", header: "STOCK" },
+              ]}
+              data={products}
+              actions={(row) => (
+                <div className="flex items-center space-x-2">
+                  <button
+                    className="p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 rounded transition-colors"
+                    title="View"
+                  >
+                    <Eye className="w-5 h-5" />
+                  </button>
+                  <button
+                    className="p-1.5 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded transition-colors"
+                    title="Edit"
+                    onClick={() => handleEdit(row._id)}
+                  >
+                    <Edit className="w-5 h-5" />
+                  </button>
+                  <button
+                    className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded transition-colors"
+                    title="Delete"
+                    onClick={() => handleDelete(row._id)}
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
+              emptyText="No products found"
+            />
           )}
         </div>
       </div>

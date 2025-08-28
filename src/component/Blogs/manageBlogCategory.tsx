@@ -11,6 +11,7 @@ import {
 } from "../../redux/actions/blogActions";
 import TablePagination from "../../reuseable/TablePagination";
 import Tabs from "../../reuseable/Tabs";
+import DataTable from "../../reuseable/DataTable";
 
 const manageBlogCategory: React.FC = () => {
   const dispatch = useDispatch();
@@ -179,89 +180,84 @@ const manageBlogCategory: React.FC = () => {
               {error}
             </div>
           ) : (
-            <table className="w-full">
-              <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-                <tr>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    NAME
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    SLUG
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    PARENT
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase whitespace-nowrap">
-                    POST COUNT
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase whitespace-nowrap">
-                    CREATED AT
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase whitespace-nowrap">
-                    UPDATED AT
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    ACTION
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {categories.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="py-4 text-gray-500 dark:text-gray-400 text-center"
-                    >
-                      No categories found.
-                    </td>
-                  </tr>
-                ) : (
-                  categories.map((cat: any) => (
-                    <tr
-                      key={cat._id}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
-                    >
-                      <td className="py-4 px-6 whitespace-nowrap text-gray-900 dark:text-gray-100">
-                        {cat.name}
-                      </td>
-                      <td className="py-4 px-6 whitespace-nowrap text-gray-900 dark:text-gray-100">
-                        {cat.slug}
-                      </td>
-                      <td className="py-4 px-6 whitespace-nowrap text-gray-900 dark:text-gray-100">
-                        {cat.parent ? cat.parent.name : "-"}
-                      </td>
-                      <td className="py-4 px-6 whitespace-nowrap text-gray-900 dark:text-gray-100">
-                        {cat.postCount || 0}
-                      </td>
-                      <td className="py-4 px-6 whitespace-nowrap text-gray-900 dark:text-gray-100">
-                        {formatDate(cat.createdAt)}
-                      </td>
-                      <td className="py-4 px-6 whitespace-nowrap text-gray-900 dark:text-gray-100">
-                        {formatDate(cat.updatedAt)}
-                      </td>
-                      <td className="py-4 px-6">
-                        <div className="flex items-center space-x-2">
-                          <button
-                            className="p-1.5 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded transition-colors"
-                            title="Edit"
-                            onClick={() => handleEdit(cat._id)}
-                          >
-                            <Edit className="w-5 h-5" />
-                          </button>
-                          <button
-                            className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded transition-colors"
-                            title="Delete"
-                            onClick={() => handleDelete(cat._id)}
-                          >
-                            <Trash2 className="w-5 h-5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+            <DataTable
+              columns={[
+                {
+                  key: "name",
+                  header: "NAME",
+                  render: (cat: any) => (
+                    <span className="text-gray-900 dark:text-gray-100">
+                      {cat.name}
+                    </span>
+                  ),
+                },
+                {
+                  key: "slug",
+                  header: "SLUG",
+                  render: (cat: any) => (
+                    <span className="text-gray-900 dark:text-gray-100">
+                      {cat.slug}
+                    </span>
+                  ),
+                },
+                {
+                  key: "parent",
+                  header: "PARENT",
+                  render: (cat: any) => (
+                    <span className="text-gray-900 dark:text-gray-100">
+                      {cat.parent ? cat.parent.name : "-"}
+                    </span>
+                  ),
+                },
+                {
+                  key: "postCount",
+                  header: "POST COUNT",
+                  render: (cat: any) => (
+                    <span className="text-gray-900 dark:text-gray-100">
+                      {cat.postCount || 0}
+                    </span>
+                  ),
+                },
+                {
+                  key: "createdAt",
+                  header: "CREATED AT",
+                  render: (cat: any) => (
+                    <span className="text-gray-900 dark:text-gray-100">
+                      {formatDate(cat.createdAt)}
+                    </span>
+                  ),
+                },
+                {
+                  key: "updatedAt",
+                  header: "UPDATED AT",
+                  render: (cat: any) => (
+                    <span className="text-gray-900 dark:text-gray-100">
+                      {formatDate(cat.updatedAt)}
+                    </span>
+                  ),
+                },
+              ]}
+              data={categories}
+              actions={(cat: any) => (
+                <div className="flex items-center space-x-2">
+                  <button
+                    className="p-1.5 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded transition-colors"
+                    title="Edit"
+                    onClick={() => handleEdit(cat._id)}
+                  >
+                    <Edit className="w-5 h-5" />
+                  </button>
+                  <button
+                    className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded transition-colors"
+                    title="Delete"
+                    onClick={() => handleDelete(cat._id)}
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
+              emptyText="No categories found."
+            />
           )}
           {/* Pagination Controls */}
           <TablePagination

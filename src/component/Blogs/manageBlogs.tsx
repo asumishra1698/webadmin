@@ -13,6 +13,7 @@ import {
 import type { RootState } from "../../redux/reducers/rootReducers";
 import TablePagination from "../../reuseable/TablePagination";
 import Tabs from "../../reuseable/Tabs";
+import DataTable from "../../reuseable/DataTable";
 
 interface BlogPost {
   _id: string;
@@ -190,177 +191,160 @@ const ManageBlogs: React.FC = () => {
             <div className="text-red-500 dark:text-red-400 p-8 text-center">
               {error}
             </div>
-          ) : posts.length === 0 ? (
-            <div className="py-12 text-center">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-                No blogs found
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Try adding a new blog post.
-              </p>
-            </div>
           ) : (
-            <table className="w-full">
-              <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-                <tr>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    IMAGE
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    TITLE
-                  </th>
-                  {/* <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    DESCRIPTION
-                  </th> */}
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    AUTHOR
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    CATEGORY
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    TAGS
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    STATUS
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                    ACTION
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {posts.map((blog: BlogPost) => (
-                  <tr
-                    key={blog._id}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
-                  >
-                    <td className="py-4 px-6">
-                      <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center overflow-hidden">
-                        {blog.featuredImage ? (
-                          <img
-                            src={IMAGE_BASE_URL + blog.featuredImage}
-                            alt={blog.title}
-                            className="w-full h-full object-cover rounded"
-                          />
-                        ) : (
-                          <span className="text-gray-400 dark:text-gray-500 text-xs">
-                            No Image
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-4 px-6 font-medium text-[#14133B] dark:text-gray-100 whitespace-nowrap">
+            <DataTable
+              columns={[
+                {
+                  key: "featuredImage",
+                  header: "IMAGE",
+                  render: (blog: BlogPost) => (
+                    <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center overflow-hidden">
+                      {blog.featuredImage ? (
+                        <img
+                          src={IMAGE_BASE_URL + blog.featuredImage}
+                          alt={blog.title}
+                          className="w-full h-full object-cover rounded"
+                        />
+                      ) : (
+                        <span className="text-gray-400 dark:text-gray-500 text-xs">
+                          No Image
+                        </span>
+                      )}
+                    </div>
+                  ),
+                },
+                {
+                  key: "title",
+                  header: "TITLE",
+                  render: (blog: BlogPost) => (
+                    <span className="font-medium text-[#14133B] dark:text-gray-100 whitespace-nowrap">
                       {blog.title}
-                    </td>
-                    {/* <td className="py-4 px-6 text-sm text-gray-600 whitespace-nowrap">
-                      {blog.description?.slice(0, 80)}...
-                    </td> */}
-                    <td className="py-4 px-6 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                    </span>
+                  ),
+                },
+                {
+                  key: "author",
+                  header: "AUTHOR",
+                  render: (blog: BlogPost) => (
+                    <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
                       {blog.author?.name || "-"}
-                    </td>
-                    <td className="py-4 px-6 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                      <div className="flex flex-wrap gap-1">
-                        {blog.category && blog.category.length > 0 ? (
-                          blog.category.map((cat, idx) => (
-                            <span
-                              key={cat._id || idx}
-                              className="px-2 py-0.5 rounded text-xs font-medium"
-                              style={{
-                                background: [
-                                  "#FDE68A", // yellow
-                                  "#A7F3D0", // green
-                                  "#BFDBFE", // blue
-                                  "#FCA5A5", // red
-                                  "#C4B5FD", // purple
-                                  "#F9A8D4", // pink
-                                  "#FECACA", // light red
-                                  "#D1FAE5", // teal
-                                ][idx % 8],
-                                color: "#222",
-                              }}
-                            >
-                              {cat.name}
-                            </span>
-                          ))
-                        ) : (
-                          <span className="text-gray-400 dark:text-gray-500 text-xs">
-                            No Category
+                    </span>
+                  ),
+                },
+                {
+                  key: "category",
+                  header: "CATEGORY",
+                  render: (blog: BlogPost) => (
+                    <div className="flex flex-wrap gap-1">
+                      {blog.category && blog.category.length > 0 ? (
+                        blog.category.map((cat, idx) => (
+                          <span
+                            key={cat._id || idx}
+                            className="px-2 py-0.5 rounded text-xs font-medium"
+                            style={{
+                              background: [
+                                "#FDE68A",
+                                "#A7F3D0",
+                                "#BFDBFE",
+                                "#FCA5A5",
+                                "#C4B5FD",
+                                "#F9A8D4",
+                                "#FECACA",
+                                "#D1FAE5",
+                              ][idx % 8],
+                              color: "#222",
+                            }}
+                          >
+                            {cat.name}
                           </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-4 px-6 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                      <div className="flex flex-wrap gap-1">
-                        {blog.tags?.length > 0 ? (
-                          blog.tags.map((tag, idx) => (
-                            <span
-                              key={tag._id || idx}
-                              className={`px-2 py-0.5 rounded text-xs font-medium`}
-                              style={{
-                                background: [
-                                  "#FDE68A", // yellow
-                                  "#A7F3D0", // green
-                                  "#BFDBFE", // blue
-                                  "#FCA5A5", // red
-                                  "#C4B5FD", // purple
-                                  "#F9A8D4", // pink
-                                  "#FECACA", // light red
-                                  "#D1FAE5", // teal
-                                ][idx % 8],
-                                color: "#222",
-                              }}
-                            >
-                              {tag.name}
-                            </span>
-                          ))
-                        ) : (
-                          <span className="text-gray-400 dark:text-gray-500 text-xs">
-                            No Tags
+                        ))
+                      ) : (
+                        <span className="text-gray-400 dark:text-gray-500 text-xs">
+                          No Category
+                        </span>
+                      )}
+                    </div>
+                  ),
+                },
+                {
+                  key: "tags",
+                  header: "TAGS",
+                  render: (blog: BlogPost) => (
+                    <div className="flex flex-wrap gap-1">
+                      {blog.tags?.length > 0 ? (
+                        blog.tags.map((tag, idx) => (
+                          <span
+                            key={tag._id || idx}
+                            className="px-2 py-0.5 rounded text-xs font-medium"
+                            style={{
+                              background: [
+                                "#FDE68A",
+                                "#A7F3D0",
+                                "#BFDBFE",
+                                "#FCA5A5",
+                                "#C4B5FD",
+                                "#F9A8D4",
+                                "#FECACA",
+                                "#D1FAE5",
+                              ][idx % 8],
+                              color: "#222",
+                            }}
+                          >
+                            {tag.name}
                           </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-4 px-6 text-xs text-gray-400 dark:text-gray-500">
-                      <button
-                        onClick={() => handleStatusToggle(blog)}
-                        className={`px-3 py-1 rounded-full font-semibold transition-colors text-xs ${
-                          blog.status === "published"
-                            ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-400 border border-green-300 dark:border-green-700"
-                            : "bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-400 border border-yellow-300 dark:border-yellow-700"
-                        }`}
-                        title="Toggle status"
-                      >
-                        {blog.status === "published" ? "Published" : "Draft"}
-                      </button>
-                    </td>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center space-x-2">
-                        <button
-                          className="p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 rounded transition-colors"
-                          title="View"
-                        >
-                          <Eye className="w-5 h-5" />
-                        </button>
-                        <button
-                          className="p-1.5 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded transition-colors"
-                          title="Edit"
-                        >
-                          <Edit className="w-5 h-5" />
-                        </button>
-                        <button
-                          className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded transition-colors"
-                          title="Delete"
-                          onClick={() => handleDeleteBlog(blog._id)}
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                        ))
+                      ) : (
+                        <span className="text-gray-400 dark:text-gray-500 text-xs">
+                          No Tags
+                        </span>
+                      )}
+                    </div>
+                  ),
+                },
+                {
+                  key: "status",
+                  header: "STATUS",
+                  render: (blog: BlogPost) => (
+                    <button
+                      onClick={() => handleStatusToggle(blog)}
+                      className={`px-3 py-1 rounded-full font-semibold transition-colors text-xs ${
+                        blog.status === "published"
+                          ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-400 border border-green-300 dark:border-green-700"
+                          : "bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-400 border border-yellow-300 dark:border-yellow-700"
+                      }`}
+                      title="Toggle status"
+                    >
+                      {blog.status === "published" ? "Published" : "Draft"}
+                    </button>
+                  ),
+                },
+              ]}
+              data={posts}
+              actions={(blog: BlogPost) => (
+                <div className="flex items-center space-x-2">
+                  <button
+                    className="p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 rounded transition-colors"
+                    title="View"
+                  >
+                    <Eye className="w-5 h-5" />
+                  </button>
+                  <button
+                    className="p-1.5 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded transition-colors"
+                    title="Edit"
+                  >
+                    <Edit className="w-5 h-5" />
+                  </button>
+                  <button
+                    className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded transition-colors"
+                    title="Delete"
+                    onClick={() => handleDeleteBlog(blog._id)}
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
+              emptyText="No blogs found"
+            />
           )}
         </div>
       </div>
