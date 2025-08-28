@@ -74,11 +74,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
             }`}
           />
           {!isCollapsed && (
-            <span className="text-xl font-bold text-gray-800">
+            <span className="text-xl font-bold">
+              {/* Show dark logo for dark theme, white logo for light theme */}
               <img
                 src="https://gonardweb.com/wp-content/uploads/2025/08/gonardwebdark.png"
                 alt="logo"
                 width="140px"
+                className="block dark:hidden"
+              />
+              <img
+                src="https://gonardweb.com/wp-content/uploads/2023/02/gonardwebwhite.png"
+                alt="logo"
+                width="140px"
+                className="hidden dark:block"
               />
             </span>
           )}

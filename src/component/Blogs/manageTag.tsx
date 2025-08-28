@@ -8,38 +8,40 @@ import {
   deleteBlogTagRequest,
   getBlogTagRequest,
 } from "../../redux/actions/blogActions";
+import TablePagination from "../../reuseable/TablePagination";
+import Tabs from "../../reuseable/Tabs";
 
 const ManageTag: React.FC = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [tagName, setTagName] = useState("");
+  const limitOptions = [10, 20, 50, 100];
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState<"all blogs" | "category" | "tag">(
     "tag"
   );
 
-  // Redux state for paginated tags and categories
   const {
-  blogTags = [],
-  totalTags = 0,
-  page = 1,
-  pages = 1,
-  limit = 10,
-  loading,
-  error,
-} = useSelector((state: any) => {
-  const tagState = state.blog.blogtags || {};
-  return {
-    blogTags: Array.isArray(tagState.blogTags) ? tagState.blogTags : [],
-    totalTags: tagState.totalTags || 0,
-    page: tagState.page || 1,
-    pages: tagState.pages || 1,
-    limit: tagState.limit || 10,
-    loading: state.blog.loading,
-    error: state.blog.error,
-  };
-});
+    blogTags = [],
+    totalTags = 0,
+    page = 1,
+    pages = 1,
+    limit = 10,
+    loading,
+    error,
+  } = useSelector((state: any) => {
+    const tagState = state.blog.blogtags || {};
+    return {
+      blogTags: Array.isArray(tagState.blogTags) ? tagState.blogTags : [],
+      totalTags: tagState.totalTags || 0,
+      page: tagState.page || 1,
+      pages: tagState.pages || 1,
+      limit: tagState.limit || 10,
+      loading: state.blog.loading,
+      error: state.blog.error,
+    };
+  });
   console.log("Tags from Redux:", blogTags);
 
   useEffect(() => {
@@ -117,82 +119,75 @@ const ManageTag: React.FC = () => {
       isHeaderFixed={true}
     >
       <div className="p-4">
-        <div className="flex flex-wrap items-center justify-between border-b border-gray-200 gap-4 mb-4">
-          <div className="flex items-center space-x-6">
-            <button
-              onClick={() => {
+        <Tabs
+          tabs={[
+            {
+              label: "All Blogs",
+              value: "all blogs",
+              onClick: () => {
                 setActiveTab("all blogs");
                 Navigate("/blogs");
-              }}
-              className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
-                activeTab === "all blogs"
-                  ? "text-red-500 border-b-2 border-red-500"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              All Blogs
-            </button>
-            <button
-              onClick={() => {
+              },
+            },
+            {
+              label: "Category",
+              value: "category",
+              onClick: () => {
                 setActiveTab("category");
                 Navigate("/blog-category");
-              }}
-              className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
-                activeTab === "category"
-                  ? "text-red-500 border-b-2 border-red-500"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Category
-            </button>
-            <button
-              onClick={() => {
+              },
+            },
+            {
+              label: "Tags",
+              value: "tag",
+              onClick: () => {
                 setActiveTab("tag");
                 Navigate("/blog-tag");
-              }}
-              className={`text-sm font-medium pb-2 cursor-pointer transition-colors ${
-                activeTab === "tag"
-                  ? "text-red-500 border-b-2 border-red-500"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Tags
-            </button>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-20">
+              },
+            },
+          ]}
+          activeTab={activeTab}
+        />
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-20">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#08DA87]"></div>
-              <span className="ml-4 text-gray-600">Loading...</span>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#08DA87] dark:border-green-400"></div>
+              <span className="ml-4 text-gray-600 dark:text-gray-300">
+                Loading...
+              </span>
             </div>
           ) : error ? (
-            <div className="text-red-500 p-8 text-center">{error}</div>
+            <div className="text-red-500 dark:text-red-400 p-8 text-center">
+              {error}
+            </div>
           ) : (
             <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
                 <tr>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
                     NAME
                   </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
                     PARENT
                   </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
                     CREATED AT
                   </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
                     UPDATED AT
                   </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
+                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
                     ACTION
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {blogTags.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="py-4 text-gray-500 text-center">
+                    <td
+                      colSpan={5}
+                      className="py-4 text-gray-500 dark:text-gray-400 text-center"
+                    >
                       No tags found.
                     </td>
                   </tr>
@@ -200,25 +195,31 @@ const ManageTag: React.FC = () => {
                   blogTags.map((tag: any) => (
                     <tr
                       key={tag._id}
-                      className="hover:bg-gray-50 transition-colors"
+                      className="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
                     >
-                      <td className="py-4 px-6">{tag.name}</td>
-                      <td className="py-4 px-6">
+                      <td className="py-4 px-6 text-gray-900 dark:text-gray-100">
+                        {tag.name}
+                      </td>
+                      <td className="py-4 px-6 text-gray-900 dark:text-gray-100">
                         {tag.parent ? tag.parent.name : "-"}
                       </td>
-                      <td className="py-4 px-6">{formatDate(tag.createdAt)}</td>
-                      <td className="py-4 px-6">{formatDate(tag.updatedAt)}</td>
+                      <td className="py-4 px-6 text-gray-900 dark:text-gray-100">
+                        {formatDate(tag.createdAt)}
+                      </td>
+                      <td className="py-4 px-6 text-gray-900 dark:text-gray-100">
+                        {formatDate(tag.updatedAt)}
+                      </td>
                       <td className="py-4 px-6">
                         <div className="flex items-center space-x-2">
                           <button
-                            className="p-1.5 text-green-600 hover:bg-green-100 rounded transition-colors"
+                            className="p-1.5 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded transition-colors"
                             title="Edit"
                             onClick={() => handleEdit(tag._id)}
                           >
                             <Edit className="w-5 h-5" />
                           </button>
                           <button
-                            className="p-1.5 text-red-600 hover:bg-red-100 rounded transition-colors"
+                            className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded transition-colors"
                             title="Delete"
                             onClick={() => handleDelete(tag._id)}
                           >
@@ -233,50 +234,15 @@ const ManageTag: React.FC = () => {
             </table>
           )}
           {/* Pagination Controls */}
-          <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg">
-            <div className="flex flex-col md:flex-row justify-between items-center px-6 py-3 max-w-full mx-auto">
-              <span className="text-sm text-gray-700 mb-2 md:mb-0">
-                Total Tags: <strong>{totalTags}</strong>
-              </span>
-              <div className="flex gap-2 items-center">
-                <strong className="text-[#08DA87]">Page {page}</strong> of{" "}
-                <strong>{pages}</strong> &nbsp;|&nbsp;
-                <label
-                  className="text-sm text-gray-600 mr-2"
-                  htmlFor="limit-select"
-                >
-                  Rows per page:
-                </label>
-                <select
-                  id="limit-select"
-                  value={limit}
-                  onChange={handleLimitChange}
-                  className="px-2 py-1 rounded border bg-gray-100 text-gray-700"
-                  style={{ minWidth: 60 }}
-                >
-                  {[5, 10, 20, 50, 100].map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  className="px-4 py-2 rounded-lg border bg-green-500 text-white hover:bg-green-600 transition disabled:opacity-50"
-                  disabled={page <= 1}
-                  onClick={() => handlePageChange(page - 1)}
-                >
-                  Previous
-                </button>
-                <button
-                  className="px-4 py-2 rounded-lg border bg-green-500 text-white hover:bg-green-600 transition disabled:opacity-50"
-                  disabled={page >= pages}
-                  onClick={() => handlePageChange(page + 1)}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          </div>
+          <TablePagination
+            page={page}
+            pages={pages}
+            total={totalTags}
+            limit={limit}
+            limitOptions={limitOptions}
+            onLimitChange={handleLimitChange}
+            onPageChange={handlePageChange}
+          />
           {/* Modal */}
           {showModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
