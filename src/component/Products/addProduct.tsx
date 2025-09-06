@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Layout from "../../reuseable/Layout";
 import { createProductRequest } from "../../redux/actions/productActions";
-import { useNavigate } from "react-router-dom";
 
 const initialState = {
   name: "",
@@ -35,7 +34,6 @@ const initialState = {
 
 const AddProduct: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [form, setForm] = useState(initialState);
 
   // Handle input change for simple fields

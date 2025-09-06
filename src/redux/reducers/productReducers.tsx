@@ -169,7 +169,11 @@ export default function productReducer(state = initialState, action: any) {
     case GET_PRODUCT_TAGS_SUCCESS:
       return {
         ...state,
-        tags: Array.isArray(action.payload) ? action.payload : [],
+        tags: Array.isArray(action.payload.tags) ? action.payload.tags : [],
+        total: action.payload.total || 0,
+        page: action.payload.page || 1,
+        pages: action.payload.pages || 1,
+        limit: action.payload.limit || 10,
         loading: false,
         error: null,
       };
@@ -202,7 +206,11 @@ export default function productReducer(state = initialState, action: any) {
     case GET_PRODUCT_BRANDS_SUCCESS:
       return {
         ...state,
-        brands: Array.isArray(action.payload) ? action.payload : [],
+        brands: Array.isArray(action.payload.brands) ? action.payload.brands : [],
+        total: action.payload.total || 0,
+        page: action.payload.page || 1,
+        pages: action.payload.pages || 1,
+        limit: action.payload.limit || 10,
         loading: false,
         error: null,
       };

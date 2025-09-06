@@ -125,12 +125,18 @@ const ManageProductCategory: React.FC = () => {
                         {
                             label: "Tags",
                             value: "tag",
-                            onClick: () => setActiveTab("tag"),
+                            onClick: () => {
+                                setActiveTab("tag");
+                                navigate("/product-tags");
+                            },
                         },
                         {
                             label: "Brand",
                             value: "brand",
-                            onClick: () => setActiveTab("brand"),
+                            onClick: () => {
+                                setActiveTab("brand");
+                                navigate("/product-brands");
+                            },
                         },
                     ]}
                     activeTab={activeTab}

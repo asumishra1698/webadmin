@@ -144,13 +144,12 @@ function* deleteProductCategorySaga(action: any): any {
   }
 }
 
-function* getProductTagsSaga(_action: any): any {
+function* getProductTagsSaga(action: any): any {
   try {
-    const url = `${BASE_URL}${API_ENDPOINTS.GET_PRODUCT_TAGS}`;
+    const { page = 1, limit = 10, search = "" } = action.payload || {};
+    const url = `${BASE_URL}${API_ENDPOINTS.GET_PRODUCT_TAGS}?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
     const response = yield call(getRequest, url);
-    const tagsData = response.data ? response.data : response;
-    console.log("Product Tags API response:", tagsData);
-    yield put({ type: GET_PRODUCT_TAGS_SUCCESS, payload: tagsData });
+    yield put({ type: GET_PRODUCT_TAGS_SUCCESS, payload: response });
   } catch (error: any) {
     yield put({
       type: GET_PRODUCT_TAGS_FAILURE,
@@ -158,11 +157,13 @@ function* getProductTagsSaga(_action: any): any {
     });
   }
 }
+
 function* createProductTagSaga(action: any): any {
   try {
-    // Simulate API call with a delay
-    yield new Promise((resolve) => setTimeout(resolve, 1000));
-    yield put({ type: CREATE_PRODUCT_TAG_SUCCESS, payload: action.payload });
+    const url = `${BASE_URL}${API_ENDPOINTS.CREATE_PRODUCT_TAG}`;
+    const response = yield call(postRequest, url, action.payload);
+    yield put({ type: CREATE_PRODUCT_TAG_SUCCESS, payload: response });
+    yield put({ type: GET_PRODUCT_TAGS_REQUEST });
   } catch (error: any) {
     yield put({
       type: CREATE_PRODUCT_TAG_FAILURE,
@@ -172,9 +173,10 @@ function* createProductTagSaga(action: any): any {
 }
 function* deleteProductTagSaga(action: any): any {
   try {
-    // Simulate API call with a delay
-    yield new Promise((resolve) => setTimeout(resolve, 1000));
-    yield put({ type: DELETE_PRODUCT_TAG_SUCCESS, payload: action.payload });
+    const url = `${BASE_URL}${API_ENDPOINTS.DELETE_PRODUCT_TAG}/${action.payload}`;
+    const response = yield call(deleteRequest, url);
+    yield put({ type: DELETE_PRODUCT_TAG_SUCCESS, payload: response });
+    yield put({ type: GET_PRODUCT_TAGS_REQUEST });
   } catch (error: any) {
     yield put({
       type: DELETE_PRODUCT_TAG_FAILURE,
@@ -187,9 +189,7 @@ function* getProductBrandsSaga(_action: any): any {
   try {
     const url = `${BASE_URL}${API_ENDPOINTS.GET_PRODUCT_BRANDS}`;
     const response = yield call(getRequest, url);
-    const brandsData = response.data ? response.data : response;
-    console.log("Product Brands API response:", brandsData);
-    yield put({ type: GET_PRODUCT_BRANDS_SUCCESS, payload: brandsData });
+    yield put({ type: GET_PRODUCT_BRANDS_SUCCESS, payload: response });
   } catch (error: any) {
     yield put({
       type: GET_PRODUCT_BRANDS_FAILURE,
@@ -199,9 +199,10 @@ function* getProductBrandsSaga(_action: any): any {
 }
 function* createProductBrandSaga(action: any): any {
   try {
-    // Simulate API call with a delay
-    yield new Promise((resolve) => setTimeout(resolve, 1000));
-    yield put({ type: CREATE_PRODUCT_BRAND_SUCCESS, payload: action.payload });
+    const url = `${BASE_URL}${API_ENDPOINTS.CREATE_PRODUCT_BRAND}`;
+    const response = yield call(postRequest, url, action.payload);
+    yield put({ type: CREATE_PRODUCT_BRAND_SUCCESS, payload: response });
+    yield put({ type: GET_PRODUCT_BRANDS_REQUEST });
   } catch (error: any) {
     yield put({
       type: CREATE_PRODUCT_BRAND_FAILURE,

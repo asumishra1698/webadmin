@@ -23,7 +23,7 @@ import {
   DELETE_PRODUCT_BRAND_FAILURE,
 
 
-  GET_PRODUCT_CATEGORIES_REQUEST,  
+  GET_PRODUCT_CATEGORIES_REQUEST,
   GET_PRODUCT_CATEGORIES_SUCCESS,
   GET_PRODUCT_CATEGORIES_FAILURE,
   CREATE_PRODUCT_CATEGORY_REQUEST,
@@ -206,9 +206,9 @@ export const getProductTagsFailure = (error: string) => ({
   payload: error,
 });
 
-export const createProductTagRequest = (formData: FormData) => ({
+export const createProductTagRequest = (data: { name: string; description: string }) => ({
   type: CREATE_PRODUCT_TAG_REQUEST,
-  payload: formData,
+  payload: data,
 });
 export const createProductTagSuccess = (data: any) => ({
   type: CREATE_PRODUCT_TAG_SUCCESS,
