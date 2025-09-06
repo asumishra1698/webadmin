@@ -89,7 +89,6 @@ const AddProduct: React.FC = () => {
     setForm({ ...form, variants: newVariants });
   };
 
-  // Handle array fields (productcategory, producttags, images, reviews)
   const handleArrayChange = (name: string, value: string) => {
     setForm({
       ...form,
@@ -100,7 +99,6 @@ const AddProduct: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(createProductRequest(form as any));
-    navigate("/products");
   };
 
   return (

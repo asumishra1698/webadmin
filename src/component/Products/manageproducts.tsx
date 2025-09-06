@@ -5,7 +5,7 @@ import DataTable from "../../reuseable/DataTable";
 import { Eye, Edit, Trash2 } from "lucide-react";
 
 import Layout from "../../reuseable/Layout";
-import { getProductsRequest } from "../../redux/actions/productActions";
+import { getProductsRequest, deleteProductRequest } from "../../redux/actions/productActions";
 import { useNavigate } from "react-router-dom";
 import TablePagination from "../../reuseable/TablePagination";
 import Tabs from "../../reuseable/Tabs";
@@ -60,7 +60,7 @@ const ManageProducts: React.FC = () => {
 
   const handleDelete = (id: string) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
-      alert("Delete logic here");
+      dispatch(deleteProductRequest(id));
     }
   };
 
@@ -90,12 +90,18 @@ const ManageProducts: React.FC = () => {
             {
               label: "All Products",
               value: "all products",
-              onClick: () => setActiveTab("all products"),
+              onClick: () => {
+                setActiveTab("all products");
+                navigate("/products");
+              },
             },
             {
               label: "Category",
               value: "category",
-              onClick: () => setActiveTab("category"),
+              onClick: () => {
+                setActiveTab("category");
+                navigate("/product-categories");
+              },
             },
             {
               label: "Tags",
@@ -142,8 +148,8 @@ const ManageProducts: React.FC = () => {
                   render: (row) =>
                     Array.isArray(row.productcategory)
                       ? row.productcategory
-                          .map((cat: any) => cat.name)
-                          .join(", ")
+                        .map((cat: any) => cat.name)
+                        .join(", ")
                       : "-",
                 },
                 {

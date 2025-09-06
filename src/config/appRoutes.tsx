@@ -15,6 +15,9 @@ import ManageTag from "../component/Blogs/manageTag";
 import ManageLeads from "../component/Lead/manageLeads";
 import ManageProducts from "../component/Products/manageproducts";
 import AddProduct from "../component/Products/addProduct";
+import ManageProductCategory from "../component/Products/manageProductCategory";
+// import ManageProductTag from "../component/Products/manageProductTags";
+// import ManageProductBrand from "../component/Products/manageProductBrand";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -208,7 +211,30 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
           </ProtectedRoute>
         }
       />
-
+      <Route
+        path="/product-categories"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageProductCategory />
+          </ProtectedRoute>
+        }
+      />
+      {/* <Route
+        path="/product-tags"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageProductTag />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/product-brands"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageProductBrand />
+          </ProtectedRoute>
+        }
+      /> */}
       <Route
         path="/"
         element={

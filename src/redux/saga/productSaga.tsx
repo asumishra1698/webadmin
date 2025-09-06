@@ -3,16 +3,54 @@ import {
   GET_PRODUCTS_REQUEST,
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS_FAILURE,
+  CREATE_PRODUCT_REQUEST,
+  CREATE_PRODUCT_SUCCESS,
+  CREATE_PRODUCT_FAILURE,
+  DELETE_PRODUCT_REQUEST,
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_FAILURE,
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_FAILURE,
+
+  GET_PRODUCT_CATEGORIES_REQUEST,
+  GET_PRODUCT_CATEGORIES_SUCCESS,
+  GET_PRODUCT_CATEGORIES_FAILURE,
+  CREATE_PRODUCT_CATEGORY_REQUEST,
+  CREATE_PRODUCT_CATEGORY_SUCCESS,
+  CREATE_PRODUCT_CATEGORY_FAILURE,
+  DELETE_PRODUCT_CATEGORY_REQUEST,
+  DELETE_PRODUCT_CATEGORY_SUCCESS,
+  DELETE_PRODUCT_CATEGORY_FAILURE,
+
+  GET_PRODUCT_TAGS_REQUEST,
+  GET_PRODUCT_TAGS_SUCCESS,
+  GET_PRODUCT_TAGS_FAILURE,
+  CREATE_PRODUCT_TAG_REQUEST,
+  CREATE_PRODUCT_TAG_SUCCESS,
+  CREATE_PRODUCT_TAG_FAILURE,
+  DELETE_PRODUCT_TAG_REQUEST,
+  DELETE_PRODUCT_TAG_SUCCESS,
+  DELETE_PRODUCT_TAG_FAILURE,
+
+  GET_PRODUCT_BRANDS_REQUEST,
+  GET_PRODUCT_BRANDS_SUCCESS,
+  GET_PRODUCT_BRANDS_FAILURE,
+  CREATE_PRODUCT_BRAND_REQUEST,
+  CREATE_PRODUCT_BRAND_SUCCESS,
+  CREATE_PRODUCT_BRAND_FAILURE,
+  DELETE_PRODUCT_BRAND_REQUEST,
+  DELETE_PRODUCT_BRAND_SUCCESS,
+  DELETE_PRODUCT_BRAND_FAILURE,
 } from "../actions/actionTypes";
 import { API_ENDPOINTS, BASE_URL } from "../../config/apiRoutes";
-import { getRequest } from "../../config/apihelpers";
+import { deleteRequest, getRequest, postRequest } from "../../config/apihelpers";
 
 function* getProductsSaga(action: any): any {
   try {
     const { page = 1, limit = 10, search = "" } = action.payload || {};
-    const url = `${BASE_URL}${
-      API_ENDPOINTS.GET_PRODUCTS
-    }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
+    const url = `${BASE_URL}${API_ENDPOINTS.GET_PRODUCTS
+      }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
     const response = yield call(getRequest, url);
     const productsData = response.data ? response.data : response;
     console.log("Products API response:", productsData);
@@ -25,6 +63,178 @@ function* getProductsSaga(action: any): any {
   }
 }
 
+function* createProductSaga(action: any): any {
+  try {
+    const url = `${BASE_URL}${API_ENDPOINTS.CREATE_PRODUCT}`;
+    const response = yield call(postRequest, url, action.payload);
+    yield put({ type: CREATE_PRODUCT_SUCCESS, payload: response });
+  } catch (error: any) {
+    yield put({
+      type: CREATE_PRODUCT_FAILURE,
+      payload: error?.message || "Failed to create product",
+    });
+  }
+}
+
+function* deleteProductSaga(action: any): any {
+  try {
+    const url = `${BASE_URL}${API_ENDPOINTS.DELETE_PRODUCT}/${action.payload}`;
+    const response = yield call(deleteRequest, url);
+    yield put({ type: DELETE_PRODUCT_SUCCESS, payload: response });
+    yield put({ type: GET_PRODUCTS_REQUEST, payload: { page: 1, limit: 10, search: "" } });
+  } catch (error: any) {
+    yield put({
+      type: DELETE_PRODUCT_FAILURE,
+      payload: error?.message || "Failed to delete product",
+    });
+  }
+}
+
+function* updateProductSaga(action: any): any {
+  try {
+    yield new Promise((resolve) => setTimeout(resolve, 1000));
+    yield put({ type: UPDATE_PRODUCT_SUCCESS, payload: action.payload });
+  } catch (error: any) {
+    yield put({
+      type: UPDATE_PRODUCT_FAILURE,
+      payload: error?.message || "Failed to update product",
+    });
+  }
+}
+
+function* getProductCategoriesSaga(action: any): any {
+  try {
+    const { page = 1, limit = 10, search = "" } = action.payload || {};
+    const url = `${BASE_URL}${API_ENDPOINTS.GET_PRODUCT_CATEGORIES}?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
+    const response = yield call(getRequest, url);
+    yield put({ type: GET_PRODUCT_CATEGORIES_SUCCESS, payload: response });
+  } catch (error: any) {
+    yield put({
+      type: GET_PRODUCT_CATEGORIES_FAILURE,
+      payload: error?.message || "Failed to fetch product categories",
+    });
+  }
+}
+
+function* createProductCategorySaga(action: any): any {
+  try {
+    const url = `${BASE_URL}${API_ENDPOINTS.CREATE_PRODUCT_CATEGORY}`;
+    const response = yield call(postRequest, url, action.payload);
+    yield put({ type: CREATE_PRODUCT_CATEGORY_SUCCESS, payload: response });
+    yield put({ type: GET_PRODUCT_CATEGORIES_REQUEST, payload: { page: 1, limit: 10, search: "" } });
+  } catch (error: any) {
+    yield put({
+      type: CREATE_PRODUCT_CATEGORY_FAILURE,
+      payload: error?.message || "Failed to create product category",
+    });
+  }
+}
+
+function* deleteProductCategorySaga(action: any): any {
+  try {
+    const url = `${BASE_URL}${API_ENDPOINTS.DELETE_PRODUCT_CATEGORY}/${action.payload}`;
+    const response = yield call(deleteRequest, url);
+    yield put({ type: DELETE_PRODUCT_CATEGORY_SUCCESS, payload: response });
+    yield put({ type: GET_PRODUCT_CATEGORIES_REQUEST, payload: { page: 1, limit: 10, search: "" } });
+  } catch (error: any) {
+    yield put({
+      type: DELETE_PRODUCT_CATEGORY_FAILURE,
+      payload: error?.message || "Failed to delete product category",
+    });
+  }
+}
+
+function* getProductTagsSaga(_action: any): any {
+  try {
+    const url = `${BASE_URL}${API_ENDPOINTS.GET_PRODUCT_TAGS}`;
+    const response = yield call(getRequest, url);
+    const tagsData = response.data ? response.data : response;
+    console.log("Product Tags API response:", tagsData);
+    yield put({ type: GET_PRODUCT_TAGS_SUCCESS, payload: tagsData });
+  } catch (error: any) {
+    yield put({
+      type: GET_PRODUCT_TAGS_FAILURE,
+      payload: error?.message || "Failed to fetch product tags",
+    });
+  }
+}
+function* createProductTagSaga(action: any): any {
+  try {
+    // Simulate API call with a delay
+    yield new Promise((resolve) => setTimeout(resolve, 1000));
+    yield put({ type: CREATE_PRODUCT_TAG_SUCCESS, payload: action.payload });
+  } catch (error: any) {
+    yield put({
+      type: CREATE_PRODUCT_TAG_FAILURE,
+      payload: error?.message || "Failed to create product tag",
+    });
+  }
+}
+function* deleteProductTagSaga(action: any): any {
+  try {
+    // Simulate API call with a delay
+    yield new Promise((resolve) => setTimeout(resolve, 1000));
+    yield put({ type: DELETE_PRODUCT_TAG_SUCCESS, payload: action.payload });
+  } catch (error: any) {
+    yield put({
+      type: DELETE_PRODUCT_TAG_FAILURE,
+      payload: error?.message || "Failed to delete product tag",
+    });
+  }
+}
+
+function* getProductBrandsSaga(_action: any): any {
+  try {
+    const url = `${BASE_URL}${API_ENDPOINTS.GET_PRODUCT_BRANDS}`;
+    const response = yield call(getRequest, url);
+    const brandsData = response.data ? response.data : response;
+    console.log("Product Brands API response:", brandsData);
+    yield put({ type: GET_PRODUCT_BRANDS_SUCCESS, payload: brandsData });
+  } catch (error: any) {
+    yield put({
+      type: GET_PRODUCT_BRANDS_FAILURE,
+      payload: error?.message || "Failed to fetch product brands",
+    });
+  }
+}
+function* createProductBrandSaga(action: any): any {
+  try {
+    // Simulate API call with a delay
+    yield new Promise((resolve) => setTimeout(resolve, 1000));
+    yield put({ type: CREATE_PRODUCT_BRAND_SUCCESS, payload: action.payload });
+  } catch (error: any) {
+    yield put({
+      type: CREATE_PRODUCT_BRAND_FAILURE,
+      payload: error?.message || "Failed to create product brand",
+    });
+  }
+}
+function* deleteProductBrandSaga(action: any): any {
+  try {
+    // Simulate API call with a delay
+    yield new Promise((resolve) => setTimeout(resolve, 1000));
+    yield put({ type: DELETE_PRODUCT_BRAND_SUCCESS, payload: action.payload });
+  } catch (error: any) {
+    yield put({
+      type: DELETE_PRODUCT_BRAND_FAILURE,
+      payload: error?.message || "Failed to delete product brand",
+    });
+  }
+}
+
+
 export default function* productSaga() {
   yield takeLatest(GET_PRODUCTS_REQUEST, getProductsSaga);
+  yield takeLatest(CREATE_PRODUCT_REQUEST, createProductSaga);
+  yield takeLatest(DELETE_PRODUCT_REQUEST, deleteProductSaga);
+  yield takeLatest(UPDATE_PRODUCT_REQUEST, updateProductSaga);
+  yield takeLatest(GET_PRODUCT_CATEGORIES_REQUEST, getProductCategoriesSaga);
+  yield takeLatest(CREATE_PRODUCT_CATEGORY_REQUEST, createProductCategorySaga);
+  yield takeLatest(DELETE_PRODUCT_CATEGORY_REQUEST, deleteProductCategorySaga);
+  yield takeLatest(GET_PRODUCT_TAGS_REQUEST, getProductTagsSaga);
+  yield takeLatest(CREATE_PRODUCT_TAG_REQUEST, createProductTagSaga);
+  yield takeLatest(DELETE_PRODUCT_TAG_REQUEST, deleteProductTagSaga);
+  yield takeLatest(GET_PRODUCT_BRANDS_REQUEST, getProductBrandsSaga);
+  yield takeLatest(CREATE_PRODUCT_BRAND_REQUEST, createProductBrandSaga);
+  yield takeLatest(DELETE_PRODUCT_BRAND_REQUEST, deleteProductBrandSaga);
 }
