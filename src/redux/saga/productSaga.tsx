@@ -212,9 +212,10 @@ function* createProductBrandSaga(action: any): any {
 }
 function* deleteProductBrandSaga(action: any): any {
   try {
-    // Simulate API call with a delay
-    yield new Promise((resolve) => setTimeout(resolve, 1000));
+    const url = `${BASE_URL}${API_ENDPOINTS.DELETE_PRODUCT_BRAND}/${action.payload}`;
+    yield call(deleteRequest, url);
     yield put({ type: DELETE_PRODUCT_BRAND_SUCCESS, payload: action.payload });
+    yield put({ type: GET_PRODUCT_BRANDS_REQUEST });
   } catch (error: any) {
     yield put({
       type: DELETE_PRODUCT_BRAND_FAILURE,
