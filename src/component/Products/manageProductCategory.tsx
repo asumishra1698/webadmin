@@ -8,6 +8,8 @@ import DataTable from "../../reuseable/DataTable";
 import { Eye, Edit, Trash2, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../reuseable/modal";
+import { IMAGE_BASE_URL } from "../../config/apiRoutes";
+import { formatDate } from "../../reuseable/formatDate";
 
 
 const ManageProductCategory: React.FC = () => {
@@ -171,7 +173,26 @@ const ManageProductCategory: React.FC = () => {
                                     key: "description",
                                     header: "DESCRIPTION",
                                 },
-                                { key: "createdAt", header: "CREATED AT" },
+                                {
+                                    key: "bannerImage",
+                                    header: "BANNER IMAGE",
+                                    render: (row: any) => row.bannerImage ? <img src={`${IMAGE_BASE_URL}productcategories/${row.bannerImage}`} alt={row.name} className="w-10 h-10 object-cover rounded" /> : 'N/A',
+                                },
+                                {
+                                    key: "thumbnailImage",
+                                    header: "THUMBNAIL IMAGE",
+                                    render: (row: any) => row.thumbnailImage ? <img src={`${IMAGE_BASE_URL}productcategories/${row.thumbnailImage}`} alt={row.name} className="w-10 h-10 object-cover rounded" /> : 'N/A',
+                                },
+                                {
+                                    key: "createdAt",
+                                    header: "CREATED AT",
+                                    render: (row: any) => formatDate(row.createdAt),
+                                },
+                                {
+                                    key: "updatedAt",
+                                    header: "UPDATED AT",
+                                    render: (row: any) => formatDate(row.updatedAt),
+                                },
                             ]}
                             data={categories}
                             actions={(row) => (

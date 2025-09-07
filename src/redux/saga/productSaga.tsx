@@ -187,7 +187,8 @@ function* deleteProductTagSaga(action: any): any {
 
 function* getProductBrandsSaga(_action: any): any {
   try {
-    const url = `${BASE_URL}${API_ENDPOINTS.GET_PRODUCT_BRANDS}`;
+    const { page = 1, limit = 10, search = "" } = _action.payload || {};
+    const url = `${BASE_URL}${API_ENDPOINTS.GET_PRODUCT_BRANDS}?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
     const response = yield call(getRequest, url);
     yield put({ type: GET_PRODUCT_BRANDS_SUCCESS, payload: response });
   } catch (error: any) {
@@ -197,6 +198,7 @@ function* getProductBrandsSaga(_action: any): any {
     });
   }
 }
+
 function* createProductBrandSaga(action: any): any {
   try {
     const url = `${BASE_URL}${API_ENDPOINTS.CREATE_PRODUCT_BRAND}`;

@@ -12,6 +12,7 @@ import Tabs from "../../reuseable/Tabs";
 import DataTable from "../../reuseable/DataTable";
 import { Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "../../reuseable/formatDate";
 
 const ManageProductTags: React.FC = () => {
     const dispatch = useDispatch();
@@ -83,12 +84,12 @@ const ManageProductTags: React.FC = () => {
         {
             key: "createdAt",
             header: "CREATED AT",
-            render: (row: any) => new Date(row.createdAt).toLocaleString(),
+            render: (row: any) => formatDate(row.createdAt),
         },
         {
             key: "updatedAt",
             header: "UPDATED AT",
-            render: (row: any) => new Date(row.updatedAt).toLocaleString(),
+            render: (row: any) => formatDate(row.updatedAt),
         },
         {
             key: "actions",

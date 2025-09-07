@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../reuseable/Layout";
-import { createProductRequest } from "../../redux/actions/productActions";
+import Select from "react-select";
+import { createProductRequest, getProductCategoriesRequest, getProductTagsRequest } from "../../redux/actions/productActions";
+
 
 const initialState = {
   name: "",
@@ -9,7 +11,7 @@ const initialState = {
   description: "",
   price: "",
   salePrice: "",
-  productcategory: [],
+  productcategory: [] as string[],
   brand: "",
   sku: "",
   barcode: "",
@@ -17,7 +19,7 @@ const initialState = {
   stock: "",
   images: [] as File[],
   thumbnail: null as File | null,
-  producttags: [],
+  producttags: [] as string[],
   weight: "",
   dimensions: { length: "", width: "", height: "" },
   isFeatured: false,
@@ -35,6 +37,36 @@ const initialState = {
 const AddProduct: React.FC = () => {
   const dispatch = useDispatch();
   const [form, setForm] = useState(initialState);
+
+  useEffect(() => {
+    dispatch(getProductCategoriesRequest({ page: 1, limit: 100, search: "" }));
+    dispatch(getProductTagsRequest({ page: 1, limit: 100, search: "" }));
+  }, [dispatch]);
+
+  const { categories, tags } = useSelector((state: any) => ({
+    categories: state.product.categories,
+    tags: state.product.tags,
+  }));
+
+  // Format for react-select
+  const categoryOptions = categories.map((cat: any) => ({
+    value: cat._id,
+    label: cat.name,
+  }));
+
+  const tagOptions = tags.map((tag: any) => ({
+    value: tag._id,
+    label: tag.name,
+  }));
+
+  // Multi-select handlers
+  const handleCategoryChange = (selected: any) => {
+    setForm({ ...form, productcategory: selected.map((item: any) => item.value) });
+  };
+
+  const handleTagChange = (selected: any) => {
+    setForm({ ...form, producttags: selected.map((item: any) => item.value) });
+  };
 
   // Handle input change for simple fields
   const handleChange = (
@@ -218,29 +250,27 @@ const AddProduct: React.FC = () => {
         {/* Product Categories, Product Tags */}
         <div className="mb-4 flex gap-4">
           <div className="w-1/2">
-            <label className="block mb-1 font-medium">
-              Product Categories (comma separated IDs)
-            </label>
-            <input
-              type="text"
-              name="productcategory"
-              value={form.productcategory.join(",")}
-              onChange={(e) =>
-                handleArrayChange("productcategory", e.target.value)
-              }
-              className="border px-3 py-2 rounded w-full"
+            <label className="block mb-1 font-medium">Product Categories</label>
+            <Select
+              isMulti
+              options={categoryOptions}
+              value={categoryOptions.filter((opt: any) => form.productcategory.includes(opt.value))}
+              onChange={handleCategoryChange}
+              className="react-select-container"
+              classNamePrefix="react-select"
+              placeholder="Select categories"
             />
           </div>
           <div className="w-1/2">
-            <label className="block mb-1 font-medium">
-              Product Tags (comma separated IDs)
-            </label>
-            <input
-              type="text"
-              name="producttags"
-              value={form.producttags.join(",")}
-              onChange={(e) => handleArrayChange("producttags", e.target.value)}
-              className="border px-3 py-2 rounded w-full"
+            <label className="block mb-1 font-medium">Product Tags</label>
+            <Select
+              isMulti
+              options={tagOptions}
+              value={tagOptions.filter((opt: any) => form.producttags.includes(opt.value))}
+              onChange={handleTagChange}
+              className="react-select-container"
+              classNamePrefix="react-select"
+              placeholder="Select tags"
             />
           </div>
         </div>

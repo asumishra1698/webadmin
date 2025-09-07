@@ -12,6 +12,8 @@ import Tabs from "../../reuseable/Tabs";
 import DataTable from "../../reuseable/DataTable";
 import { Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { IMAGE_BASE_URL } from "../../config/apiRoutes";
+import { formatDate } from "../../reuseable/formatDate";
 
 const ManageProductBrand: React.FC = () => {
     const dispatch = useDispatch();
@@ -56,12 +58,7 @@ const ManageProductBrand: React.FC = () => {
         const formData = new FormData();
         formData.append("name", form.name);
         formData.append("description", form.description);
-        if (form.logo) formData.append("logo", form.logo);
-
-        for (let pair of formData.entries()) {
-            console.log(pair[0], pair[1]);
-        }
-
+        if (form.logo) formData.append("logo", form.logo);        
         dispatch(createProductBrandRequest(formData));
         setShowModal(false);
         setForm({ name: "", description: "", logo: null });
@@ -85,14 +82,19 @@ const ManageProductBrand: React.FC = () => {
         { key: "name", header: "NAME" },
         { key: "description", header: "DESCRIPTION" },
         {
+            key: "logo",
+            header: "LOGO",
+            render: (row: any) => row.logo ? <img src={`${IMAGE_BASE_URL}productbrands/${row.logo}`} alt={row.name} className="w-10 h-10 object-cover rounded" /> : 'N/A',
+        },
+        {
             key: "createdAt",
             header: "CREATED AT",
-            render: (row: any) => new Date(row.createdAt).toLocaleString(),
+            render: (row: any) => formatDate(row.createdAt),
         },
         {
             key: "updatedAt",
             header: "UPDATED AT",
-            render: (row: any) => new Date(row.updatedAt).toLocaleString(),
+            render: (row: any) => formatDate(row.updatedAt),
         },
         {
             key: "actions",
@@ -120,7 +122,7 @@ const ManageProductBrand: React.FC = () => {
             isHeaderFixed={true}
         >
             <div className="p-4">
-                 <Tabs
+                <Tabs
                     tabs={[
                         {
                             label: "All Products",
