@@ -21,6 +21,13 @@ const EditProduct: React.FC = () => {
     const tags = useSelector((state: any) => state.product.tags);
     const brands = useSelector((state: any) => state.product.brands);
 
+    const getImageUrl = (img: any) => {
+        if (!img) return "";
+        if (typeof img === "string") return img;
+        if (img instanceof File) return URL.createObjectURL(img);
+        return "";
+    };
+
     useEffect(() => {
         if (id) {
             dispatch(getProductByIdRequest(id));
@@ -48,7 +55,13 @@ const EditProduct: React.FC = () => {
                 thumbnail: null,
                 producttags: product.producttags || [],
                 weight: product.weight || "",
-                dimensions: product.dimensions || { length: "", width: "", height: "" },
+                dimensions: product.dimensions
+                    ? {
+                        length: product.dimensions.length ?? "",
+                        width: product.dimensions.width ?? "",
+                        height: product.dimensions.height ?? "",
+                    }
+                    : { length: "", width: "", height: "" },
                 isFeatured: product.isFeatured || false,
                 isActive: product.isActive ?? true,
                 rating: product.rating || "",
@@ -73,15 +86,16 @@ const EditProduct: React.FC = () => {
     };
 
     const handleDimensionsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        const [length = "", width = "", height = ""] = value.split("x");
+        const { name, value } = e.target;
         setForm((prev: any) => ({
             ...prev,
-            dimensions: { length, width, height },
+            dimensions: {
+                ...prev.dimensions,
+                [name]: value,
+            },
         }));
     };
 
-    // react-select handlers
     const handleCategorySelect = (selected: any) => {
         setForm((prev: any) => ({
             ...prev,
@@ -114,22 +128,28 @@ const EditProduct: React.FC = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!form || !id) return;
-
         const formData = new FormData();
         Object.entries(form).forEach(([key, value]) => {
             if (key === "images" && Array.isArray(value)) {
                 value.forEach((file: File) => {
-                    formData.append("images", file);
+                    if (file instanceof File) {
+                        formData.append("images", file);
+                    }
                 });
-            } else if (key === "thumbnail" && value) {
-                if (key === "thumbnail" && value && value instanceof File) {
-                    formData.append("thumbnail", value);
-                }
+            } else if (key === "thumbnail" && value && value instanceof File) {
+                formData.append("thumbnail", value);
             } else if (key === "variants" && Array.isArray(value)) {
-                // Send variants as a JSON array string
                 formData.append("variants", JSON.stringify(value));
             } else if (Array.isArray(value)) {
-                value.forEach((v) => formData.append(key, v));
+                value.forEach((v) => {
+                    if (typeof v === "string" || typeof v === "number" || typeof v === "boolean") {
+                        formData.append(key, v.toString());
+                    } else if (v instanceof File) {
+                        formData.append(key, v);
+                    } else if (typeof v === "object" && v !== null) {
+                        formData.append(key, JSON.stringify(v));
+                    }
+                });
             } else if (
                 typeof value === "object" &&
                 value !== null &&
@@ -150,7 +170,6 @@ const EditProduct: React.FC = () => {
         });
 
         dispatch(updateProductRequest(id, formData));
-        // navigate("/products");
     };
 
     const handleVariantChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,8 +210,6 @@ const EditProduct: React.FC = () => {
             </Layout>
         );
     }
-
-    // react-select options
     const categoryOptions = categories.map((cat: any) => ({
         value: cat._id,
         label: cat.name,
@@ -205,8 +222,6 @@ const EditProduct: React.FC = () => {
         value: brand._id,
         label: brand.name,
     }));
-
-    // react-select values
     const selectedCategories = categoryOptions.filter((opt: any) =>
         form.productcategory.includes(opt.value)
     );
@@ -279,17 +294,17 @@ const EditProduct: React.FC = () => {
                             placeholder="Select tags"
                         />
                     </div>
-                     <div className="w-1/3">
-                    <label className="block mb-1 font-medium">Brand</label>
-                    <Select
-                        options={brandOptions}
-                        value={selectedBrand}
-                        onChange={handleBrandSelect}
-                        placeholder="Select brand"
-                    />
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Brand</label>
+                        <Select
+                            options={brandOptions}
+                            value={selectedBrand}
+                            onChange={handleBrandSelect}
+                            placeholder="Select brand"
+                        />
+                    </div>
                 </div>
-                </div>
-               
+
                 <div className="mb-4">
                     <label className="block mb-1 font-medium">Price</label>
                     <input
@@ -402,6 +417,42 @@ const EditProduct: React.FC = () => {
                         onChange={handleFileChange}
                         className="w-full"
                     />
+                    <div className="flex gap-2 mt-2 flex-wrap">
+                        {product.images && product.images.length > 0 &&
+                            product.images.map((img: any, idx: number) => (
+                                <a
+                                    key={idx}
+                                    href={getImageUrl(img)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block"
+                                >
+                                    <img
+                                        src={getImageUrl(img)}
+                                        alt={`Product Image ${idx + 1}`}
+                                        className="w-16 h-16 object-cover rounded border"
+                                    />
+                                </a>
+                            ))
+                        }
+                        {form.images && form.images.length > 0 &&
+                            form.images.map((img: any, idx: number) => (
+                                <a
+                                    key={`new-${idx}`}
+                                    href={getImageUrl(img)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block"
+                                >
+                                    <img
+                                        src={getImageUrl(img)}
+                                        alt={`Selected Image ${idx + 1}`}
+                                        className="w-16 h-16 object-cover rounded border"
+                                    />
+                                </a>
+                            ))
+                        }
+                    </div>
                 </div>
                 <div className="mb-4">
                     <label className="block mb-1 font-medium">Thumbnail</label>
@@ -423,20 +474,41 @@ const EditProduct: React.FC = () => {
                             className="w-full border px-3 py-2 rounded"
                         />
                     </div>
-                    <div className="w-1/2">
-                        <label className="block mb-1 font-medium">Dimensions</label>
-                        <input
-                            type="text"
-                            name="dimensions"
-                            value={
-                                form.dimensions
-                                    ? `${form.dimensions.length}x${form.dimensions.width}x${form.dimensions.height}`
-                                    : ""
-                            }
-                            onChange={handleDimensionsChange}
-                            className="w-full border px-3 py-2 rounded"
-                            placeholder="LxWxH"
-                        />
+                    {/* Only one dimensions section below */}
+                    <div className="w-1/2 flex gap-4">
+                        <div className="w-1/3">
+                            <label className="block mb-1 font-medium">Length</label>
+                            <input
+                                type="text"
+                                name="length"
+                                value={form.dimensions?.length ?? ""}
+                                onChange={handleDimensionsChange}
+                                className="w-full border px-3 py-2 rounded"
+                                placeholder="Length"
+                            />
+                        </div>
+                        <div className="w-1/3">
+                            <label className="block mb-1 font-medium">Width</label>
+                            <input
+                                type="text"
+                                name="width"
+                                value={form.dimensions?.width ?? ""}
+                                onChange={handleDimensionsChange}
+                                className="w-full border px-3 py-2 rounded"
+                                placeholder="Width"
+                            />
+                        </div>
+                        <div className="w-1/3">
+                            <label className="block mb-1 font-medium">Height</label>
+                            <input
+                                type="text"
+                                name="height"
+                                value={form.dimensions?.height ?? ""}
+                                onChange={handleDimensionsChange}
+                                className="w-full border px-3 py-2 rounded"
+                                placeholder="Height"
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className="mb-4 flex gap-4">

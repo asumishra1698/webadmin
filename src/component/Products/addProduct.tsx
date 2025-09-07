@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../reuseable/Layout";
 import Select from "react-select";
-import { createProductRequest, getProductCategoriesRequest, getProductTagsRequest } from "../../redux/actions/productActions";
+import { createProductRequest, getProductCategoriesRequest, getProductTagsRequest, getProductBrandsRequest } from "../../redux/actions/productActions";
 
 
 const initialState = {
@@ -41,9 +41,11 @@ const AddProduct: React.FC = () => {
   useEffect(() => {
     dispatch(getProductCategoriesRequest({ page: 1, limit: 100, search: "" }));
     dispatch(getProductTagsRequest({ page: 1, limit: 100, search: "" }));
+    dispatch(getProductBrandsRequest({ page: 1, limit: 100, search: "" }));
   }, [dispatch]);
   const categories = useSelector((state: any) => state.product.categories);
   const tags = useSelector((state: any) => state.product.tags);
+  const brands = useSelector((state: any) => state.product.brands);
 
   const categoryOptions = categories.map((cat: any) => ({
     value: cat._id,
@@ -53,6 +55,11 @@ const AddProduct: React.FC = () => {
   const tagOptions = tags.map((tag: any) => ({
     value: tag._id,
     label: tag.name,
+  }));
+
+  const brandOptions = brands.map((brand: any) => ({
+    value: brand._id,
+    label: brand.name,
   }));
 
   const handleCategoryChange = (selected: any) => {
@@ -117,7 +124,50 @@ const AddProduct: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(createProductRequest(form as any));
+
+    const formData = new FormData();
+
+    Object.entries(form).forEach(([key, value]) => {
+      if (key === "images" && Array.isArray(value)) {
+        value.forEach((file) => {
+          if (file instanceof File) {
+            formData.append("images", file);
+          }
+        });
+      } else if (key === "thumbnail" && value && value instanceof File) {
+        formData.append("thumbnail", value);
+      } else if (key === "variants" && Array.isArray(value)) {
+        formData.append("variants", JSON.stringify(value));
+      } else if (Array.isArray(value)) {
+        value.forEach((v) => {
+          if (typeof v === "string" || typeof v === "number" || typeof v === "boolean") {
+            formData.append(key, v.toString());
+          } else if (v instanceof File) {
+            formData.append(key, v);
+          } else if (typeof v === "object" && v !== null) {
+            formData.append(key, JSON.stringify(v));
+          }
+        });
+      } else if (
+        typeof value === "object" &&
+        value !== null &&
+        !Array.isArray(value)
+      ) {
+        if (Object.keys(value).length > 0) {
+          formData.append(key, JSON.stringify(value));
+        }
+      } else if (
+        value !== undefined &&
+        value !== null &&
+        (typeof value === "string" ||
+          typeof value === "number" ||
+          typeof value === "boolean")
+      ) {
+        formData.append(key, value.toString());
+      }
+    });
+
+    dispatch(createProductRequest(formData));
   };
 
   return (
@@ -192,18 +242,7 @@ const AddProduct: React.FC = () => {
             />
           </div>
         </div>
-        {/* Row 3: Brand, SKU, Barcode */}
         <div className="mb-4 flex gap-4">
-          <div className="w-1/3">
-            <label className="block mb-1 font-medium">Brand (ID)</label>
-            <input
-              type="text"
-              name="brand"
-              value={form.brand}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded w-full"
-            />
-          </div>
           <div className="w-1/3">
             <label className="block mb-1 font-medium">SKU</label>
             <input
@@ -224,21 +263,19 @@ const AddProduct: React.FC = () => {
               className="border px-3 py-2 rounded w-full"
             />
           </div>
+          <div className="w-1/3">
+            <label className="block mb-1 font-medium">Description</label>
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              className="border px-3 py-2 rounded w-full"
+              rows={3}
+            />
+          </div>
         </div>
-        {/* Description */}
-        <div className="mb-4">
-          <label className="block mb-1 font-medium">Description</label>
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            className="border px-3 py-2 rounded w-full"
-            rows={3}
-          />
-        </div>
-        {/* Product Categories, Product Tags */}
         <div className="mb-4 flex gap-4">
-          <div className="w-1/2">
+          <div className="w-1/3">
             <label className="block mb-1 font-medium">Product Categories</label>
             <Select
               isMulti
@@ -250,7 +287,7 @@ const AddProduct: React.FC = () => {
               placeholder="Select categories"
             />
           </div>
-          <div className="w-1/2">
+          <div className="w-1/3">
             <label className="block mb-1 font-medium">Product Tags</label>
             <Select
               isMulti
@@ -262,9 +299,21 @@ const AddProduct: React.FC = () => {
               placeholder="Select tags"
             />
           </div>
+          <div className="w-1/3">
+            <label className="block mb-1 font-medium">Brand</label>
+            <Select
+              options={brandOptions}
+              value={brandOptions.find((opt: any) => opt.value === form.brand)}
+              onChange={(selected: any) =>
+                setForm({ ...form, brand: selected ? selected.value : "" })
+              }
+              className="react-select-container"
+              classNamePrefix="react-select"
+              placeholder="Select brand"
+            />
+          </div>
         </div>
         <div className="mb-4 flex gap-4">
-          {/* Images Upload */}
           <div className="w-1/2">
             <label className="block mb-2 font-medium">
               Upload Product Images <span className="text-red-500">*</span>
@@ -314,9 +363,28 @@ const AddProduct: React.FC = () => {
               <p className="mt-2 text-xs text-gray-500">
                 (File Types: jpg, jpeg, png, pdf, Max Size: 2 MB)
               </p>
+              {/* Image Previews */}
+              {form.images && form.images.length > 0 && (
+                <div className="flex gap-2 mt-4 flex-wrap">
+                  {form.images.map((img: File, idx: number) => (
+                    <a
+                      key={idx}
+                      href={URL.createObjectURL(img)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block"
+                    >
+                      <img
+                        src={URL.createObjectURL(img)}
+                        alt={`Selected Image ${idx + 1}`}
+                        className="w-16 h-16 object-cover rounded border"
+                      />
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-          {/* Thumbnail Upload */}
           <div className="w-1/2">
             <label className="block mb-2 font-medium">
               Upload Thumbnail <span className="text-red-500">*</span>
@@ -364,6 +432,23 @@ const AddProduct: React.FC = () => {
               <p className="mt-2 text-xs text-gray-500">
                 (File Types: jpg, jpeg, png, pdf, Max Size: 2 MB)
               </p>
+              {/* Thumbnail Preview */}
+              {form.thumbnail && (
+                <div className="mt-4">
+                  <a
+                    href={URL.createObjectURL(form.thumbnail)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  >
+                    <img
+                      src={URL.createObjectURL(form.thumbnail)}
+                      alt="Selected Thumbnail"
+                      className="w-16 h-16 object-cover rounded border"
+                    />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>

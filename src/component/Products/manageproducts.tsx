@@ -9,6 +9,7 @@ import { getProductsRequest, deleteProductRequest } from "../../redux/actions/pr
 import { useNavigate } from "react-router-dom";
 import TablePagination from "../../reuseable/TablePagination";
 import Tabs from "../../reuseable/Tabs";
+import { IMAGE_BASE_URL } from "../../config/apiRoutes";
 
 const ManageProducts: React.FC = () => {
   const dispatch = useDispatch();
@@ -142,6 +143,27 @@ const ManageProducts: React.FC = () => {
           ) : (
             <DataTable
               columns={[
+                {
+                  key: "thumbnail",
+                  header: "THUMBNAIL",
+                  render: (row) =>
+                    row.thumbnail ? (
+                      <a
+                        href={`${IMAGE_BASE_URL}products/${row.thumbnail}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block"
+                      >
+                        <img
+                          src={`${IMAGE_BASE_URL}products/${row.thumbnail}`}
+                          alt="Thumbnail"
+                          className="w-12 h-12 object-cover rounded border"
+                        />
+                      </a>
+                    ) : (
+                      "-"
+                    ),
+                },
                 { key: "name", header: "NAME" },
                 { key: "slug", header: "SLUG" },
                 {
