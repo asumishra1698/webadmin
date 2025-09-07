@@ -2,6 +2,9 @@ import {
   GET_PRODUCTS_REQUEST,
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS_FAILURE,
+  GET_PRODUCT_BY_ID_REQUEST,
+  GET_PRODUCT_BY_ID_SUCCESS,
+  GET_PRODUCT_BY_ID_FAILURE,
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAILURE,
@@ -61,6 +64,19 @@ export const getProductsFailure = (error: string) => ({
   payload: error,
 });
 
+export const getProductByIdRequest = (productId: string) => ({
+  type: GET_PRODUCT_BY_ID_REQUEST,
+  payload: productId,
+});
+export const getProductByIdSuccess = (data: any) => ({
+  type: GET_PRODUCT_BY_ID_SUCCESS,
+  payload: data,
+});
+export const getProductByIdFailure = (error: string) => ({
+  type: GET_PRODUCT_BY_ID_FAILURE,
+  payload: error,
+});
+
 export const createProductRequest = (formData: FormData) => ({
   type: CREATE_PRODUCT_REQUEST,
   payload: formData,
@@ -91,6 +107,7 @@ export const updateProductRequest = (productId: string, formData: FormData) => (
   type: UPDATE_PRODUCT_REQUEST,
   payload: { productId, formData },
 });
+
 export const updateProductSuccess = (data: any) => ({
   type: UPDATE_PRODUCT_SUCCESS,
   payload: data,

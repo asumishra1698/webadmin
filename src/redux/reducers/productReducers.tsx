@@ -11,6 +11,9 @@ import {
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_FAILURE,
+  GET_PRODUCT_BY_ID_REQUEST,
+  GET_PRODUCT_BY_ID_SUCCESS,
+  GET_PRODUCT_BY_ID_FAILURE,
 
   GET_PRODUCT_CATEGORIES_REQUEST,
   GET_PRODUCT_CATEGORIES_SUCCESS,
@@ -45,9 +48,11 @@ import {
 
 interface ProductState {
   products: any[];
+  product?: any; // <-- added to store single product details
   categories: any[];
   tags: any[];
   brands: any[];
+  brandPages?: number;
   total: number;
   page: number;
   pages: number;
@@ -58,9 +63,11 @@ interface ProductState {
 
 const initialState: ProductState = {
   products: [],
+  product: null,
   categories: [],
   tags: [],
   brands: [],
+  brandPages: 1,
   total: 0,
   page: 1,
   pages: 1,
@@ -125,6 +132,18 @@ export default function productReducer(state = initialState, action: any) {
         error: null,
       };
     case UPDATE_PRODUCT_FAILURE:
+      return { ...state, loading: false, error: action.payload };
+
+    case GET_PRODUCT_BY_ID_REQUEST:
+      return { ...state, loading: true, error: null };
+    case GET_PRODUCT_BY_ID_SUCCESS:
+      return {
+        ...state,
+        product: action.payload, // <-- store single product here
+        loading: false,
+        error: null,
+      };
+    case GET_PRODUCT_BY_ID_FAILURE:
       return { ...state, loading: false, error: action.payload };
 
     case GET_PRODUCT_CATEGORIES_REQUEST:
@@ -211,6 +230,7 @@ export default function productReducer(state = initialState, action: any) {
         page: action.payload.page || 1,
         pages: action.payload.pages || 1,
         limit: action.payload.limit || 10,
+        brandPages: action.payload.pages || 1,
         loading: false,
         error: null,
       };

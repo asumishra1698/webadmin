@@ -22,6 +22,7 @@ export const API_ENDPOINTS = {
   GET_LEAD: "/api/contact/all",
   DELETE_LEAD: "/api/contact/",
   GET_PRODUCTS: "/api/products",
+  GET_PRODUCT_BY_ID: "/api/products/",
   CREATE_PRODUCT: "/api/products",
   DELETE_PRODUCT: "/api/products/",
   UPDATE_PRODUCT: "/api/products/",

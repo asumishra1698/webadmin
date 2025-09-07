@@ -5,7 +5,7 @@ import Layout from "../../reuseable/Layout";
 import TablePagination from "../../reuseable/TablePagination";
 import Tabs from "../../reuseable/Tabs";
 import DataTable from "../../reuseable/DataTable";
-import { Eye, Edit, Trash2, Plus } from "lucide-react";
+import { Trash2, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../reuseable/modal";
 import { IMAGE_BASE_URL } from "../../config/apiRoutes";
@@ -86,9 +86,6 @@ const ManageProductCategory: React.FC = () => {
         </button>
     );
 
-    const handleEdit = (id: string) => {
-        navigate(`/product-categories/edit/${id}`);
-    }
     const handleDelete = (id: string) => {
         if (window.confirm("Are you sure you want to delete this category?")) {
             dispatch(deleteProductCategoryRequest(id));
@@ -197,19 +194,6 @@ const ManageProductCategory: React.FC = () => {
                             data={categories}
                             actions={(row) => (
                                 <div className="flex items-center space-x-2">
-                                    <button
-                                        className="p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 rounded transition-colors"
-                                        title="View"
-                                    >
-                                        <Eye className="w-5 h-5" />
-                                    </button>
-                                    <button
-                                        className="p-1.5 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded transition-colors"
-                                        title="Edit"
-                                        onClick={() => handleEdit(row._id)}
-                                    >
-                                        <Edit className="w-5 h-5" />
-                                    </button>
                                     <button
                                         className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded transition-colors"
                                         title="Delete"

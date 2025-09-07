@@ -55,7 +55,7 @@ const ManageProducts: React.FC = () => {
   };
 
   const handleEdit = (id: string) => {
-    alert(`Edit product: ${id}`);
+    navigate(`/edit-product/${id}`);
   };
 
   const handleDelete = (id: string) => {

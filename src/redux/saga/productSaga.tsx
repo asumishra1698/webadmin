@@ -3,6 +3,9 @@ import {
   GET_PRODUCTS_REQUEST,
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS_FAILURE,
+  GET_PRODUCT_BY_ID_REQUEST,
+  GET_PRODUCT_BY_ID_SUCCESS,
+  GET_PRODUCT_BY_ID_FAILURE,
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAILURE,
@@ -44,7 +47,7 @@ import {
   DELETE_PRODUCT_BRAND_FAILURE,
 } from "../actions/actionTypes";
 import { API_ENDPOINTS, BASE_URL } from "../../config/apiRoutes";
-import { deleteRequest, getRequest, postRequest } from "../../config/apihelpers";
+import { deleteRequest, getRequest, postRequest, putRequest } from "../../config/apihelpers";
 
 function* getProductsSaga(action: any): any {
   try {
@@ -92,12 +95,27 @@ function* deleteProductSaga(action: any): any {
 
 function* updateProductSaga(action: any): any {
   try {
-    yield new Promise((resolve) => setTimeout(resolve, 1000));
-    yield put({ type: UPDATE_PRODUCT_SUCCESS, payload: action.payload });
+    const url = `${BASE_URL}${API_ENDPOINTS.UPDATE_PRODUCT}${action.payload.productId}`;
+    const response = yield call(putRequest, url, action.payload.formData);
+    yield put({ type: UPDATE_PRODUCT_SUCCESS, payload: response });
+    yield put({ type: GET_PRODUCTS_REQUEST, payload: { page: 1, limit: 10, search: "" } });
   } catch (error: any) {
     yield put({
       type: UPDATE_PRODUCT_FAILURE,
       payload: error?.message || "Failed to update product",
+    });
+  }
+}
+
+function* getProductByIdSaga(action: any): any {
+  try {
+    const url = `${BASE_URL}${API_ENDPOINTS.GET_PRODUCT_BY_ID}/${action.payload}`;
+    const response = yield call(getRequest, url);
+    yield put({ type: GET_PRODUCT_BY_ID_SUCCESS, payload: response.product });
+  } catch (error: any) {
+    yield put({
+      type: GET_PRODUCT_BY_ID_FAILURE,
+      payload: error?.message || "Failed to fetch product",
     });
   }
 }
@@ -232,6 +250,7 @@ export default function* productSaga() {
   yield takeLatest(CREATE_PRODUCT_REQUEST, createProductSaga);
   yield takeLatest(DELETE_PRODUCT_REQUEST, deleteProductSaga);
   yield takeLatest(UPDATE_PRODUCT_REQUEST, updateProductSaga);
+  yield takeLatest(GET_PRODUCT_BY_ID_REQUEST, getProductByIdSaga);
   yield takeLatest(GET_PRODUCT_CATEGORIES_REQUEST, getProductCategoriesSaga);
   yield takeLatest(CREATE_PRODUCT_CATEGORY_REQUEST, createProductCategorySaga);
   yield takeLatest(DELETE_PRODUCT_CATEGORY_REQUEST, deleteProductCategorySaga);

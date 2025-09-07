@@ -99,9 +99,10 @@ export const getRequest = async (
 
 export const putRequest = async (url: string, data: any, config: any = {}) => {
   try {
+    const isFormData = typeof FormData !== "undefined" && data instanceof FormData;
     const response = await api.put(url, data, {
       headers: {
-        "Content-Type": "application/json",
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
         ...(config.headers || {}),
       },
       ...config,
@@ -114,7 +115,6 @@ export const putRequest = async (url: string, data: any, config: any = {}) => {
     );
   }
 };
-
 export const patchRequest = async (
   url: string,
   data: any = {},

@@ -15,6 +15,7 @@ import ManageTag from "../component/Blogs/manageTag";
 import ManageLeads from "../component/Lead/manageLeads";
 import ManageProducts from "../component/Products/manageproducts";
 import AddProduct from "../component/Products/addProduct";
+import EditProduct from "../component/Products/editProduct";
 import ManageProductCategory from "../component/Products/manageProductCategory";
 import ManageProductTag from "../component/Products/manageProductTags";
 import ManageProductBrand from "../component/Products/manageProductBrand";
@@ -211,6 +212,15 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/edit-product/:id"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <EditProduct />
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/product-categories"
         element={
