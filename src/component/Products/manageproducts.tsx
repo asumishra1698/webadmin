@@ -3,16 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { Copy, Plus, Edit, Trash2 } from "lucide-react";
 import DataTable from "../../reuseable/DataTable";
 import Layout from "../../reuseable/Layout";
-import { getProductsRequest, deleteProductRequest, duplicateProductRequest, exportProductsRequest } from "../../redux/actions/productActions";
+import { getProductsRequest, deleteProductRequest, duplicateProductRequest, exportProductsRequest, importProductsRequest } from "../../redux/actions/productActions";
 import { useNavigate } from "react-router-dom";
 import TablePagination from "../../reuseable/TablePagination";
 import Tabs from "../../reuseable/Tabs";
 import { IMAGE_BASE_URL } from "../../config/apiRoutes";
 import { formatDate } from "../../reuseable/formatDate";
+import Modal from "../../reuseable/modal";
+
 
 const ManageProducts: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importFile, setImportFile] = useState<File | null>(null);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState<
     "all products" | "category" | "tag" | "brand"
@@ -30,6 +35,17 @@ const ManageProducts: React.FC = () => {
   useEffect(() => {
     dispatch(getProductsRequest({ page: 1, limit: 10, search: "" }));
   }, [dispatch]);
+
+  const handleImportSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (importFile) {
+      const formData = new FormData();
+      formData.append("file", importFile);
+      dispatch(importProductsRequest(formData));
+      setShowImportModal(false);
+      setImportFile(null);
+    }
+  };
 
   const handlePageChange = (newPage: number) => {
     dispatch(getProductsRequest({ page: newPage, limit, search: searchTerm }));
@@ -71,7 +87,7 @@ const ManageProducts: React.FC = () => {
       </button>
       <button
         className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
-        onClick={() => navigate("/add-product")}
+        onClick={() => setShowImportModal(true)}
       >
         <Plus className="w-4 h-4 mr-2" />
         Import Product
@@ -273,6 +289,36 @@ const ManageProducts: React.FC = () => {
         </div>
       </div>
 
+      <Modal isOpen={showImportModal} onClose={() => setShowImportModal(false)}>
+        <h2 className="text-lg font-semibold mb-4">Import Products</h2>
+        <form onSubmit={handleImportSubmit}>
+          <input
+            type="file"
+            accept=".xlsx,.csv"
+            onChange={(e) => setImportFile(e.target.files?.[0] || null)}
+            className="mb-4"
+            required
+          />
+          <div className="flex justify-end space-x-2">
+            <button
+              type="button"
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              onClick={() => setShowImportModal(false)}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              disabled={!importFile}
+            >
+              Import
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+
       {/* Pagination Controls */}
       <TablePagination
         page={page}
@@ -283,6 +329,7 @@ const ManageProducts: React.FC = () => {
         onLimitChange={handleLimitChange}
         onPageChange={handlePageChange}
       />
+
     </Layout>
   );
 };
