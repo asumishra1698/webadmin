@@ -42,13 +42,9 @@ const AddProduct: React.FC = () => {
     dispatch(getProductCategoriesRequest({ page: 1, limit: 100, search: "" }));
     dispatch(getProductTagsRequest({ page: 1, limit: 100, search: "" }));
   }, [dispatch]);
+  const categories = useSelector((state: any) => state.product.categories);
+  const tags = useSelector((state: any) => state.product.tags);
 
-  const { categories, tags } = useSelector((state: any) => ({
-    categories: state.product.categories,
-    tags: state.product.tags,
-  }));
-
-  // Format for react-select
   const categoryOptions = categories.map((cat: any) => ({
     value: cat._id,
     label: cat.name,
@@ -59,7 +55,6 @@ const AddProduct: React.FC = () => {
     label: tag.name,
   }));
 
-  // Multi-select handlers
   const handleCategoryChange = (selected: any) => {
     setForm({ ...form, productcategory: selected.map((item: any) => item.value) });
   };
@@ -68,7 +63,6 @@ const AddProduct: React.FC = () => {
     setForm({ ...form, producttags: selected.map((item: any) => item.value) });
   };
 
-  // Handle input change for simple fields
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -80,7 +74,6 @@ const AddProduct: React.FC = () => {
     }
   };
 
-  // Handle change for dimensions
   const handleDimensionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
@@ -90,8 +83,6 @@ const AddProduct: React.FC = () => {
       },
     });
   };
-
-  // Handle change for variants
   const handleVariantChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>
@@ -102,7 +93,6 @@ const AddProduct: React.FC = () => {
     setForm({ ...form, variants: newVariants });
   };
 
-  // Add new variant row
   const addVariant = () => {
     setForm({
       ...form,
@@ -113,7 +103,6 @@ const AddProduct: React.FC = () => {
     });
   };
 
-  // Remove variant row
   const removeVariant = (index: number) => {
     const newVariants = form.variants.filter((_, i) => i !== index);
     setForm({ ...form, variants: newVariants });
@@ -143,7 +132,7 @@ const AddProduct: React.FC = () => {
         className="max-w-full mx-auto bg-white p-8 rounded shadow"
         onSubmit={handleSubmit}
       >
-        {/* Row 1: Name, Slug */}
+
         <div className="mb-4 flex gap-4">
           <div className="w-1/2">
             <label className="block mb-1 font-medium">Product Name</label>
@@ -168,7 +157,7 @@ const AddProduct: React.FC = () => {
             />
           </div>
         </div>
-        {/* Row 2: Price, Sale Price, Stock */}
+
         <div className="mb-4 flex gap-4">
           <div className="w-1/3">
             <label className="block mb-1 font-medium">Price</label>
