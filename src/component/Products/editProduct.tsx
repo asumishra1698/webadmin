@@ -10,6 +10,7 @@ import {
     getProductTagsRequest,
     getProductBrandsRequest,
 } from "../../redux/actions/productActions";
+import { IMAGE_BASE_URL } from "../../config/apiRoutes";
 
 const EditProduct: React.FC = () => {
     const dispatch = useDispatch();
@@ -428,7 +429,7 @@ const EditProduct: React.FC = () => {
                                     className="block"
                                 >
                                     <img
-                                        src={getImageUrl(img)}
+                                        src={`${IMAGE_BASE_URL}products/${getImageUrl(img)}`}
                                         alt={`Product Image ${idx + 1}`}
                                         className="w-16 h-16 object-cover rounded border"
                                     />
@@ -462,6 +463,42 @@ const EditProduct: React.FC = () => {
                         onChange={handleFileChange}
                         className="w-full"
                     />
+                    {/* Thumbnail Preview */}
+                    <div className="mt-2">
+                        {form.thumbnail ? (
+                            <a
+                                href={
+                                    form.thumbnail instanceof File
+                                        ? URL.createObjectURL(form.thumbnail)
+                                        : `${IMAGE_BASE_URL}products/${form.thumbnail}`
+                                }
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <img
+                                    src={
+                                        form.thumbnail instanceof File
+                                            ? URL.createObjectURL(form.thumbnail)
+                                            : `${IMAGE_BASE_URL}products/${form.thumbnail}`
+                                    }
+                                    alt="Thumbnail Preview"
+                                    className="w-16 h-16 object-cover rounded border"
+                                />
+                            </a>
+                        ) : product.thumbnail ? (
+                            <a
+                                href={`${IMAGE_BASE_URL}products/${product.thumbnail}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <img
+                                    src={`${IMAGE_BASE_URL}products/${product.thumbnail}`}
+                                    alt="Current Thumbnail"
+                                    className="w-16 h-16 object-cover rounded border"
+                                />
+                            </a>
+                        ) : null}
+                    </div>
                 </div>
                 <div className="mb-4 flex gap-4">
                     <div className="w-1/2">
