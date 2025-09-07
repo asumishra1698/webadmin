@@ -155,17 +155,16 @@ function* getProductByIdSaga(action: any): any {
 function* exportProductsSaga(_action: any): any {
   try {
     const url = `${BASE_URL}${API_ENDPOINTS.EXPORT_PRODUCTS}`;
-    // Pass responseType: "blob" to getRequest
-    const response = yield call(getRequest, url, { responseType: "blob" });
-    // Download the file
-    const urlBlob = window.URL.createObjectURL(new Blob([response]));
+    const response = yield call(getRequest, url, null, { responseType: "blob" });
+    const urlBlob = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = urlBlob;
-    link.setAttribute("download", "products.xlsx");
+    link.setAttribute("download", "products.csv");
     document.body.appendChild(link);
     link.click();
     link.remove();
-    yield put({ type: EXPORT_PRODUCTS_SUCCESS, payload: response });
+    yield put({ type: EXPORT_PRODUCTS_SUCCESS });
+    toast.success("Products exported successfully");
   } catch (error: any) {
     yield put({
       type: EXPORT_PRODUCTS_FAILURE,

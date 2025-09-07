@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Copy, Plus, Edit, Trash2 } from "lucide-react";
 import DataTable from "../../reuseable/DataTable";
 import Layout from "../../reuseable/Layout";
-import { getProductsRequest, deleteProductRequest, duplicateProductRequest } from "../../redux/actions/productActions";
+import { getProductsRequest, deleteProductRequest, duplicateProductRequest, exportProductsRequest } from "../../redux/actions/productActions";
 import { useNavigate } from "react-router-dom";
 import TablePagination from "../../reuseable/TablePagination";
 import Tabs from "../../reuseable/Tabs";
@@ -64,7 +64,7 @@ const ManageProducts: React.FC = () => {
     <>
       <button
         className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
-        onClick={() => navigate("/add-product")}
+        onClick={() => dispatch(exportProductsRequest())}
       >
         <Plus className="w-4 h-4 mr-2" />
         Export Product
