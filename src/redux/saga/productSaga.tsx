@@ -178,11 +178,14 @@ function* importProductsSaga(action: any): any {
     const url = `${BASE_URL}${API_ENDPOINTS.IMPORT_PRODUCTS}`;
     const response = yield call(postRequest, url, action.payload);
     yield put({ type: IMPORT_PRODUCTS_SUCCESS, payload: response });
+    yield put({ type: GET_PRODUCTS_REQUEST, payload: { page: 1, limit: 10, search: "" } });
+    toast.success("Products imported successfully");
   } catch (error: any) {
     yield put({
       type: IMPORT_PRODUCTS_FAILURE,
       payload: error?.message || "Failed to import products",
     });
+    toast.error(error?.message || "Failed to import products");
   }
 }
 
