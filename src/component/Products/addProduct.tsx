@@ -426,7 +426,7 @@ const AddProduct: React.FC = () => {
           ))}
           <button
             type="button"
-            className="text-green-600 mt-2"
+            className="text-gray-600 mt-2"
             onClick={addVariant}
           >
             Add Variant
@@ -589,7 +589,7 @@ const AddProduct: React.FC = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
           >
             Add Product
           </button>

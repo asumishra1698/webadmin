@@ -323,7 +323,7 @@ const ManageBlogs: React.FC = () => {
               actions={(blog: BlogPost) => (
                 <div className="flex items-center space-x-2">
                   <button
-                    className="p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 rounded transition-colors"
+                    className="p-1.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 rounded transition-colors"
                     title="View"
                   >
                     <Eye className="w-5 h-5" />

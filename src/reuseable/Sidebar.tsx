@@ -31,9 +31,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
   const menuItems = [
     { icon: dashboardIcon, label: "Dashboard", path: "/dashboard" },
     { icon: visitorsIcon, label: "Pages", path: "/pages" },
-    { icon: brokersIcon, label: "Blogs", path: "/blogs" },
+    { icon: brokersIcon, label: "Blogs", path: ["/blogs", "/blog-category", "/blog-tag"] },
     { icon: projectsIcon, label: "Services", path: "/services" },
-    { icon: projectsIcon, label: "Products", path: "/products" },
+    { icon: projectsIcon, label: "Products", path: ["/products", "/product-categories", "/product-tags", "/product-brands"], },
     { icon: projectsIcon, label: "Leads", path: "/leads" },
     { icon: reportsIcon, label: "Reports & Analytics", path: "/reports" },
     { icon: teamIcon, label: "Team", path: "/team" },
@@ -49,9 +49,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
 
   return (
     <aside
-      className={`fixed top-0 left-0 h-full flex flex-col transition-all duration-300 z-50 ${
-        isCollapsed ? "w-18" : "w-64"
-      } bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow`}
+      className={`fixed top-0 left-0 h-full flex flex-col transition-all duration-300 z-50 ${isCollapsed ? "w-18" : "w-64"
+        } bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow`}
     >
       <button
         onClick={handleCollapseToggle}
@@ -69,9 +68,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
           <img
             src="https://gonardweb.com/wp-content/uploads/2025/08/fav.png"
             alt="logo"
-            className={`w-10 h-auto transition-all duration-200 ${
-              isCollapsed ? "block" : "hidden"
-            }`}
+            className={`w-10 h-auto transition-all duration-200 ${isCollapsed ? "block" : "hidden"
+              }`}
           />
           {!isCollapsed && (
             <span className="text-xl font-bold">
@@ -98,13 +96,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
           {menuItems.map((item, index) => {
             return (
               <li key={index}>
-                <Link
-                  to={item.path}
-                  className={`flex items-center px-4 py-4 rounded-lg transition-all duration-200 group ${
-                    isActive(item.path)
-                      ? "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-100 border-r-2 border-gray-500 dark:border-gray-700"
-                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
-                  }`}
+                <Link to={Array.isArray(item.path) ? item.path[0] : item.path}
+                  className={`flex items-center px-4 py-4 rounded-lg transition-all duration-200 group ${isActive(item.path)
+                    ? "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-100 border-r-2 border-gray-500 dark:border-gray-700"
+                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
+                    }`}
                 >
                   <img
                     src={item.icon}

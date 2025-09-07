@@ -271,7 +271,7 @@ const ManageProductCategory: React.FC = () => {
                         </button>
                         <button
                             type="submit"
-                            className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                            className="px-4 py-2 rounded bg-gray-600 text-white hover:bg-gray-700"
                         >
                             Add
                         </button>
