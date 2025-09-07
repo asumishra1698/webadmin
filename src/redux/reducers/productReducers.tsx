@@ -5,6 +5,9 @@ import {
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAILURE,
+  DUPLICATE_PRODUCT_REQUEST,
+  DUPLICATE_PRODUCT_SUCCESS,
+  DUPLICATE_PRODUCT_FAILURE,
   DELETE_PRODUCT_REQUEST,
   DELETE_PRODUCT_SUCCESS,
   DELETE_PRODUCT_FAILURE,
@@ -48,7 +51,7 @@ import {
 
 interface ProductState {
   products: any[];
-  product?: any; // <-- added to store single product details
+  product?: any;
   categories: any[];
   tags: any[];
   brands: any[];
@@ -106,6 +109,18 @@ export default function productReducer(state = initialState, action: any) {
         error: null,
       };
     case CREATE_PRODUCT_FAILURE:
+      return { ...state, loading: false, error: action.payload };
+
+    case DUPLICATE_PRODUCT_REQUEST:
+      return { ...state, loading: true, error: null };
+    case DUPLICATE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        products: [action.payload, ...state.products],
+        loading: false,
+        error: null,
+      };
+    case DUPLICATE_PRODUCT_FAILURE:
       return { ...state, loading: false, error: action.payload };
 
     case DELETE_PRODUCT_REQUEST:

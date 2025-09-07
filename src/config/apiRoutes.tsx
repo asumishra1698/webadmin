@@ -24,6 +24,7 @@ export const API_ENDPOINTS = {
   GET_PRODUCTS: "/api/products",
   GET_PRODUCT_BY_ID: "/api/products/",
   CREATE_PRODUCT: "/api/products",
+  DUPLICATE_PRODUCT: "/api/products",
   DELETE_PRODUCT: "/api/products/",
   UPDATE_PRODUCT: "/api/products/",
   GET_PRODUCT_CATEGORIES: "/api/product-categories",

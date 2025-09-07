@@ -9,6 +9,9 @@ import {
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAILURE,
+  DUPLICATE_PRODUCT_REQUEST,
+  DUPLICATE_PRODUCT_SUCCESS,
+  DUPLICATE_PRODUCT_FAILURE,
   DELETE_PRODUCT_REQUEST,
   DELETE_PRODUCT_SUCCESS,
   DELETE_PRODUCT_FAILURE,
@@ -74,6 +77,20 @@ function* createProductSaga(action: any): any {
     yield put({
       type: CREATE_PRODUCT_FAILURE,
       payload: error?.message || "Failed to create product",
+    });
+  }
+}
+
+function* duplicateProductSaga(action: any): any {
+  try {
+    const url = `${BASE_URL}${API_ENDPOINTS.DUPLICATE_PRODUCT}/${action.payload}/duplicate`;
+    const response = yield call(postRequest, url, {});
+    yield put({ type: DUPLICATE_PRODUCT_SUCCESS, payload: response });
+    yield put({ type: GET_PRODUCTS_REQUEST, payload: { page: 1, limit: 10, search: "" } });
+  } catch (error: any) {
+    yield put({
+      type: DUPLICATE_PRODUCT_FAILURE,
+      payload: error?.message || "Failed to duplicate product",
     });
   }
 }
@@ -247,6 +264,7 @@ function* deleteProductBrandSaga(action: any): any {
 export default function* productSaga() {
   yield takeLatest(GET_PRODUCTS_REQUEST, getProductsSaga);
   yield takeLatest(CREATE_PRODUCT_REQUEST, createProductSaga);
+  yield takeLatest(DUPLICATE_PRODUCT_REQUEST, duplicateProductSaga);
   yield takeLatest(DELETE_PRODUCT_REQUEST, deleteProductSaga);
   yield takeLatest(UPDATE_PRODUCT_REQUEST, updateProductSaga);
   yield takeLatest(GET_PRODUCT_BY_ID_REQUEST, getProductByIdSaga);

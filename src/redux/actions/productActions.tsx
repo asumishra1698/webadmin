@@ -8,6 +8,9 @@ import {
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAILURE,
+  DUPLICATE_PRODUCT_REQUEST,
+  DUPLICATE_PRODUCT_SUCCESS,
+  DUPLICATE_PRODUCT_FAILURE,
   DELETE_PRODUCT_REQUEST,
   DELETE_PRODUCT_SUCCESS,
   DELETE_PRODUCT_FAILURE,
@@ -61,6 +64,20 @@ export const getProductsSuccess = (data: any) => ({
 });
 export const getProductsFailure = (error: string) => ({
   type: GET_PRODUCTS_FAILURE,
+  payload: error,
+});
+
+export const duplicateProductRequest = (productId: string) => ({
+  type: DUPLICATE_PRODUCT_REQUEST,
+  payload: productId,
+});
+
+export const duplicateProductSuccess = (data: any) => ({
+  type: DUPLICATE_PRODUCT_SUCCESS,
+  payload: data,
+});
+export const duplicateProductFailure = (error: string) => ({
+  type: DUPLICATE_PRODUCT_FAILURE,
   payload: error,
 });
 

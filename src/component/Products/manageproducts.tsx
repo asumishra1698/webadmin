@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Plus } from "lucide-react";
+import { Copy, Plus, Edit, Trash2 } from "lucide-react";
 import DataTable from "../../reuseable/DataTable";
-import { Eye, Edit, Trash2 } from "lucide-react";
-
 import Layout from "../../reuseable/Layout";
-import { getProductsRequest, deleteProductRequest } from "../../redux/actions/productActions";
+import { getProductsRequest, deleteProductRequest, duplicateProductRequest } from "../../redux/actions/productActions";
 import { useNavigate } from "react-router-dom";
 import TablePagination from "../../reuseable/TablePagination";
 import Tabs from "../../reuseable/Tabs";
@@ -203,9 +201,10 @@ const ManageProducts: React.FC = () => {
                 <div className="flex items-center space-x-2">
                   <button
                     className="p-1.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 rounded transition-colors"
-                    title="View"
+                    title="Duplicate"
+                    onClick={() => dispatch(duplicateProductRequest(row._id))}
                   >
-                    <Eye className="w-5 h-5" />
+                    <Copy className="w-5 h-5" />
                   </button>
                   <button
                     className="p-1.5 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded transition-colors"
