@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import TablePagination from "../../reuseable/TablePagination";
 import Tabs from "../../reuseable/Tabs";
 import { IMAGE_BASE_URL } from "../../config/apiRoutes";
+import { formatDate } from "../../reuseable/formatDate";
 
 const ManageProducts: React.FC = () => {
   const dispatch = useDispatch();
@@ -60,13 +61,29 @@ const ManageProducts: React.FC = () => {
   };
 
   const actionButtons = (
-    <button
-      className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
-      onClick={() => navigate("/add-product")}
-    >
-      <Plus className="w-4 h-4 mr-2" />
-      Add Product
-    </button>
+    <>
+      <button
+        className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+        onClick={() => navigate("/add-product")}
+      >
+        <Plus className="w-4 h-4 mr-2" />
+        Export Product
+      </button>
+      <button
+        className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+        onClick={() => navigate("/add-product")}
+      >
+        <Plus className="w-4 h-4 mr-2" />
+        Import Product
+      </button>
+      <button
+        className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+        onClick={() => navigate("/add-product")}
+      >
+        <Plus className="w-4 h-4 mr-2" />
+        Add Product
+      </button>
+    </>
   );
 
   return (
@@ -162,8 +179,20 @@ const ManageProducts: React.FC = () => {
                       "-"
                     ),
                 },
-                { key: "name", header: "NAME" },
-                { key: "slug", header: "SLUG" },
+                {
+                  key: "name_slug",
+                  header: "NAME / SLUG",
+                  render: (row) => (
+                    <>
+                      <div>
+                        <span className="font-semibold">{row.name}</span>
+                      </div>
+                      <div>
+                        <span className="text-xs text-gray-500">{row.slug?.toLowerCase()}</span>
+                      </div>
+                    </>
+                  ),
+                },
                 {
                   key: "productcategory",
                   header: "CATEGORY",
@@ -195,6 +224,22 @@ const ManageProducts: React.FC = () => {
                   render: (row) => `₹${row.price}`,
                 },
                 { key: "stock", header: "STOCK" },
+                {
+                  key: "created_updated",
+                  header: "CREATED / UPDATED",
+                  render: (row) => (
+                    <div className="flex flex-col text-xs">
+                      <span>
+                        <span className="font-semibold">Created:</span>{" "}
+                        {row.createdAt ? formatDate(row.createdAt) : "-"}
+                      </span>
+                      <span>
+                        <span className="font-semibold">Updated:</span>{" "}
+                        {row.updatedAt ? formatDate(row.updatedAt) : "-"}
+                      </span>
+                    </div>
+                  ),
+                },
               ]}
               data={products}
               actions={(row) => (

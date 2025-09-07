@@ -27,6 +27,8 @@ export const API_ENDPOINTS = {
   DUPLICATE_PRODUCT: "/api/products",
   DELETE_PRODUCT: "/api/products/",
   UPDATE_PRODUCT: "/api/products/",
+  EXPORT_PRODUCTS: "/api/products/export/all",
+  IMPORT_PRODUCTS: "/api/products/import/csv",
   GET_PRODUCT_CATEGORIES: "/api/product-categories",
   CREATE_PRODUCT_CATEGORY: "/api/product-categories",
   DELETE_PRODUCT_CATEGORY: "/api/product-categories/",

@@ -73,13 +73,29 @@ const ManageProductCategory: React.FC = () => {
     };
 
     const actionButtons = (
-        <button
-            className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
-            onClick={() => setShowModal(true)}
-        >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Category
-        </button>
+        <>
+            <button
+                className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+                onClick={() => setShowModal(true)}
+            >
+                <Plus className="w-4 h-4 mr-2" />
+                Export Category
+            </button>
+              <button
+                className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+                onClick={() => setShowModal(true)}
+            >
+                <Plus className="w-4 h-4 mr-2" />
+                Import Category
+            </button>
+            <button
+                className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+                onClick={() => setShowModal(true)}
+            >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Category
+            </button>
+        </>
     );
 
     const handleDelete = (id: string) => {

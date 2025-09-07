@@ -17,6 +17,12 @@ import {
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_FAILURE,
+  EXPORT_PRODUCTS_REQUEST,
+  EXPORT_PRODUCTS_SUCCESS,
+  EXPORT_PRODUCTS_FAILURE,
+  IMPORT_PRODUCTS_REQUEST,
+  IMPORT_PRODUCTS_SUCCESS,
+  IMPORT_PRODUCTS_FAILURE,
 
   GET_PRODUCT_BRANDS_REQUEST,
   GET_PRODUCT_BRANDS_SUCCESS,
@@ -131,6 +137,31 @@ export const updateProductSuccess = (data: any) => ({
 });
 export const updateProductFailure = (error: string) => ({
   type: UPDATE_PRODUCT_FAILURE,
+  payload: error,
+});
+
+export const exportProductsRequest = () => ({
+  type: EXPORT_PRODUCTS_REQUEST,
+});
+export const exportProductsSuccess = (data: any) => ({
+  type: EXPORT_PRODUCTS_SUCCESS,
+  payload: data,
+});
+export const exportProductsFailure = (error: string) => ({
+  type: EXPORT_PRODUCTS_FAILURE,
+  payload: error,
+});
+
+export const importProductsRequest = (formData: FormData) => ({
+  type: IMPORT_PRODUCTS_REQUEST,
+  payload: formData,
+});
+export const importProductsSuccess = (data: any) => ({
+  type: IMPORT_PRODUCTS_SUCCESS,
+  payload: data,
+});
+export const importProductsFailure = (error: string) => ({
+  type: IMPORT_PRODUCTS_FAILURE,
   payload: error,
 });
 
