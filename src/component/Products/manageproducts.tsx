@@ -19,17 +19,13 @@ const ManageProducts: React.FC = () => {
   >("all products");
   const limitOptions = [5, 10, 20, 50, 100];
 
-  const { products, loading, error, total, page, pages, limit } = useSelector(
-    (state: any) => ({
-      products: state.product.products,
-      loading: state.product.loading,
-      error: state.product.error,
-      total: state.product.total,
-      page: state.product.page,
-      pages: state.product.pages,
-      limit: state.product.limit,
-    })
-  );
+  const products = useSelector((state: any) => state.product.products);
+  const loading = useSelector((state: any) => state.product.loading);
+  const error = useSelector((state: any) => state.product.error);
+  const total = useSelector((state: any) => state.product.total);
+  const page = useSelector((state: any) => state.product.page);
+  const pages = useSelector((state: any) => state.product.pages);
+  const limit = useSelector((state: any) => state.product.limit);
 
   useEffect(() => {
     dispatch(getProductsRequest({ page: 1, limit: 10, search: "" }));
@@ -147,7 +143,7 @@ const ManageProducts: React.FC = () => {
             <DataTable
               columns={[
                 { key: "name", header: "NAME" },
-                { key: "name", header: "NAME" },
+                { key: "slug", header: "SLUG" },
                 {
                   key: "productcategory",
                   header: "CATEGORY",

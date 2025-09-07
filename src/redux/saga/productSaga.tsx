@@ -56,7 +56,6 @@ function* getProductsSaga(action: any): any {
       }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
     const response = yield call(getRequest, url);
     const productsData = response.data ? response.data : response;
-    console.log("Products API response:", productsData);
     yield put({ type: GET_PRODUCTS_SUCCESS, payload: productsData });
   } catch (error: any) {
     yield put({

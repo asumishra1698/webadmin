@@ -27,17 +27,13 @@ const ManageProductCategory: React.FC = () => {
         thumbnailImage: null as File | null,
     });
 
-    const { categories, loading, error, total, page, pages, limit } = useSelector(
-        (state: any) => ({
-            categories: state.product.categories,
-            loading: state.product.loading,
-            error: state.product.error,
-            total: state.product.total,
-            page: state.product.page,
-            pages: state.product.pages,
-            limit: state.product.limit,
-        })
-    );
+    const categories = useSelector((state: any) => state.product.categories);
+    const loading = useSelector((state: any) => state.product.loading);
+    const error = useSelector((state: any) => state.product.error);
+    const total = useSelector((state: any) => state.product.total);
+    const page = useSelector((state: any) => state.product.page);
+    const pages = useSelector((state: any) => state.product.pages);
+    const limit = useSelector((state: any) => state.product.limit);
 
     useEffect(() => {
         dispatch(getProductCategoriesRequest({ page: 1, limit, search: searchTerm }));

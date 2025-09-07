@@ -22,15 +22,13 @@ const ManageProductTags: React.FC = () => {
     const [form, setForm] = useState({ name: "", description: "" });
     const [activeTab, setActiveTab] = useState<"all products" | "category" | "tag" | "brand">("tag");
 
-    const { tags, loading, error, total, page, pages, limit } = useSelector((state: any) => ({
-        tags: state.product.tags,
-        loading: state.product.loading,
-        error: state.product.error,
-        total: state.product.total,
-        page: state.product.page,
-        pages: state.product.pages,
-        limit: state.product.limit,
-    }));
+    const tags = useSelector((state: any) => state.product.tags);
+    const loading = useSelector((state: any) => state.product.loading);
+    const error = useSelector((state: any) => state.product.error);
+    const total = useSelector((state: any) => state.product.total);
+    const page = useSelector((state: any) => state.product.page);
+    const pages = useSelector((state: any) => state.product.pages);
+    const limit = useSelector((state: any) => state.product.limit);
 
     useEffect(() => {
         dispatch(getProductTagsRequest({ page: 1, limit, search: "" }));
