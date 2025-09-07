@@ -183,9 +183,6 @@ const ManageProducts: React.FC = () => {
                     row.brand ? (
                       <div className="flex flex-col text-xs">
                         <span className="font-semibold">{row.brand.name}</span>
-                        <span className="text-gray-500 dark:text-gray-400">
-                          {row.brand.name}
-                        </span>
                         <span className="text-gray-400 dark:text-gray-500">
                           {row.brand.description}
                         </span>

@@ -244,35 +244,37 @@ const EditProduct: React.FC = () => {
                 className="max-w-full mx-auto bg-white p-8 rounded shadow"
                 onSubmit={handleSubmit}
             >
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full border px-3 py-2 rounded"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Slug</label>
-                    <input
-                        type="text"
-                        name="slug"
-                        value={form.slug}
-                        onChange={handleChange}
-                        className="w-full border px-3 py-2 rounded"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Description</label>
-                    <textarea
-                        name="description"
-                        value={form.description}
-                        onChange={handleChange}
-                        className="w-full border px-3 py-2 rounded"
-                    />
+                <div className="mb-4 flex gap-4">
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={form.name}
+                            onChange={handleChange}
+                            required
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Slug</label>
+                        <input
+                            type="text"
+                            name="slug"
+                            value={form.slug}
+                            onChange={handleChange}
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Description</label>
+                        <textarea
+                            name="description"
+                            value={form.description}
+                            onChange={handleChange}
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
                 </div>
                 <div className="mb-4 flex gap-4">
                     <div className="w-1/3">
@@ -305,56 +307,59 @@ const EditProduct: React.FC = () => {
                         />
                     </div>
                 </div>
-
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Price</label>
-                    <input
-                        type="number"
-                        name="price"
-                        value={form.price}
-                        onChange={handleChange}
-                        className="w-full border px-3 py-2 rounded"
-                    />
+                <div className="mb-4 flex gap-4">
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Price</label>
+                        <input
+                            type="number"
+                            name="price"
+                            value={form.price}
+                            onChange={handleChange}
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Sale Price</label>
+                        <input
+                            type="number"
+                            name="salePrice"
+                            value={form.salePrice}
+                            onChange={handleChange}
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">SKU</label>
+                        <input
+                            type="text"
+                            name="sku"
+                            value={form.sku}
+                            onChange={handleChange}
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
                 </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Sale Price</label>
-                    <input
-                        type="number"
-                        name="salePrice"
-                        value={form.salePrice}
-                        onChange={handleChange}
-                        className="w-full border px-3 py-2 rounded"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">SKU</label>
-                    <input
-                        type="text"
-                        name="sku"
-                        value={form.sku}
-                        onChange={handleChange}
-                        className="w-full border px-3 py-2 rounded"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Barcode</label>
-                    <input
-                        type="text"
-                        name="barcode"
-                        value={form.barcode}
-                        onChange={handleChange}
-                        className="w-full border px-3 py-2 rounded"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Stock</label>
-                    <input
-                        type="number"
-                        name="stock"
-                        value={form.stock}
-                        onChange={handleChange}
-                        className="w-full border px-3 py-2 rounded"
-                    />
+                <div className="mb-4 flex gap-4">
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Barcode</label>
+                        <input
+                            type="text"
+                            name="barcode"
+                            value={form.barcode}
+                            onChange={handleChange}
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Stock</label>
+                        <input
+                            type="number"
+                            name="stock"
+                            value={form.stock}
+                            onChange={handleChange}
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
                 </div>
                 <div className="mb-4">
                     <label className="block mb-1 font-medium">Variants</label>
@@ -409,95 +414,97 @@ const EditProduct: React.FC = () => {
                         Add Variant
                     </button>
                 </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Images</label>
-                    <input
-                        type="file"
-                        name="images"
-                        multiple
-                        onChange={handleFileChange}
-                        className="w-full"
-                    />
-                    <div className="flex gap-2 mt-2 flex-wrap">
-                        {product.images && product.images.length > 0 &&
-                            product.images.map((img: any, idx: number) => (
-                                <a
-                                    key={idx}
-                                    href={getImageUrl(img)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block"
-                                >
-                                    <img
-                                        src={`${IMAGE_BASE_URL}products/${getImageUrl(img)}`}
-                                        alt={`Product Image ${idx + 1}`}
-                                        className="w-16 h-16 object-cover rounded border"
-                                    />
-                                </a>
-                            ))
-                        }
-                        {form.images && form.images.length > 0 &&
-                            form.images.map((img: any, idx: number) => (
-                                <a
-                                    key={`new-${idx}`}
-                                    href={getImageUrl(img)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block"
-                                >
-                                    <img
-                                        src={getImageUrl(img)}
-                                        alt={`Selected Image ${idx + 1}`}
-                                        className="w-16 h-16 object-cover rounded border"
-                                    />
-                                </a>
-                            ))
-                        }
+                <div className="mb-4 flex gap-4">
+                    <div className="w-1/2">
+                        <label className="block mb-1 font-medium">Images</label>
+                        <input
+                            type="file"
+                            name="images"
+                            multiple
+                            onChange={handleFileChange}
+                            className="w-full"
+                        />
+                        <div className="flex gap-2 mt-2 flex-wrap">
+                            {product.images && product.images.length > 0 &&
+                                product.images.map((img: any, idx: number) => (
+                                    <a
+                                        key={idx}
+                                        href={getImageUrl(img)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="block"
+                                    >
+                                        <img
+                                            src={`${IMAGE_BASE_URL}products/${getImageUrl(img)}`}
+                                            alt={`Product Image ${idx + 1}`}
+                                            className="w-16 h-16 object-cover rounded border"
+                                        />
+                                    </a>
+                                ))
+                            }
+                            {form.images && form.images.length > 0 &&
+                                form.images.map((img: any, idx: number) => (
+                                    <a
+                                        key={`new-${idx}`}
+                                        href={getImageUrl(img)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="block"
+                                    >
+                                        <img
+                                            src={getImageUrl(img)}
+                                            alt={`Selected Image ${idx + 1}`}
+                                            className="w-16 h-16 object-cover rounded border"
+                                        />
+                                    </a>
+                                ))
+                            }
+                        </div>
                     </div>
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Thumbnail</label>
-                    <input
-                        type="file"
-                        name="thumbnail"
-                        onChange={handleFileChange}
-                        className="w-full"
-                    />
-                    {/* Thumbnail Preview */}
-                    <div className="mt-2">
-                        {form.thumbnail ? (
-                            <a
-                                href={
-                                    form.thumbnail instanceof File
-                                        ? URL.createObjectURL(form.thumbnail)
-                                        : `${IMAGE_BASE_URL}products/${form.thumbnail}`
-                                }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <img
-                                    src={
+                    <div className="w-1/2">
+                        <label className="block mb-1 font-medium">Thumbnail</label>
+                        <input
+                            type="file"
+                            name="thumbnail"
+                            onChange={handleFileChange}
+                            className="w-full"
+                        />
+                        {/* Thumbnail Preview */}
+                        <div className="mt-2">
+                            {form.thumbnail ? (
+                                <a
+                                    href={
                                         form.thumbnail instanceof File
                                             ? URL.createObjectURL(form.thumbnail)
                                             : `${IMAGE_BASE_URL}products/${form.thumbnail}`
                                     }
-                                    alt="Thumbnail Preview"
-                                    className="w-16 h-16 object-cover rounded border"
-                                />
-                            </a>
-                        ) : product.thumbnail ? (
-                            <a
-                                href={`${IMAGE_BASE_URL}products/${product.thumbnail}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <img
-                                    src={`${IMAGE_BASE_URL}products/${product.thumbnail}`}
-                                    alt="Current Thumbnail"
-                                    className="w-16 h-16 object-cover rounded border"
-                                />
-                            </a>
-                        ) : null}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <img
+                                        src={
+                                            form.thumbnail instanceof File
+                                                ? URL.createObjectURL(form.thumbnail)
+                                                : `${IMAGE_BASE_URL}products/${form.thumbnail}`
+                                        }
+                                        alt="Thumbnail Preview"
+                                        className="w-16 h-16 object-cover rounded border"
+                                    />
+                                </a>
+                            ) : product.thumbnail ? (
+                                <a
+                                    href={`${IMAGE_BASE_URL}products/${product.thumbnail}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <img
+                                        src={`${IMAGE_BASE_URL}products/${product.thumbnail}`}
+                                        alt="Current Thumbnail"
+                                        className="w-16 h-16 object-cover rounded border"
+                                    />
+                                </a>
+                            ) : null}
+                        </div>
                     </div>
                 </div>
                 <div className="mb-4 flex gap-4">
@@ -548,8 +555,10 @@ const EditProduct: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
+
                 <div className="mb-4 flex gap-4">
-                    <div className="w-1/2">
+                    <div className="w-1/3">
                         <label className="block mb-1 font-medium">Discount</label>
                         <input
                             type="text"
@@ -559,7 +568,7 @@ const EditProduct: React.FC = () => {
                             className="w-full border px-3 py-2 rounded"
                         />
                     </div>
-                    <div className="w-1/2">
+                    <div className="w-1/3">
                         <label className="block mb-1 font-medium">Tax</label>
                         <input
                             type="text"
@@ -569,46 +578,49 @@ const EditProduct: React.FC = () => {
                             className="w-full border px-3 py-2 rounded"
                         />
                     </div>
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Shipping Class</label>
+                        <input
+                            type="text"
+                            name="shippingClass"
+                            value={form.shippingClass}
+                            onChange={handleChange}
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
                 </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Shipping Class</label>
-                    <input
-                        type="text"
-                        name="shippingClass"
-                        value={form.shippingClass}
-                        onChange={handleChange}
-                        className="w-full border px-3 py-2 rounded"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Warranty</label>
-                    <input
-                        type="text"
-                        name="warranty"
-                        value={form.warranty}
-                        onChange={handleChange}
-                        className="w-full border px-3 py-2 rounded"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Return Policy</label>
-                    <input
-                        type="text"
-                        name="returnPolicy"
-                        value={form.returnPolicy}
-                        onChange={handleChange}
-                        className="w-full border px-3 py-2 rounded"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">Vendor</label>
-                    <input
-                        type="text"
-                        name="vendor"
-                        value={form.vendor}
-                        onChange={handleChange}
-                        className="w-full border px-3 py-2 rounded"
-                    />
+
+                <div className="mb-4 flex gap-4">
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Warranty</label>
+                        <input
+                            type="text"
+                            name="warranty"
+                            value={form.warranty}
+                            onChange={handleChange}
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Return Policy</label>
+                        <input
+                            type="text"
+                            name="returnPolicy"
+                            value={form.returnPolicy}
+                            onChange={handleChange}
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
+                    <div className="w-1/3">
+                        <label className="block mb-1 font-medium">Vendor</label>
+                        <input
+                            type="text"
+                            name="vendor"
+                            value={form.vendor}
+                            onChange={handleChange}
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
                 </div>
                 <div className="mb-4 flex gap-4">
                     <div className="w-1/2 flex items-center">
