@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Copy, Plus, Edit, Trash2 } from "lucide-react";
+import { Copy, Plus, Edit, Trash2, Upload } from "lucide-react";
 import DataTable from "../../reuseable/DataTable";
 import Layout from "../../reuseable/Layout";
 import { getProductsRequest, deleteProductRequest, duplicateProductRequest, exportProductsRequest, importProductsRequest } from "../../redux/actions/productActions";
@@ -10,6 +10,7 @@ import Tabs from "../../reuseable/Tabs";
 import { IMAGE_BASE_URL } from "../../config/apiRoutes";
 import { formatDate } from "../../reuseable/formatDate";
 import Modal from "../../reuseable/modal";
+import csvIcon from "../../assets/icons/csv.png";
 
 
 const ManageProducts: React.FC = () => {
@@ -80,24 +81,26 @@ const ManageProducts: React.FC = () => {
     <>
       <button
         className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
-        onClick={() => dispatch(exportProductsRequest())}
-      >
-        <Plus className="w-4 h-4 mr-2" />
-        Export Product
-      </button>
-      <button
-        className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
-        onClick={() => setShowImportModal(true)}
-      >
-        <Plus className="w-4 h-4 mr-2" />
-        Import Product
-      </button>
-      <button
-        className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
         onClick={() => navigate("/add-product")}
       >
         <Plus className="w-4 h-4 mr-2" />
         Add Product
+      </button>
+
+      <button
+        className="flex items-center px-4 py-2.5 bg-[#e5e5e5] text-[#000000] rounded-xl hover:bg-gray-600 hover:text-white transition-colors font-medium border border-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+        onClick={() => setShowImportModal(true)}
+      >
+        <Upload className="w-4 h-4 mr-2" />
+        Import CSV
+      </button>
+
+      <button
+        className="flex items-center px-4 py-2.5 bg-[#14133B] text-white rounded-lg hover:bg-gray-900 transition-colors font-medium"
+        onClick={() => dispatch(exportProductsRequest())}
+      >
+        <img src={csvIcon} alt="CSV" className="w-5 h-5 mr-2" />
+        Export CSV
       </button>
     </>
   );
@@ -309,7 +312,7 @@ const ManageProducts: React.FC = () => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
               disabled={!importFile}
             >
               Import
