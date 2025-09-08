@@ -31,9 +31,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
   const menuItems = [
     { icon: dashboardIcon, label: "Dashboard", path: "/dashboard" },
     { icon: visitorsIcon, label: "Pages", path: "/pages" },
-    { icon: brokersIcon, label: "Blogs", path: ["/blogs", "/blog-category", "/blog-tag"] },
+    { icon: brokersIcon, label: "Blogs", path: ["/blogs", "/blog-category", "/blog-tag", "/add-new-blog"] },
     { icon: projectsIcon, label: "Services", path: "/services" },
-    { icon: projectsIcon, label: "Products", path: ["/products", "/product-categories", "/product-tags", "/product-brands"], },
+    { icon: projectsIcon, label: "Products", path: ["/products", "/product-categories", "/product-tags", "/product-brands", "/add-product", "/edit-product"], },
     { icon: projectsIcon, label: "Leads", path: "/leads" },
     { icon: reportsIcon, label: "Reports & Analytics", path: "/reports" },
     { icon: teamIcon, label: "Team", path: "/team" },
