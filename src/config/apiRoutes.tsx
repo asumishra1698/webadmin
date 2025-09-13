@@ -38,4 +38,8 @@ export const API_ENDPOINTS = {
   GET_PRODUCT_BRANDS: "/api/product-brands",
   CREATE_PRODUCT_BRAND: "/api/product-brands",
   DELETE_PRODUCT_BRAND: "/api/product-brands/",
+
+  REFERENCE_DATA: "/api/reference-data",
+  ADD_REFERENCE_DATA_ITEM: "/api/reference-data",
+  UPDATE_REFERENCE_DATA_ITEM: "/api/reference-data/",
 };
