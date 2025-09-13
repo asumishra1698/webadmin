@@ -4,6 +4,7 @@ import blogReducers from "./blogReducers";
 import leadsReducers from "./leadsReducers";
 import productReducers from "./productReducers";
 import referenceReducers from "./referenceReducers";
+import projectReducers from "./projectReducers";
 
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   leads: leadsReducers,
   product: productReducers,
   referenceData: referenceReducers,
+  projects: projectReducers,
 });
 
 export default rootReducer;

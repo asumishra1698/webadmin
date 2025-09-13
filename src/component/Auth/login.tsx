@@ -233,7 +233,7 @@ const Login: React.FC = () => {
               </button>
             )}
             <div className="flex justify-between mt-2 text-sm">
-              <a href="/" className="text-blue-600 hover:underline font-medium">
+              <a href="/forgot-password" className="text-blue-600 hover:underline font-medium">
                 Forgot my password
               </a>
             </div>

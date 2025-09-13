@@ -5,9 +5,6 @@ import {
   ADD_REFERENCE_DATA_ITEM_REQUEST,
   ADD_REFERENCE_DATA_ITEM_SUCCESS,
   ADD_REFERENCE_DATA_ITEM_FAILURE,
-  GETWITHOUT_ADMIN_REFERENCE_DATA_REQUEST,
-  GETWITHOUT_ADMIN_REFERENCE_DATA_SUCCESS,
-  GETWITHOUT_ADMIN_REFERENCE_DATA_FAILURE,
   REMOVE_REFERENCE_DATA_ITEM_REQUEST,
   REMOVE_REFERENCE_DATA_ITEM_SUCCESS,
   REMOVE_REFERENCE_DATA_ITEM_FAILURE,
@@ -87,16 +84,6 @@ const referenceDataReducer = (
     case REMOVE_REFERENCE_DATA_ITEM_FAILURE:
       return { ...state, loading: false, error: action.payload };
 
-    case GETWITHOUT_ADMIN_REFERENCE_DATA_REQUEST:
-      return { ...state, loading: true, error: null };
-    case GETWITHOUT_ADMIN_REFERENCE_DATA_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        withoutAdminReferenceData: action.payload,
-      };
-    case GETWITHOUT_ADMIN_REFERENCE_DATA_FAILURE:
-      return { ...state, loading: false, error: action.payload };
 
     case UPDATE_REFERENCE_DATA_ITEM_REQUEST:
       return { ...state, loading: true, error: null };
@@ -115,7 +102,7 @@ const referenceDataReducer = (
         },
       };
     case UPDATE_REFERENCE_DATA_ITEM_FAILURE:
-      return { ...state, loading: false, error: action.payload };    
+      return { ...state, loading: false, error: action.payload };
 
     default:
       return state;

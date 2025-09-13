@@ -43,4 +43,15 @@ export const API_ENDPOINTS = {
   ADD_REFERENCE_DATA_ITEM: "/api/reference",
   UPDATE_REFERENCE_DATA_ITEM: "/api/reference/",
   REMOVE_REFERENCE_DATA_ITEM: "/api/reference/item/",
+
+  PROJECTS: "/api/projects",
+  GET_PROJECT_BY_ID: "/api/projects/",
+  CREATE_PROJECT: "/api/projects",
+  UPDATE_PROJECT: "/api/projects/",
+  DELETE_PROJECT: "/api/projects/",
+  TOGGLE_PROJECT_STATUS: "/api/projects/toggle-status/",
+  VISITORBYPROJECT: "/api/projects/visitors/",
+  BROKERBYPROJECT: "/api/projects/brokers/",
+  EXPORT_PROJECT_DATA: "/api/projects/export/",
+  DELETE_PROJECT_MEDIA: "/api/projects/media/",
 };

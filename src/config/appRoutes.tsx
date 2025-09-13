@@ -2,9 +2,9 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "../component/Dashboard/Dashboard";
 import Login from "../component/Auth/login";
-// import ForgotPassword from "../component/Auth/forgotPassword";
-// import VerificationCode from "../component/Auth/verificationCode";
-// import SetNewPassword from "../component/Auth/setNewPassword";
+import ForgotPassword from "../component/Auth/forgotPassword";
+import VerificationCode from "../component/Auth/verificationCode";
+import SetNewPassword from "../component/Auth/setNewPassword";
 import MyAccount from "../component/Auth/myAccount";
 import ManagePages from "../component/Pages/managePages";
 import ManageTeam from "../component/Team/manageTeam";
@@ -25,6 +25,8 @@ import ManageFinanceAndCommission from "../component/financeAndCommission/manage
 import ManageReports from "../component/Report/manageReports";
 import ManageSupportTickets from "../component/SupportTickets/manageSupportTickets";
 import DetailSupportTicket from "../component/SupportTickets/detailSupportTicket";
+import ManageProjects from "../component/Project/manageProjects";
+import AddNewProjects from "../component/Project/addNewProjects";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -98,32 +100,32 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
         }
       />
 
-      {/* <Route
+      <Route
         path="/forgot-password"
         element={
           <PublicRoute isAuthenticated={isAuthenticated}>
             <ForgotPassword />
           </PublicRoute>
         }
-      /> */}
+      />
 
-      {/* <Route
+      <Route
         path="/verification-code"
         element={
           <PublicRoute isAuthenticated={isAuthenticated}>
             <VerificationCode />
           </PublicRoute>
         }
-      /> */}
+      />
 
-      {/* <Route
+      <Route
         path="/set-password"
         element={
           <PublicRoute isAuthenticated={isAuthenticated}>
             <SetNewPassword />
           </PublicRoute>
         }
-      /> */}
+      />
 
       <Route
         path="/my-account"
@@ -298,6 +300,22 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
             <DetailSupportTicket />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/projects"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageProjects />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/projects/add-new-project"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <AddNewProjects />
           </ProtectedRoute>
         }
       />

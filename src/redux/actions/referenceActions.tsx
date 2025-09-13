@@ -2,9 +2,6 @@ import {
   GET_REFERENCE_DATA_REQUEST,
   GET_REFERENCE_DATA_SUCCESS,
   GET_REFERENCE_DATA_FAILURE,
-  GETWITHOUT_ADMIN_REFERENCE_DATA_REQUEST,
-  GETWITHOUT_ADMIN_REFERENCE_DATA_SUCCESS,
-  GETWITHOUT_ADMIN_REFERENCE_DATA_FAILURE,
   ADD_REFERENCE_DATA_ITEM_REQUEST,
   ADD_REFERENCE_DATA_ITEM_SUCCESS,
   ADD_REFERENCE_DATA_ITEM_FAILURE,
@@ -13,7 +10,7 @@ import {
   REMOVE_REFERENCE_DATA_ITEM_FAILURE,
   UPDATE_REFERENCE_DATA_ITEM_REQUEST,
   UPDATE_REFERENCE_DATA_ITEM_SUCCESS,
-  UPDATE_REFERENCE_DATA_ITEM_FAILURE, 
+  UPDATE_REFERENCE_DATA_ITEM_FAILURE,
 } from "./actionTypes";
 
 interface GetReferenceDataPayload {
@@ -69,22 +66,6 @@ export const removeReferenceDataItemFailure = (error: string) => ({
   payload: error,
 });
 
-export const getWithoutAdminReferenceDataRequest = (
-  payload?: GetReferenceDataPayload
-) => ({
-  type: GETWITHOUT_ADMIN_REFERENCE_DATA_REQUEST,
-  payload,
-});
-
-export const getWithoutAdminReferenceDataSuccess = (data: any[]) => ({
-  type: GETWITHOUT_ADMIN_REFERENCE_DATA_SUCCESS,
-  payload: data,
-});
-
-export const getWithoutAdminReferenceDataFailure = (error: string) => ({
-  type: GETWITHOUT_ADMIN_REFERENCE_DATA_FAILURE,
-  payload: error,
-});
 
 export const updateReferenceDataItemRequest = (
   itemId: string,
