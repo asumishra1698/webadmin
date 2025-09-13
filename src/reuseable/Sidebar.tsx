@@ -32,7 +32,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
     { icon: dashboardIcon, label: "Dashboard", path: "/dashboard" },
     { icon: visitorsIcon, label: "Pages", path: "/pages" },
     { icon: brokersIcon, label: "Blogs", path: ["/blogs", "/blog-category", "/blog-tag", "/add-new-blog"] },
-    { icon: projectsIcon, label: "Services", path: "/services" },
+    { icon: visitorsIcon, label: "Visitors", path: "/visitors" },
+    { icon: projectsIcon, label: "Projects", path: "/projects" },
+    { icon: brokersIcon, label: "Broker", path: "/broker" },
     { icon: projectsIcon, label: "Products", path: ["/products", "/product-categories", "/product-tags", "/product-brands", "/add-product", "/edit-product"], },
     { icon: projectsIcon, label: "Leads", path: "/leads" },
     { icon: reportsIcon, label: "Reports & Analytics", path: "/reports" },
@@ -72,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
               }`}
           />
           {!isCollapsed && (
-            <span className="text-xl font-bold">              
+            <span className="text-xl font-bold">
               <img
                 src="https://gonardweb.com/wp-content/uploads/2025/08/gonardwebdark.png"
                 alt="logo"

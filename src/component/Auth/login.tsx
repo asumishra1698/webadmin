@@ -11,14 +11,12 @@ import {
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  // Redux selectors (separate for memoization)
   const otpVerified = useSelector((state: any) => state.auth.otpVerified);
   const otpSuccess = useSelector((state: any) => state.auth.otpSuccess);
 
   // Local state
   const [loginType, setLoginType] = useState<"password" | "otp">("password");
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("admin");
   const [identifier, setIdentifier] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [showOtpModal, setShowOtpModal] = useState(false);
@@ -196,8 +194,6 @@ const Login: React.FC = () => {
                 onChange={(e) => setRole(e.target.value)}
                 required
               >
-                <option value="user">User</option>
-                <option value="customer">Customer</option>
                 <option value="admin">Admin</option>
                 <option value="super_admin">Superadmin</option>
               </select>

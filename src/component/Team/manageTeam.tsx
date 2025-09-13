@@ -6,6 +6,7 @@ import {
   getAllUsersRequest,
   registerRequest,
 } from "../../redux/actions/authActions";
+import { getReferenceDataRequest } from "../../redux/actions/referenceActions";
 import type { RootState } from "../../redux/reducers/rootReducers";
 
 import { IMAGE_BASE_URL } from "../../config/apiRoutes";
@@ -22,6 +23,11 @@ const ManageTeam: React.FC = () => {
       limit: state.auth.limit,
     })
   );
+
+  const roleReference = useSelector((state: RootState) =>
+    (state.referenceData?.data?.data || []).filter((item: any) => item.cate_key === "role")
+  );
+
 
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -84,6 +90,7 @@ const ManageTeam: React.FC = () => {
   };
 
   useEffect(() => {
+    dispatch(getReferenceDataRequest());
     dispatch(getAllUsersRequest({ page, limit, search: searchTerm }));
   }, [dispatch, page, limit, searchTerm]);
 
@@ -303,9 +310,11 @@ const ManageTeam: React.FC = () => {
                   required
                 >
                   <option value="">Select Role</option>
-                  <option value="admin">Admin</option>
-                  <option value="superadmin">Superadmin</option>
-                  <option value="user">User</option>
+                  {roleReference[0]?.items?.map((role: any) => (
+                    <option key={role.key} value={role.key}>
+                      {role.name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="mb-3">
