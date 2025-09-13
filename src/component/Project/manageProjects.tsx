@@ -296,7 +296,7 @@ const ManageProjects: React.FC = () => {
               {projects.map((project) => {
                 const firstImage =
                   Array.isArray(project.media) &&
-                  project.media.find((m) => m.doc_type === "image");
+                  project.media.find((m) => m.doc_type === "images");
 
                 return (
                   <tr

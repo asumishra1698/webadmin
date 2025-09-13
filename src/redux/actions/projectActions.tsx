@@ -37,7 +37,7 @@ import {
 
 export interface ProjectMedia {
   img_url: string;
-  doc_type: "image" | "document";
+  doc_type: "images" | "documents" | "videos" | "brochure" | "workThroughVideo" | "floorPlanImg";
   description: string;
   created_by: string;
   _id: string;

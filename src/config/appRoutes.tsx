@@ -27,6 +27,8 @@ import ManageSupportTickets from "../component/SupportTickets/manageSupportTicke
 import DetailSupportTicket from "../component/SupportTickets/detailSupportTicket";
 import ManageProjects from "../component/Project/manageProjects";
 import AddNewProjects from "../component/Project/addNewProjects";
+import ProjectDetails from "../component/Project/projectDetails";
+import EditProject from "../component/Project/editProject";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -319,6 +321,24 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/projects/projects-detail/:id"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ProjectDetails />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/projects/edit-project/:id"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <EditProject />
+          </ProtectedRoute>
+        }
+      />
+
 
       <Route
         path="/"
