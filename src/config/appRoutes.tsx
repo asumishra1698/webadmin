@@ -19,6 +19,12 @@ import EditProduct from "../component/Products/editProduct";
 import ManageProductCategory from "../component/Products/manageProductCategory";
 import ManageProductTag from "../component/Products/manageProductTags";
 import ManageProductBrand from "../component/Products/manageProductBrand";
+import ManageAdminSettings from "../component/AdminSettings/manageAdminSettings";
+import ManageMasterLists from "../component/AdminSettings/manageMasterLists";
+import ManageFinanceAndCommission from "../component/financeAndCommission/manageFinanceAndCommission";
+import ManageReports from "../component/Report/manageReports";
+import ManageSupportTickets from "../component/SupportTickets/manageSupportTickets";
+import DetailSupportTicket from "../component/SupportTickets/detailSupportTicket";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -245,6 +251,57 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/admin-settings"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageAdminSettings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin-settings/master-lists"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageMasterLists />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/finance-commission"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageFinanceAndCommission />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageReports />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/support-tickets"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageSupportTickets />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/support-tickets/detail/:id"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <DetailSupportTicket />
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/"
         element={

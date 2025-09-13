@@ -39,7 +39,8 @@ export const API_ENDPOINTS = {
   CREATE_PRODUCT_BRAND: "/api/product-brands",
   DELETE_PRODUCT_BRAND: "/api/product-brands/",
 
-  REFERENCE_DATA: "/api/reference-data",
-  ADD_REFERENCE_DATA_ITEM: "/api/reference-data",
-  UPDATE_REFERENCE_DATA_ITEM: "/api/reference-data/",
+  REFERENCE_DATA: "/api/reference",
+  ADD_REFERENCE_DATA_ITEM: "/api/reference",
+  UPDATE_REFERENCE_DATA_ITEM: "/api/reference/",
+  REMOVE_REFERENCE_DATA_ITEM: "/api/reference/item/",
 };

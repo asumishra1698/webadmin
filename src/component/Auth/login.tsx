@@ -199,7 +199,7 @@ const Login: React.FC = () => {
                 <option value="user">User</option>
                 <option value="customer">Customer</option>
                 <option value="admin">Admin</option>
-                <option value="superadmin">Superadmin</option>
+                <option value="super_admin">Superadmin</option>
               </select>
             </div>
             {loginType === "password" ? (

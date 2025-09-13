@@ -108,7 +108,7 @@ function* addReferenceDataItemSaga(action: any): Generator<any, void, any> {
 function* removeReferenceDataItemSaga(action: any): Generator<any, void, any> {
     try {
         const id = action.payload;
-        const endpoint = `${BASE_URL}${API_ENDPOINTS.REFERENCE_DATA}/${id}`;
+        const endpoint = `${BASE_URL}${API_ENDPOINTS.REMOVE_REFERENCE_DATA_ITEM}${id}`;
         const response: any = yield call(deleteRequest, endpoint);
 
         if (response.success) {
@@ -142,54 +142,6 @@ function* removeReferenceDataItemSaga(action: any): Generator<any, void, any> {
         });
     }
 }
-
-// function* fetchWithoutAdminReferenceDataSaga(
-//   action: any
-// ): Generator<any, void, any> {
-//   try {
-//     const {
-//       page = 1,
-//       limit = 10,
-//       search = "",
-//       cate_key = "",
-//     } = action.payload || {};
-
-//     const queryParams = new URLSearchParams({
-//       page: page.toString(),
-//       limit: limit.toString(),
-//     });
-
-//     if (search) {
-//       queryParams.append("search", search);
-//     }
-//     if (cate_key) {
-//       queryParams.append("cate_key", cate_key);
-//     }
-
-//     // Use your provided API URL
-//     const endpoint = `${BASE_URL}${
-//       API_ENDPOINTS.GETWITHOUT_ADMIN_REFERENCE_DATA
-//     }?${queryParams.toString()}`;
-//     const response: any = yield call(getRequest, endpoint);
-//     console.log("Response from getWithoutAdminReferenceData:", response);
-//     if (response.success) {
-//       yield put({
-//         type: GETWITHOUT_ADMIN_REFERENCE_DATA_SUCCESS,
-//         payload: response,
-//       });
-//     } else {
-//       yield put({
-//         type: GETWITHOUT_ADMIN_REFERENCE_DATA_FAILURE,
-//         payload: response.message || "Failed to fetch reference data",
-//       });
-//     }
-//   } catch (error: any) {
-//     yield put({
-//       type: GETWITHOUT_ADMIN_REFERENCE_DATA_FAILURE,
-//       payload: error?.message || "Failed to fetch reference data",
-//     });
-//   }
-// }
 
 function* updateReferenceDataItemSaga(action: any): Generator<any, void, any> {
     try {
