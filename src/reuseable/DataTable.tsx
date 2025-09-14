@@ -13,6 +13,7 @@ interface DataTableProps {
   actions?: (row: any) => React.ReactNode;
   rowKey?: string;
   emptyText?: string;
+  loading?: boolean;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -21,59 +22,70 @@ const DataTable: React.FC<DataTableProps> = ({
   actions,
   rowKey = "_id",
   emptyText = "No data found",
-}) => (
-  <table className="w-full">
-    <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-      <tr>
-        {columns.map((col) => (
-          <th
-            key={col.key}
-            className={`text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase ${
-              col.className || ""
-            }`}
-          >
-            {col.header}
-          </th>
-        ))}
-        {actions && (
-          <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-            ACTION
-          </th>
-        )}
-      </tr>
-    </thead>
-    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-      {data.length === 0 ? (
+  loading = false,
+}) => {
+  if (loading) {
+    return (
+      <div className="py-12 text-center text-gray-500 dark:text-gray-400">
+        Loading...
+      </div>
+    );
+  }
+
+  return (
+    <table className="w-full">
+      <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
         <tr>
-          <td
-            colSpan={columns.length + (actions ? 1 : 0)}
-            className="py-12 text-center text-gray-600 dark:text-gray-400"
-          >
-            {emptyText}
-          </td>
+          {columns.map((col) => (
+            <th
+              key={col.key}
+              className={`text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase ${
+                col.className || ""
+              }`}
+            >
+              {col.header}
+            </th>
+          ))}
+          {actions && (
+            <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
+              ACTION
+            </th>
+          )}
         </tr>
-      ) : (
-        data.map((row) => (
-          <tr
-            key={row[rowKey]}
-            className="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
-          >
-            {columns.map((col) => (
-              <td
-                key={col.key}
-                className={`py-4 px-6 whitespace-nowrap ${
-                  col.className || ""
-                } text-gray-900 dark:text-gray-100`}
-              >
-                {col.render ? col.render(row) : row[col.key]}
-              </td>
-            ))}
-            {actions && <td className="py-4 px-6">{actions(row)}</td>}
+      </thead>
+      <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+        {data.length === 0 ? (
+          <tr>
+            <td
+              colSpan={columns.length + (actions ? 1 : 0)}
+              className="py-12 text-center text-gray-600 dark:text-gray-400"
+            >
+              {emptyText}
+            </td>
           </tr>
-        ))
-      )}
-    </tbody>
-  </table>
-);
+        ) : (
+          data.map((row) => (
+            <tr
+              key={row[rowKey]}
+              className="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+            >
+              {columns.map((col) => (
+                <td
+                  key={col.key}
+                  className={`py-4 px-6 whitespace-nowrap ${
+                    col.className || ""
+                  } text-gray-900 dark:text-gray-100`}
+                >
+                  {col.render ? col.render(row) : row[col.key]}
+                </td>
+              ))}
+              {actions && <td className="py-4 px-6">{actions(row)}</td>}
+            </tr>
+          ))
+        )}
+      </tbody>
+    </table>
+  );
+};
 
 export default DataTable;

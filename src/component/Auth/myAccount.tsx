@@ -18,8 +18,6 @@ import type { RootState } from "../../redux/reducers/rootReducers";
 const MyAccount: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // Bind profile and loading from Redux
   const profile = useSelector((state: RootState) => state.auth.user);
   const isLoading = useSelector((state: RootState) => state.auth.loading);
 
@@ -87,11 +85,10 @@ const MyAccount: React.FC = () => {
                 </h1>
                 <p className="text-md text-gray-600">{profile?.user?.email}</p>
                 <span
-                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-2 ${
-                    profile?.user?.is_active
-                      ? "bg-green-100 text-green-800"
-                      : "bg-red-100 text-red-800"
-                  }`}
+                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-2 ${profile?.user?.is_active
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
+                    }`}
                 >
                   {profile?.user?.status}
                 </span>
@@ -128,7 +125,11 @@ const MyAccount: React.FC = () => {
                 label="User ID"
                 value={profile?.user?.id}
               />
-              <DetailItem icon={Building} label="Role" value={profile?.user?.role} />
+              <DetailItem
+                icon={Building}
+                label="Role"
+                value={profile?.user?.role?.name}
+              />
               <DetailItem
                 icon={Calendar}
                 label="Joined On"

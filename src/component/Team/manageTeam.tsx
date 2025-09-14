@@ -10,13 +10,15 @@ import { getReferenceDataRequest } from "../../redux/actions/referenceActions";
 import type { RootState } from "../../redux/reducers/rootReducers";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import { IMAGE_BASE_URL } from "../../config/apiRoutes";
 import csvIcon from "../../assets/icons/csv.png";
+import DataTable from "../../reuseable/DataTable";
+import Pagination from "../../reuseable/Pagination";
+import { formatDate } from "../../reuseable/formatDate";
 
 const ManageTeam: React.FC = () => {
   const dispatch = useDispatch();
-  const { users, loading, totalUsers, Pages, limit } = useSelector(
+  const { users, loading, Pages, limit } = useSelector(
     (state: RootState) => ({
       users: state.auth.users,
       loading: state.auth.loading,
@@ -25,7 +27,6 @@ const ManageTeam: React.FC = () => {
       limit: state.auth.limit,
     })
   );
-  console.log("Users:", users);
 
   const roleReference = useSelector((state: RootState) =>
     (state.referenceData?.data?.data || []).filter((item: any) => item.cate_key === "role")
@@ -34,7 +35,6 @@ const ManageTeam: React.FC = () => {
   const departmentReference = useSelector((state: RootState) =>
     (state.referenceData?.data?.data || []).filter((item: any) => item.cate_key === "department")
   );
-
 
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -136,7 +136,6 @@ const ManageTeam: React.FC = () => {
     if (formData.profilePic) {
       data.append("profilePic", formData.profilePic);
     }
-    // Dispatch your register action here, e.g.:
     dispatch(registerRequest(data));
     setShowAddUserModal(false);
   };
@@ -153,9 +152,6 @@ const ManageTeam: React.FC = () => {
     dispatch(getAllUsersRequest({ page, limit, search: searchTerm }));
   }, [dispatch, page, limit, searchTerm]);
 
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
 
   const actionButtons = useMemo(
     () => (
@@ -179,6 +175,75 @@ const ManageTeam: React.FC = () => {
     [exportUsers]
   );
 
+  // DataTable columns
+  const columns = [
+    {
+      key: "profile_picture",
+      header: "PROFILE",
+      render: (user: any) => (
+        <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
+          {user.profile_picture ? (
+            <img
+              src={`${IMAGE_BASE_URL}/profile/${user.profile_picture}`}
+              alt={user.full_name}
+              className="w-full h-full object-cover rounded-full"
+            />
+          ) : (
+            <User className="w-6 h-6 text-gray-500" />
+          )}
+        </div>
+      ),
+    },
+    {
+      key: "name",
+      header: "NAME",
+      render: (user: any) => (
+        <div className="flex flex-col">
+          <span>{user.full_name}</span>
+          <span className="text-xs text-gray-500 mt-1">{user.email_address}</span>
+          <span className="text-xs text-gray-500">{user.mobile_number}</span>
+        </div>
+      ),
+    },
+    { key: "gender", header: "Gender", render: (user: any) => user.gender },
+    {
+      key: "date_of_birth",
+      header: "Date Of Birth",
+      render: (user: any) => formatDate(user.date_of_birth),
+    },
+    { key: "role", header: "ROLE", render: (user: any) => user.role?.name || "-" },
+    { key: "user_name", header: "USERNAME", render: (user: any) => user.user_name || "-" },
+    {
+      key: "joined",
+      header: "JOINED",
+      render: (user: any) => formatDate(user.createdAt),
+    },
+  ];
+
+  const userActions = (user: any) => (
+    <div className="flex items-center space-x-2">
+      <button
+        className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors"
+        title="View"
+      >
+        <Eye className="w-4 h-4" />
+      </button>
+      <button
+        className="p-1.5 text-green-600 hover:bg-green-100 rounded transition-colors"
+        title="Edit"
+      >
+        <Edit className="w-4 h-4" />
+      </button>
+      <button
+        className="p-1.5 text-red-600 hover:bg-red-100 rounded transition-colors"
+        title="Delete"
+        onClick={() => handleDeleteUser(user._id)}
+      >
+        <Trash2 className="w-4 h-4" />
+      </button>
+    </div>
+  );
+
   return (
     <Layout
       title="Manage Team"
@@ -191,115 +256,14 @@ const ManageTeam: React.FC = () => {
     >
       <div className="p-4">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-20">
-          {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#000000]"></div>
-              <span className="ml-4 text-gray-600">Loading...</span>
-            </div>
-          ) : (
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
-                    PHOTO
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
-                    NAME
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
-                    EMAIL
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
-                    MOBILE
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
-                    ROLE
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
-                    USERNAME
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
-                    JOINED
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-gray-700 uppercase">
-                    ACTION
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {users && users.length > 0 ? (
-                  users.map((user: any) => (
-                    <tr key={user._id} className="hover:bg-gray-50 transition-colors">
-                      <td className="py-4 px-6">
-                        <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
-                          {user.profile_picture ? (
-                            <img
-                              src={`${IMAGE_BASE_URL}/profile/${user.profile_picture}`}
-                              alt={user.full_name}
-                              className="w-full h-full object-cover rounded-full"
-                            />
-                          ) : (
-                            <User className="w-6 h-6 text-gray-500" />
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-4 px-6 font-medium text-[#14133B] whitespace-nowrap">
-                        {user.full_name}
-                      </td>
-                      <td className="py-4 px-6">{user.email_address}</td>
-                      <td className="py-4 px-6">{user.mobile_number}</td>
-                      <td className="py-4 px-6 capitalize">{user.role_name || "-"}</td>
-                      <td className="py-4 px-6">{user.user_name || "-"}</td>
-                      <td className="py-4 px-6 whitespace-nowrap">
-                        {new Date(user.createdAt).toLocaleDateString("en-IN", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </td>
-                      <td className="py-4 px-6">
-                        <div className="flex items-center space-x-2">
-                          <button
-                            className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors"
-                            title="View"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </button>
-                          <button
-                            className="p-1.5 text-green-600 hover:bg-green-100 rounded transition-colors"
-                            title="Edit"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                          <button
-                            className="p-1.5 text-red-600 hover:bg-red-100 rounded transition-colors"
-                            title="Delete"
-                            onClick={() => handleDeleteUser(user._id)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={8}>
-                      <div className="py-12 text-center">
-                        <User className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">
-                          No team members found
-                        </h3>
-                        <p className="text-gray-600">
-                          Try adding a new team member.
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          )}
+          <DataTable
+            columns={columns}
+            data={users || []}
+            actions={userActions}
+            rowKey="_id"
+            emptyText="No team members found"
+            loading={loading}
+          />
         </div>
       </div>
 
@@ -445,7 +409,8 @@ const ManageTeam: React.FC = () => {
                     onChange={handleFileChange}
                     className="border px-3 py-2 rounded-lg w-full"
                   />
-                </div></div>
+                </div>
+              </div>
               <div className="flex justify-end gap-2 mt-6">
                 <button
                   type="button"
@@ -466,59 +431,21 @@ const ManageTeam: React.FC = () => {
         </div>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg">
-        <div className="flex flex-col md:flex-row justify-between items-center px-6 py-3 max-w-full mx-auto">
-          <span className="text-sm text-gray-700 mb-2 md:mb-0"></span>
-          <div className="flex gap-2 items-center">
-            <strong className="text-[#000000]">Page {page}</strong> of{" "}
-            <strong>{Pages}</strong> &nbsp;|&nbsp;
-            <span className="text-gray-500">Total Users:</span>{" "}
-            <strong>{totalUsers}</strong>
-            <label
-              className="text-sm text-gray-600 mr-2"
-              htmlFor="limit-select"
-            >
-              Rows per page:
-            </label>
-            <select
-              id="limit-select"
-              value={limit}
-              onChange={(e) => {
-                setPage(1);
-                dispatch(
-                  getAllUsersRequest({
-                    page: 1,
-                    limit: Number(e.target.value),
-                    search: searchTerm,
-                  })
-                );
-              }}
-              className="px-2 py-1 rounded border bg-gray-100 text-gray-700"
-              style={{ minWidth: 60 }}
-            >
-              {limitOptions.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-            <button
-              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-gray-600 transition disabled:opacity-50"
-              disabled={page <= 1}
-              onClick={() => handlePageChange(page - 1)}
-            >
-              Previous
-            </button>
-            <button
-              className="px-4 py-2 rounded-lg border bg-red-600 text-white hover:bg-gray-600 transition disabled:opacity-50"
-              disabled={page >= Pages}
-              onClick={() => handlePageChange(page + 1)}
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      </div>
+      <Pagination
+        page={page}
+        totalPages={Pages}
+        limit={limit}
+        setPage={setPage}
+        setLimit={(newLimit) => {
+          setPage(1);
+          dispatch(getAllUsersRequest({
+            page: 1,
+            limit: newLimit,
+            search: searchTerm,
+          }));
+        }}
+        limits={limitOptions}
+      />
     </Layout>
   );
 };
