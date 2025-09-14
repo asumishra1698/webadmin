@@ -8,6 +8,8 @@ import {
 } from "../../redux/actions/authActions";
 import { getReferenceDataRequest } from "../../redux/actions/referenceActions";
 import type { RootState } from "../../redux/reducers/rootReducers";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import { IMAGE_BASE_URL } from "../../config/apiRoutes";
 import csvIcon from "../../assets/icons/csv.png";
@@ -23,9 +25,14 @@ const ManageTeam: React.FC = () => {
       limit: state.auth.limit,
     })
   );
+  console.log("Users:", users);
 
   const roleReference = useSelector((state: RootState) =>
     (state.referenceData?.data?.data || []).filter((item: any) => item.cate_key === "role")
+  );
+
+  const departmentReference = useSelector((state: RootState) =>
+    (state.referenceData?.data?.data || []).filter((item: any) => item.cate_key === "department")
   );
 
 
@@ -33,6 +40,8 @@ const ManageTeam: React.FC = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const limitOptions = [5, 10, 20, 50, 100];
+  const [dobDate, setDobDate] = useState<Date | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] = useState({
     name: "",
@@ -41,6 +50,9 @@ const ManageTeam: React.FC = () => {
     password: "",
     role: "",
     profilePic: null as File | null,
+    dateOfBirth: "",
+    department: "",
+    gender: "",
   });
 
   const handleInputChange = (
@@ -66,14 +78,61 @@ const ManageTeam: React.FC = () => {
     setShowAddUserModal(true);
   };
 
+  useEffect(() => {
+    if (dobDate) {
+      const yyyy = dobDate.getFullYear();
+      const mm = String(dobDate.getMonth() + 1).padStart(2, "0");
+      const dd = String(dobDate.getDate()).padStart(2, "0");
+      setFormData((prev) => ({
+        ...prev,
+        dateOfBirth: `${yyyy}-${mm}-${dd}`,
+      }));
+    }
+  }, [dobDate]);
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Full Name is required";
+    }
+    if (!formData.mobile.trim()) {
+      newErrors.mobile = "Mobile Number is required";
+    } else if (!/^\+?[\d\s-()]+$/.test(formData.mobile)) {
+      newErrors.mobile = "Please enter a valid mobile number";
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = "Email Address is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+    if (!formData.role.trim()) {
+      newErrors.role = "Role is required";
+    }
+    if (!formData.gender.trim()) {
+      newErrors.gender = "Gender is required";
+    }
+    if (!formData.dateOfBirth.trim()) {
+      newErrors.dateOfBirth = "Date of Birth is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const valid = validateForm();
+    if (!valid) return;
     const data = new FormData();
     data.append("name", formData.name);
     data.append("email", formData.email);
     data.append("mobile", formData.mobile);
     data.append("password", formData.password);
     data.append("role", formData.role);
+    data.append("dateOfBirth", formData.dateOfBirth);
+    data.append("department", formData.department);
+    data.append("gender", formData.gender);
     if (formData.profilePic) {
       data.append("profilePic", formData.profilePic);
     }
@@ -170,16 +229,13 @@ const ManageTeam: React.FC = () => {
               <tbody className="divide-y divide-gray-200">
                 {users && users.length > 0 ? (
                   users.map((user: any) => (
-                    <tr
-                      key={user.id}
-                      className="hover:bg-gray-50 transition-colors"
-                    >
+                    <tr key={user._id} className="hover:bg-gray-50 transition-colors">
                       <td className="py-4 px-6">
                         <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
-                          {user.profilePic ? (
+                          {user.profile_picture ? (
                             <img
-                              src={`${IMAGE_BASE_URL}/profile/${user.profilePic}`}
-                              alt={user.name}
+                              src={`${IMAGE_BASE_URL}/profile/${user.profile_picture}`}
+                              alt={user.full_name}
                               className="w-full h-full object-cover rounded-full"
                             />
                           ) : (
@@ -188,12 +244,12 @@ const ManageTeam: React.FC = () => {
                         </div>
                       </td>
                       <td className="py-4 px-6 font-medium text-[#14133B] whitespace-nowrap">
-                        {user.name}
+                        {user.full_name}
                       </td>
-                      <td className="py-4 px-6">{user.email}</td>
-                      <td className="py-4 px-6">{user.mobile}</td>
-                      <td className="py-4 px-6 capitalize">{user.role}</td>
-                      <td className="py-4 px-6">{user.username}</td>
+                      <td className="py-4 px-6">{user.email_address}</td>
+                      <td className="py-4 px-6">{user.mobile_number}</td>
+                      <td className="py-4 px-6 capitalize">{user.role_name || "-"}</td>
+                      <td className="py-4 px-6">{user.user_name || "-"}</td>
                       <td className="py-4 px-6 whitespace-nowrap">
                         {new Date(user.createdAt).toLocaleDateString("en-IN", {
                           year: "numeric",
@@ -218,7 +274,7 @@ const ManageTeam: React.FC = () => {
                           <button
                             className="p-1.5 text-red-600 hover:bg-red-100 rounded transition-colors"
                             title="Delete"
-                            onClick={() => handleDeleteUser(user.id)}
+                            onClick={() => handleDeleteUser(user._id)}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -248,87 +304,148 @@ const ManageTeam: React.FC = () => {
       </div>
 
       {showAddUserModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+          onClick={() => setShowAddUserModal(false)}
+        >
+          <div className="bg-white rounded-lg shadow-lg p-8  w-full max-w-5xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h2 className="text-xl font-bold mb-4">Add New User</h2>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="border px-3 py-2 rounded-lg w-full"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="border px-3 py-2 rounded-lg w-full"
-                  required
-                  autoComplete="off"
-                />
-              </div>
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">Mobile</label>
-                <input
-                  type="text"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleInputChange}
-                  className="border px-3 py-2 rounded-lg w-full"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="border px-3 py-2 rounded-lg w-full"
-                  required
-                  autoComplete="new-password"
-                />
-              </div>
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">Role</label>
-                <select
-                  name="role"
-                  value={formData.role}
-                  onChange={handleInputChange}
-                  className="border px-3 py-2 rounded-lg w-full"
-                  required
-                >
-                  <option value="">Select Role</option>
-                  {roleReference[0]?.items?.map((role: any) => (
-                    <option key={role.key} value={role.key}>
-                      {role.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">
-                  Profile Picture
-                </label>
-                <input
-                  type="file"
-                  name="profilePic"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="border px-3 py-2 rounded-lg w-full"
-                />
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="mb-3">
+                  <label className="block text-sm font-medium mb-1">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="border px-3 py-2 rounded-lg w-full"
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="block text-sm font-medium mb-1">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="border px-3 py-2 rounded-lg w-full"
+                    required
+                    autoComplete="off"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="block text-sm font-medium mb-1">Mobile</label>
+                  <input
+                    type="text"
+                    name="mobile"
+                    value={formData.mobile}
+                    onChange={handleInputChange}
+                    className="border px-3 py-2 rounded-lg w-full"
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="block text-sm font-medium mb-1">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="border px-3 py-2 rounded-lg w-full"
+                    required
+                    autoComplete="new-password"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Gender <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent ${errors.gender ? "border-red-500" : "border-gray-300"
+                      }`}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                  {errors.gender && (
+                    <p className="text-red-500 text-sm mt-1">{errors.gender}</p>
+                  )}
+                </div>
+                <div className="mb-3">
+                  <label className="block text-sm font-medium mb-1">Role</label>
+                  <select
+                    name="role"
+                    value={formData.role}
+                    onChange={handleInputChange}
+                    className="border px-3 py-2 rounded-lg w-full"
+                    required
+                  >
+                    <option value="">Select Role</option>
+                    {roleReference[0]?.items?.map((role: any) => (
+                      <option key={role.key} value={role.key}>
+                        {role.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label className="block text-sm font-medium mb-1">Department</label>
+                  <select
+                    name="department"
+                    value={formData.department}
+                    onChange={handleInputChange}
+                    className="border px-3 py-2 rounded-lg w-full"
+                    required
+                  >
+                    <option value="">Select Department</option>
+                    {departmentReference[0]?.items?.map((department: any) => (
+                      <option key={department.key} value={department.key}>
+                        {department.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {/* Date of Birth */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Date of Birth <span className="text-red-500">*</span>
+                  </label>
+                  <DatePicker
+                    selected={dobDate}
+                    onChange={(date: Date | null) => setDobDate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    placeholderText="DD/MM/YYYY"
+                    maxDate={new Date()}
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent ${errors.dateOfBirth ? "border-red-500" : "border-gray-300"
+                      }`}
+                    wrapperClassName="w-full"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="block text-sm font-medium mb-1">
+                    Profile Picture
+                  </label>
+                  <input
+                    type="file"
+                    name="profilePic"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="border px-3 py-2 rounded-lg w-full"
+                  />
+                </div></div>
               <div className="flex justify-end gap-2 mt-6">
                 <button
                   type="button"

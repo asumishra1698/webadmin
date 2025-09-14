@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
     { icon: brokersIcon, label: "Blogs", path: ["/blogs", "/blog-category", "/blog-tag", "/add-new-blog"] },
     { icon: visitorsIcon, label: "Visitors", path: "/visitors" },
     { icon: projectsIcon, label: "Projects", path: "/projects" },
-    { icon: brokersIcon, label: "Broker", path: "/broker" },
+    { icon: brokersIcon, label: "Broker", path: "/brokers" },
     { icon: projectsIcon, label: "Products", path: ["/products", "/product-categories", "/product-tags", "/product-brands", "/add-product", "/edit-product"], },
     { icon: projectsIcon, label: "Leads", path: "/leads" },
     { icon: reportsIcon, label: "Reports & Analytics", path: "/reports" },

@@ -162,7 +162,7 @@ const authReducer = (state = initialState, action: any) => {
       return {
         ...state,
         loading: false,
-        users: action.payload.users,
+        users: action.payload.data.data,
         totalUsers: action.payload.totalUsers,
         page: action.payload.page,
         Pages: action.payload.Pages,

@@ -8,27 +8,38 @@ import SetNewPassword from "../component/Auth/setNewPassword";
 import MyAccount from "../component/Auth/myAccount";
 import ManagePages from "../component/Pages/managePages";
 import ManageTeam from "../component/Team/manageTeam";
+
 import ManageBlogs from "../component/Blogs/manageBlogs";
 import AddNewBlog from "../component/Blogs/addNewBlog";
 import ManageBlogCategory from "../component/Blogs/manageBlogCategory";
 import ManageTag from "../component/Blogs/manageTag";
+
 import ManageLeads from "../component/Lead/manageLeads";
+
 import ManageProducts from "../component/Products/manageproducts";
 import AddProduct from "../component/Products/addProduct";
 import EditProduct from "../component/Products/editProduct";
 import ManageProductCategory from "../component/Products/manageProductCategory";
 import ManageProductTag from "../component/Products/manageProductTags";
 import ManageProductBrand from "../component/Products/manageProductBrand";
+
 import ManageAdminSettings from "../component/AdminSettings/manageAdminSettings";
 import ManageMasterLists from "../component/AdminSettings/manageMasterLists";
 import ManageFinanceAndCommission from "../component/financeAndCommission/manageFinanceAndCommission";
 import ManageReports from "../component/Report/manageReports";
 import ManageSupportTickets from "../component/SupportTickets/manageSupportTickets";
 import DetailSupportTicket from "../component/SupportTickets/detailSupportTicket";
+
 import ManageProjects from "../component/Project/manageProjects";
 import AddNewProjects from "../component/Project/addNewProjects";
 import ProjectDetails from "../component/Project/projectDetails";
 import EditProject from "../component/Project/editProject";
+
+import AddNewBroker from "../component/Broker/addNewBroker";
+import EditBroker from "../component/Broker/editBroker";
+import ManageBrokers from "../component/Broker/manageBrokers";
+import BrokerDetails from "../component/Broker/brokerDetails";
+import BrokerTeam from "../component/Broker/brokerTeam";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -339,6 +350,46 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
         }
       />
 
+      <Route
+        path="/brokers"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageBrokers />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/brokers/add-new-broker"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <AddNewBroker />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/brokers/edit-broker/:id"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <EditBroker />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/brokers/broker-details/:id"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <BrokerDetails />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/brokers/broker-team/:id"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <BrokerTeam />
+          </ProtectedRoute>
+        }
+      />
 
       <Route
         path="/"

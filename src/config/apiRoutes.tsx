@@ -54,4 +54,12 @@ export const API_ENDPOINTS = {
   // VISITORBYPROJECT: "/api/projects/visitors/",
   // BROKERBYPROJECT: "/api/projects/brokers/",
 
+  BROKERS: "/api/brokers",
+  GET_BROKER_BY_ID: "/api/brokers/",
+  CREATE_BROKER: "/api/brokers",
+  UPDATE_BROKER: "/api/brokers/",
+  DELETE_BROKER: "/api/brokers/",
+  TOGGLE_BROKER_STATUS: "/api/brokers/toggle-status/",
+  EXPORT_BROKER_DATA: "/api/brokers/export/",
+  BROKER_TEAM: "/api/brokers/team/",
 };

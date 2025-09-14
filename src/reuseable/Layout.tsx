@@ -26,7 +26,7 @@ interface LayoutProps {
   actionButtons?: React.ReactNode;
   isHeaderFixed?: boolean;
   showBackButton?: boolean;
-  backButtonLink?: string;
+  backButtonLink?: string | number;
 }
 
 const SIDEBAR_WIDTH = "16rem";
@@ -217,9 +217,15 @@ const Layout: React.FC<LayoutProps> = ({
           <div className="flex items-center">
             {showBackButton && (
               <button
-                onClick={() =>
-                  backButtonLink ? navigate(backButtonLink) : navigate(-1)
-                }
+                onClick={() => {
+                  if (typeof backButtonLink === "number") {
+                    navigate(backButtonLink);
+                  } else if (typeof backButtonLink === "string") {
+                    navigate(backButtonLink);
+                  } else {
+                    navigate(-1);
+                  }
+                }}
                 className="mr-2 p-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                 aria-label="Go back"
               >
@@ -340,11 +346,10 @@ const Layout: React.FC<LayoutProps> = ({
                 </div>
               </button>
               <div
-                className={`absolute right-0 mt-2 w-60 bg-white dark:bg-[#14133B] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 transition-all duration-200 ease-in-out transform ${
-                  isDropdownOpen
-                    ? "opacity-100 scale-100 pointer-events-auto"
-                    : "opacity-0 scale-95 pointer-events-none"
-                }`}
+                className={`absolute right-0 mt-2 w-60 bg-white dark:bg-[#14133B] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 transition-all duration-200 ease-in-out transform ${isDropdownOpen
+                  ? "opacity-100 scale-100 pointer-events-auto"
+                  : "opacity-0 scale-95 pointer-events-none"
+                  }`}
                 tabIndex={-1}
               >
                 <button
@@ -378,9 +383,8 @@ const Layout: React.FC<LayoutProps> = ({
 
         {hasSearchOrActions && (
           <div
-            className={`${
-              isHeaderFixed ? "fixed" : "sticky"
-            } z-20 bg-gray-100 dark:bg-gray-900 p-2`}
+            className={`${isHeaderFixed ? "fixed" : "sticky"
+              } z-20 bg-gray-100 dark:bg-gray-900 p-2`}
             style={{
               top: HEADER_HEIGHT,
               left: leftOffset,
@@ -439,8 +443,8 @@ const Layout: React.FC<LayoutProps> = ({
             paddingTop: header
               ? totalHeaderHeight + HEADER_HEIGHT
               : isHeaderFixed && hasSearchOrActions
-              ? totalHeaderHeight
-              : HEADER_HEIGHT,
+                ? totalHeaderHeight
+                : HEADER_HEIGHT,
             transition: "margin-left 0.3s, padding-top 0.3s",
           }}
         >
