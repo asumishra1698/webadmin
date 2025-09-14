@@ -32,9 +32,9 @@ import {
     // GET_BROKER_BY_PROJECT_ID_REQUEST,
     // GET_BROKER_BY_PROJECT_ID_SUCCESS,
     // GET_BROKER_BY_PROJECT_ID_FAILURE,
-    // EXPORT_PROJECT_DATA_REQUEST,
-    // EXPORT_PROJECT_DATA_SUCCESS,
-    // EXPORT_PROJECT_DATA_FAILURE,
+    EXPORT_PROJECT_DATA_REQUEST,
+    EXPORT_PROJECT_DATA_SUCCESS,
+    EXPORT_PROJECT_DATA_FAILURE,
     DELETE_PROJECT_MEDIA_REQUEST,
     DELETE_PROJECT_MEDIA_SUCCESS,
     DELETE_PROJECT_MEDIA_FAILURE,
@@ -164,7 +164,7 @@ function* createProjectSaga(action: any): Generator<any, void, any> {
 function* updateProjectSaga(action: any): Generator<any, void, any> {
     try {
         const { id, data } = action.payload;
-        const endpoint = `${BASE_URL}${API_ENDPOINTS.PROJECTS}${id}`;
+        const endpoint = `${BASE_URL}${API_ENDPOINTS.PROJECTS}/${id}`;
         const response: ProjectApiResponse = yield call(putRequest, endpoint, data);
         yield put({
             type: UPDATE_PROJECT_SUCCESS,
@@ -200,7 +200,7 @@ function* updateProjectSaga(action: any): Generator<any, void, any> {
 function* deleteProjectSaga(action: any): Generator<any, void, any> {
     try {
         const projectId = action.payload;
-        const endpoint = `${BASE_URL}${API_ENDPOINTS.PROJECTS}${projectId}`;
+        const endpoint = `${BASE_URL}${API_ENDPOINTS.PROJECTS}/${projectId}`;
         yield call(deleteRequest, endpoint);
 
         yield put({
@@ -229,7 +229,7 @@ function* deleteProjectSaga(action: any): Generator<any, void, any> {
 function* toggleProjectStatusSaga(action: any): Generator<any, void, any> {
     try {
         const { projectId, is_active } = action.payload;
-        const endpoint = `${BASE_URL}${API_ENDPOINTS.PROJECTS}${projectId}/active`;
+        const endpoint = `${BASE_URL}${API_ENDPOINTS.TOGGLE_PROJECT_STATUS}${projectId}/active`;
         const response: ProjectApiResponse = yield call(patchRequest, endpoint, {
             is_active,
         });
@@ -352,6 +352,50 @@ function* toggleProjectStatusSaga(action: any): Generator<any, void, any> {
 //     }
 // }
 
+function* exportProjectDataSaga(action: any): Generator<any, void, any> {
+    try {
+        const endpoint = `${BASE_URL}${API_ENDPOINTS.EXPORT_PROJECT_DATA}`;
+        const params = action?.payload || {};
+        const response = yield call(getRequest, endpoint, params, {
+            responseType: "blob",
+        });
+
+        // Download logic here
+        const blob = response.data ?? response;
+        const urlObj = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = urlObj;
+        a.download = "ProjectData.csv"; // Change extension if needed
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(urlObj);
+
+        yield put({
+            type: EXPORT_PROJECT_DATA_SUCCESS,
+        });
+        Swal.fire({
+            title: "Success",
+            text: "Project data exported successfully!",
+            icon: "success",
+        });
+    } catch (error: any) {
+        yield put({
+            type: EXPORT_PROJECT_DATA_FAILURE,
+            payload:
+                error?.response?.data?.message ||
+                error?.message ||
+                "Failed to export project data",
+        });
+        Swal.fire({
+            title: "Error",
+            text: error?.message || "Failed to export project data",
+            icon: "error",
+        });
+    }
+}
+
+
 function* deleteProjectMediaSaga(action: any): Generator<any, void, any> {
     try {
         const { projectId, mediaId } = action.payload;
@@ -391,7 +435,7 @@ export default function* projectSaga() {
         takeLatest(UPDATE_PROJECT_REQUEST, updateProjectSaga),
         takeLatest(DELETE_PROJECT_REQUEST, deleteProjectSaga),
         // takeLatest(GET_BROKER_BY_PROJECT_ID_REQUEST, fetchBrokerByProjectIdSaga),
-        // takeLatest(EXPORT_PROJECT_DATA_REQUEST, exportProjectDataSaga),
+        takeLatest(EXPORT_PROJECT_DATA_REQUEST, exportProjectDataSaga),
         takeLatest(DELETE_PROJECT_MEDIA_REQUEST, deleteProjectMediaSaga),
     ]);
 }

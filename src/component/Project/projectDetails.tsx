@@ -198,10 +198,10 @@ const ProjectDetails: React.FC = () => {
                                 }
                             />
                             <span
-                                className={`absolute top-1 left-1 text-white text-xs font-bold px-2 py-1 rounded-full ${currentProject.is_active ? "bg-green-500" : "bg-red-600"
+                                className={`absolute top-1 left-1 text-white text-xs font-bold px-2 py-2 rounded-full ${currentProject.is_active ? "bg-green-500" : "bg-red-600"
                                     }`}
                             >
-                                {currentProject.is_active ? "Active" : "Inactive"}
+                                {/* {currentProject.is_active ? "Active" : "Inactive"} */}
                             </span>
                         </div>
                         <h1 className="text-2xl font-bold text-gray-900 w-64 break-words text-center mt-2">
@@ -317,49 +317,58 @@ const ProjectDetails: React.FC = () => {
                             currentProject.media.map((item: any) => (
                                 <div
                                     key={item._id}
-                                    className="w-32 h-32 border rounded flex items-center justify-center overflow-hidden bg-gray-50 relative"
+                                    className="w-32 h-32 border rounded flex flex-col items-center justify-center overflow-hidden bg-gray-50 relative"
                                 >
                                     {item.doc_type === "images" ||
                                         item.doc_type === "floorPlanImg" ? (
-                                        <img
-                                            src={item.img_url}
-                                            alt={item.description}
-                                            className="w-full h-full object-cover cursor-pointer"
-                                            onClick={() => openModal(item.img_url, item.description)}
-                                        />
+                                        <>
+                                            <img
+                                                src={item.img_url}
+                                                alt={item.description}
+                                                className="w-full h-full object-cover cursor-pointer"
+                                                onClick={() => openModal(item.img_url, item.description)}
+                                            />
+                                            <span className="text-xs text-gray-600 mt-1 mb-4">{item.doc_type}</span>
+                                        </>
                                     ) : item.doc_type === "videos" ||
                                         item.doc_type === "workThroughVideo" ? (
-                                        <div
-                                            className="w-full h-full flex items-center justify-center cursor-pointer relative"
-                                            onClick={() =>
-                                                setVideoModal({
-                                                    isOpen: true,
-                                                    src: item.img_url,
-                                                    alt: item.description,
-                                                })
-                                            }
-                                            title={item.description}
-                                        >
-                                            <video
-                                                src={item.img_url}
-                                                className="w-full h-full object-cover"
-                                                preload="metadata"
-                                                style={{ pointerEvents: "none" }}
-                                            />
-                                            <span className="absolute inset-0 flex items-center justify-center">
-                                                <Video className="w-14 h-14 text-white bg-black bg-opacity-60 rounded-full p-2" />
-                                            </span>
-                                        </div>
+                                        <>
+                                            <div
+                                                className="w-full h-full flex items-center justify-center cursor-pointer relative"
+                                                onClick={() =>
+                                                    setVideoModal({
+                                                        isOpen: true,
+                                                        src: item.img_url,
+                                                        alt: item.description,
+                                                    })
+                                                }
+                                                title={item.description}
+                                            >
+                                                <video
+                                                    src={item.img_url}
+                                                    className="w-full h-full object-cover"
+                                                    preload="metadata"
+                                                    style={{ pointerEvents: "none" }}
+                                                />
+                                                <span className="absolute inset-0 flex items-center justify-center">
+                                                    <Video className="w-14 h-14 text-white bg-black bg-opacity-60 rounded-full p-2" />
+                                                </span>
+                                            </div>
+                                            <span className="text-xs text-gray-600 mt-1">{item.doc_type}</span>
+                                        </>
                                     ) : (
-                                        <a
-                                            href={item.img_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="w-full h-full flex items-center justify-center"
-                                            title={item.description}
-                                        >
-                                            <FileText className="w-10 h-10 text-red-600" />
-                                        </a>
+                                        <>
+                                            <a
+                                                href={item.img_url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="w-full h-full flex items-center justify-center"
+                                                title={item.description}
+                                            >
+                                                <FileText className="w-10 h-10 text-red-600" />
+                                            </a>
+                                            <span className="text-xs text-gray-600 mt-1">{item.doc_type}</span>
+                                        </>
                                     )}
                                 </div>
                             ))
