@@ -400,6 +400,7 @@ function* deleteProjectMediaSaga(action: any): Generator<any, void, any> {
     try {
         const { projectId, mediaId } = action.payload;
         const endpoint = `${BASE_URL}/api/projects/${projectId}/media/${mediaId}`;
+        console.log("Deleting media at endpoint:", endpoint);
         yield call(deleteRequest, endpoint);
 
         yield put({

@@ -50,8 +50,8 @@ export const API_ENDPOINTS = {
   UPDATE_PROJECT: "/api/projects/",
   DELETE_PROJECT: "/api/projects/",
   TOGGLE_PROJECT_STATUS: "/api/projects/toggle-status/",
+  EXPORT_PROJECT_DATA: "/api/projects/export/",
   // VISITORBYPROJECT: "/api/projects/visitors/",
   // BROKERBYPROJECT: "/api/projects/brokers/",
-  EXPORT_PROJECT_DATA: "/api/projects/export/",
-  // DELETE_PROJECT_MEDIA: "/api/projects/media/",
+
 };

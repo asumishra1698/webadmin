@@ -33,8 +33,8 @@ const EditProject: React.FC = () => {
         const pathParts = window.location.pathname.split("/").filter(Boolean);
         return pathParts.pop() || "";
     };
-    const id = getIdFromUrl();
 
+    const id = getIdFromUrl();
     const { currentProject, loading } = useSelector(
         (state: RootState) => state.projects
     );
@@ -211,7 +211,6 @@ const EditProject: React.FC = () => {
                 ? [formData.uploadedFiles[fileType] as File | string]
                 : [];
 
-        // Icon selection
         let icon = <ImageIcon className="w-8 h-8 text-red-600" />;
         if (fileType === "videos")
             icon = <Video className="w-8 h-8 text-red-600 mx-auto mb-2" />;
