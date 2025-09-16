@@ -131,7 +131,7 @@ const ProjectDetails: React.FC = () => {
                 : "-",
             brokercode: b.broker_code || "-",
             company: b.company_name || "-",
-            rera_number: b.rere_number || "-",
+            rera_number: b.rera_number || "-",
             owner_name: b.owner_name || "-",
             is_active: b.user_id.is_active,
             avatar:

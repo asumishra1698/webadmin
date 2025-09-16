@@ -195,7 +195,7 @@ const BrokerDetails: React.FC = () => {
               onClick={() =>
                 openModal(
                   ownerPhotoUrl ||
-                    "https://www.iqsetters.com/assets/iqsetters_logo_small_new.png",
+                  "https://www.iqsetters.com/assets/iqsetters_logo_small_new.png",
                   brokerData.broker_name
                 )
               }
@@ -224,25 +224,22 @@ const BrokerDetails: React.FC = () => {
             <div>
               <span className="text-gray-500 block text-sm">Company Type</span>
               <span className="font-bold text-gray-800 block mt-1">
-                {typeof brokerData.company_type?.name === "string"
-                  ? brokerData.company_type.name
-                  : "N/A"}
+                {brokerData.company_type?.name || "N/A"}
               </span>
             </div>
             <div>
               <span className="text-gray-500 block text-sm">RERA Number</span>
               <span className="font-bold text-gray-800 block mt-1">
-                {brokerData.rere_number || "N/A"}
+                {brokerData.rera_number || "N/A"}
               </span>
             </div>
             <div>
               <span className="text-gray-500 block text-sm">Status</span>
               <span
-                className={`inline-block text-xs font-semibold px-4 py-1 rounded-full mt-1 capitalize ${
-                  brokerData.status === "approved"
+                className={`inline-block text-xs font-semibold px-4 py-1 rounded-full mt-1 capitalize ${brokerData.status === "approved"
                     ? "bg-green-100 text-green-800"
                     : "bg-yellow-100 text-yellow-800"
-                }`}
+                  }`}
               >
                 {brokerData.status === "approved"
                   ? "Approved"
@@ -333,11 +330,10 @@ const BrokerDetails: React.FC = () => {
                     {stat.value}
                   </p>
                   <div
-                    className={`flex items-center text-sm mt-2 ${
-                      stat.changeType === "increase"
+                    className={`flex items-center text-sm mt-2 ${stat.changeType === "increase"
                         ? "text-green-600"
                         : "text-red-600"
-                    }`}
+                      }`}
                   >
                     {stat.changeType === "increase" ? (
                       <TrendingUp className="h-4 w-4 mr-1" />
@@ -359,7 +355,7 @@ const BrokerDetails: React.FC = () => {
           <h2 className="text-xl font-bold text-gray-800 mb-4">Documents</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.isArray(brokerData.documents) &&
-            brokerData.documents.length > 0 ? (
+              brokerData.documents.length > 0 ? (
               brokerData.documents.map((doc: any, index: number) => (
                 <div
                   key={doc._id || index}
@@ -425,7 +421,7 @@ const BrokerDetails: React.FC = () => {
               </thead>
               <tbody>
                 {Array.isArray(referredVisitors) &&
-                referredVisitors.length > 0 ? (
+                  referredVisitors.length > 0 ? (
                   referredVisitors.map((log, idx) => (
                     <tr
                       key={log.visitor?._id || idx}

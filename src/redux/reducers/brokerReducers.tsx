@@ -66,7 +66,7 @@ interface Broker {
   alt_email_address?: string;
   website_url?: string;
   status: string;
-  rere_number: string;
+  rera_number: string;
   profile_picture?: string;
   createdAt: string;
   company_type: {

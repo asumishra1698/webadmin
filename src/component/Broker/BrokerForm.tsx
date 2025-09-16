@@ -43,7 +43,7 @@ interface BrokerFormProps {
     formData: BrokerFormData;
     errors: Record<string, string>;
     loading: boolean;
-    companyTypes: { _id: string; name: string }[];
+    companyTypes: { _id: string; key: string; name: string }[];
     indianStates: string[];
     onInputChange: (
         field: keyof Omit<BrokerFormData, "officeAddress" | "uploadedDocuments">,
@@ -172,6 +172,7 @@ const BrokerForm: React.FC<BrokerFormProps> = ({
 }) => {
     const dispatch = useDispatch();
     const salesRms = useSelector((state: RootState) => state.salesRms.salesRms);
+    console.log("Sales RMs :", salesRms);
     useEffect(() => {
         dispatch(getSalesRmRequest());
         dispatch(getProjectsRequest());
@@ -229,13 +230,12 @@ const BrokerForm: React.FC<BrokerFormProps> = ({
                         <select
                             value={formData.salesRmId}
                             onChange={(e) => onInputChange("salesRmId", e.target.value)}
-                            className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent ${errors.salesRmId ? "border-red-500" : "border-gray-300"
-                                }`}
+                            className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent ${errors.salesRmId ? "border-red-500" : "border-gray-300"}`}
                         >
                             <option value="">Select Sales RM</option>
                             {salesRms.map((rm: any) => (
                                 <option key={rm._id} value={rm._id}>
-                                    {rm.full_name} ({rm.user_name})
+                                    {rm.name} ({rm.mobile})
                                 </option>
                             ))}
                         </select>
@@ -244,7 +244,6 @@ const BrokerForm: React.FC<BrokerFormProps> = ({
                         )}
                     </div>
 
-                    {/* Company Type */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                             Company Type <span className="text-red-500">*</span>
@@ -252,12 +251,11 @@ const BrokerForm: React.FC<BrokerFormProps> = ({
                         <select
                             value={formData.companyType}
                             onChange={(e) => onInputChange("companyType", e.target.value)}
-                            className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent ${errors.companyType ? "border-red-500" : "border-gray-300"
-                                }`}
+                            className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent ${errors.companyType ? "border-red-500" : "border-gray-300"}`}
                         >
                             <option value="">Select Type</option>
                             {companyTypes.map((type) => (
-                                <option key={type._id} value={type._id}>
+                                <option key={type._id} value={type.key}>
                                     {type.name}
                                 </option>
                             ))}

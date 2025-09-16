@@ -375,7 +375,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
         }
       />
       <Route
-        path="/brokers/broker-details/:id"
+        path="/brokers/broker-detail/:id"
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
             <BrokerDetails />

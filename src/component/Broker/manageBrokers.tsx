@@ -206,7 +206,7 @@ const ManageBrokers: React.FC = () => {
         ownerName: item.owner_name || "",
         conversion: "0%",
         visitors: item.visitor_count || "0",
-        rera: item.rere_number || "",
+        rera: item.rera_number || "",
         status: item.status || "",
         address: item.office_address
             ? [

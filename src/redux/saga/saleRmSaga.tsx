@@ -14,7 +14,7 @@ function* getSalesRmsSaga(): Generator<any, void, any> {
     if (response.success && response.data && response.statusCode === 200) {
       yield put({
         type: GET_SALES_RM_SUCCESS,
-        payload: response.data,
+        payload: response.data.data,
       });
     } else {
       yield put({

@@ -61,21 +61,21 @@ const AddNewBroker: React.FC = () => {
   }, [dispatch]);
 
   const [formData, setFormData] = useState<BrokerFormData>({
-    brokerName: "",
-    companyName: "",
-    companyType: "",
-    ownerName: "",
-    mobileBranchNumber: "",
-    alt_mobile_number: "",
-    website_url: "",
-    emailAddress: "",
-    alt_email_address: "",
-    rereNumber: "",
+    brokerName: "Ashutosh Mishra",
+    companyName: "Ashu PVT LTD",
+    companyType: "private_limited",
+    ownerName: "Ashutosh Mishra",
+    mobileBranchNumber: "7827284933",
+    alt_mobile_number: "7827284931",
+    website_url: "www.ashu.com",
+    emailAddress: "ashutosh@ashu.com",
+    alt_email_address: "ashutosh.alt@ashu.com",
+    rereNumber: "RERA-123456",
     officeAddress: {
-      line1: "",
-      city: "",
-      state: "",
-      zip: "",
+      line1: "Sahibabad",
+      city: "Ghaziabad",
+      state: "Uttar Pradesh",
+      zip: "201005",
     },
     salesRmId: "",
     uploadedDocuments: {
@@ -224,7 +224,7 @@ const AddNewBroker: React.FC = () => {
     data.append("website_url", formData.website_url);
     data.append("alt_mobile_number", formData.alt_mobile_number);
     data.append("alt_email_address", formData.alt_email_address);
-    data.append("rere_number", formData.rereNumber);
+    data.append("rera_number", formData.rereNumber);
     data.append("sales_rm_id", formData.salesRmId);
     data.append("office_address.line1", formData.officeAddress.line1);
     data.append("office_address.city", formData.officeAddress.city);

@@ -142,7 +142,7 @@ const EditBroker: React.FC = () => {
         alt_email_address: selectedBroker.alt_email_address || "",
         website_url: selectedBroker.website_url || "",
         emailAddress: selectedBroker.email_address || "",
-        rereNumber: selectedBroker.rere_number || "",
+        rereNumber: selectedBroker.rera_number || "",
         salesRmId:
           selectedBroker.sales_rm_id &&
           typeof selectedBroker.sales_rm_id === "object" &&
@@ -254,7 +254,7 @@ const EditBroker: React.FC = () => {
     data.append("email_address", formData.emailAddress);
     data.append("alt_email_address", formData.alt_email_address || "");
     data.append("website_url", formData.website_url || "");
-    data.append("rere_number", formData.rereNumber);
+    data.append("rera_number", formData.rereNumber);
     data.append("office_address.line1", formData.officeAddress.line1);
     data.append("office_address.city", formData.officeAddress.city);
     data.append("office_address.state", formData.officeAddress.state);

@@ -143,7 +143,7 @@ function* createBrokerSaga(action: any): Generator<any, void, any> {
 function* getBrokerByIdSaga(action: any): Generator<any, void, any> {
   try {
     const id = action.payload;
-    const endpoint = `${BASE_URL}${API_ENDPOINTS.BROKERS}${id}`;
+    const endpoint = `${BASE_URL}${API_ENDPOINTS.GET_BROKER_BY_ID}${id}`;
     const response = yield call(getRequest, endpoint);
 
     if (response.success) {
@@ -390,7 +390,7 @@ function* updateBrokerTeamMemberStatusSaga(
       });
       yield put({
         type: GET_BROKER_TEAM_REQUEST,
-        payload: brokerId, // Use brokerId from action.payload
+        payload: brokerId,
       });
     } else {
       yield put({

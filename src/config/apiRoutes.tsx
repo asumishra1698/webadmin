@@ -54,7 +54,7 @@ export const API_ENDPOINTS = {
   // VISITORBYPROJECT: "/api/projects/visitors/",
   // BROKERBYPROJECT: "/api/projects/brokers/",
 
-  BROKERS: "/api/brokers",
+  BROKERS: "/api/brokers/",
   GET_BROKER_BY_ID: "/api/brokers/",
   CREATE_BROKER: "/api/brokers",
   UPDATE_BROKER: "/api/brokers/",
