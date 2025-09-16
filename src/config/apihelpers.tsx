@@ -27,7 +27,11 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => {
-    if (response.data && response.data.logout) {
+    if (
+      response.data &&
+      (response.data.logout ||
+        response.data.message === "Access denied")
+    ) {
       localStorage.removeItem("authToken");
       window.location.href = "/login";
       return Promise.reject(new Error("Session expired. Redirecting to login."));
@@ -38,8 +42,12 @@ api.interceptors.response.use(
     const isUnauthorized = error.response && error.response.status === 401;
     const isLogout =
       error.response && error.response.data && error.response.data.logout;
+    const isAccessDenied =
+      error.response &&
+      error.response.data &&
+      error.response.data.message === "Access denied";
 
-    if (isUnauthorized || isLogout) {
+    if (isUnauthorized || isLogout || isAccessDenied) {
       localStorage.removeItem("authToken");
       window.location.href = "/login";
       return Promise.reject(new Error("Session expired. Redirecting to login."));
