@@ -131,7 +131,7 @@ const Login: React.FC = () => {
     >
       <div className="bg-white/90 rounded-3xl shadow-2xl flex flex-col md:flex-row w-full max-w-md md:max-w-4xl overflow-hidden mx-2 sm:mx-4">
         <div className="w-full md:w-1/2 p-8 sm:p-10 flex flex-col justify-center">
-          <h2 className="text-4xl font-extrabold text-gray-900 mb-1">Login</h2>
+          <h2 className="text-4xl font-extrabold text-gray-900 mb-1">Admin Login</h2>
           <p className="text-gray-500 mb-8 text-base">
             Login with Password or OTP
           </p>
