@@ -41,6 +41,8 @@ import ManageBrokers from "../component/Broker/manageBrokers";
 import BrokerDetails from "../component/Broker/brokerDetails";
 import BrokerTeam from "../component/Broker/brokerTeam";
 
+import ManageVisitors from "../component/Visitors/manageVisitors";
+
 interface ProtectedRouteProps {
   children: React.ReactNode;
   isAuthenticated: boolean;
@@ -387,6 +389,15 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
             <BrokerTeam />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/visitors"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ManageVisitors />
           </ProtectedRoute>
         }
       />
