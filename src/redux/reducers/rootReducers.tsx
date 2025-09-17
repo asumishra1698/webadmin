@@ -7,6 +7,8 @@ import referenceReducers from "./referenceReducers";
 import projectReducers from "./projectReducers";
 import brokersReducers from "./brokerReducers";
 import salesRmReducers from "./salesRmReducers";
+import visitorReducer from "./visitorReducers";
+import visitsReducer from "./visitsReducers";
 
 
 const rootReducer = combineReducers({
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
   projects: projectReducers,
   brokers: brokersReducers,
   salesRms: salesRmReducers,
+  visitors: visitorReducer,
+  visits: visitsReducer,
 });
 
 export default rootReducer;

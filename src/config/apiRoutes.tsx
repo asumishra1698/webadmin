@@ -62,4 +62,9 @@ export const API_ENDPOINTS = {
   TOGGLE_BROKER_STATUS: "/api/brokers/toggle-status/",
   EXPORT_BROKER_DATA: "/api/brokers/export/",
   BROKER_TEAM: "/api/brokers/team/",
+
+  VISITORS: "/api/visitors/",
+  VISITOR_TAG_HISTORY: "/api/visits/visitors/",
+  VISITOR_HISTORY: "/api/visits/visitor-history/",
+  EXPORT_VISITOR_DATA: "/api/visitors/export/",
 };

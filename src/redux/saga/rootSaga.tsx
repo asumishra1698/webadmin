@@ -7,6 +7,8 @@ import referenceSaga from "./referenceSaga";
 import projectSaga from "./projectSaga";
 import saleRmSaga from "./saleRmSaga";
 import { watchGetBrokers } from "./brokerSaga";
+import visitorSaga from "./visitorSaga";
+import visitsSaga from "./visitsSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -18,5 +20,7 @@ export default function* rootSaga() {
     fork(projectSaga),
     fork(saleRmSaga),
     fork(watchGetBrokers),
+    fork(visitorSaga),
+    fork(visitsSaga),
   ]);
 }
