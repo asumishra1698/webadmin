@@ -43,9 +43,7 @@ const AddNewBlog: React.FC = () => {
     Array.isArray(state.blog?.blogtags?.blogTags)
       ? state.blog.blogtags.blogTags
       : []
-  );
-  // console.log("Categories from redux:", categories);
-  console.log("Blogtags from redux786:", blogTags);
+  ); 
 
   // Prepare options for react-select
   const categoryOptions = categories.map((cat: any) => ({

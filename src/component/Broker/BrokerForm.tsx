@@ -172,7 +172,7 @@ const BrokerForm: React.FC<BrokerFormProps> = ({
 }) => {
     const dispatch = useDispatch();
     const salesRms = useSelector((state: RootState) => state.salesRms.salesRms);
-    console.log("Sales RMs :", salesRms);
+   
     useEffect(() => {
         dispatch(getSalesRmRequest());
         dispatch(getProjectsRequest());

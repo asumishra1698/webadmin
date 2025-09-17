@@ -184,7 +184,7 @@ const visitorReducer = (state = initialState, action: any) => {
         error: null,
       };
     case VISITOR_TAG_HISTORY_SUCCESS:
-      console.log(action.payload);
+     
       return {
         ...state,
         visitorTagHistory: action.payload.data || [],

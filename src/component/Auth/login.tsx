@@ -116,7 +116,6 @@ const Login: React.FC = () => {
     }
 
     dispatch(loginRequest({ ...payload, navigate }));
-    console.log("Login request dispatched with payload:", payload);
   };
 
   return (

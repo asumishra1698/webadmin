@@ -78,8 +78,7 @@ function* getAllBlogPostsSaga(action: any): any {
     const url = `${BASE_URL}${
       API_ENDPOINTS.GET_ALL_BLOG_POSTS
     }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
-    const data = yield call(getRequest, url);
-    console.log("Fetched blog posts:", data);
+    const data = yield call(getRequest, url);   
     yield put({ type: GET_ALL_BLOG_POSTS_SUCCESS, payload: data });
   } catch (error: any) {
     yield put({
@@ -190,7 +189,6 @@ function* getBlogTagSaga(action: any): any {
       API_ENDPOINTS.GET_BLOG_TAG
     }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
     const data = yield call(getRequest, url);
-    console.log("Fetched blog tags:", data);
     yield put({ type: GET_BLOG_TAG_SUCCESS, payload: data });
   } catch (error: any) {
     yield put({

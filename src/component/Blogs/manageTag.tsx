@@ -45,7 +45,6 @@ const ManageTag: React.FC = () => {
       error: state.blog.error,
     };
   });
-  console.log("Tags from Redux:", blogTags);
 
   useEffect(() => {
     dispatch(getBlogTagRequest({ page: 1, limit, search: "" }));

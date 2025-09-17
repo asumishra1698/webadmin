@@ -193,7 +193,7 @@ const Layout: React.FC<LayoutProps> = ({
   const handleMyProfile = () => navigate("/my-account");
 
   const handleChangePin = () => {
-    console.log("Change PIN clicked");
+    alert("Change Pin functionality to be implemented");
   };
 
   const hasSearchOrActions = searchPlaceholder || actionButtons;

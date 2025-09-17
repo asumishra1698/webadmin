@@ -336,7 +336,7 @@ const AddNewProjects: React.FC = () => {
         projectData.append("floorPlanImg", file);
       });
     }
-    console.log(...projectData);
+    
 
     dispatch({
       type: CREATE_PROJECT_REQUEST,

@@ -267,7 +267,6 @@ function* toggleProjectStatusSaga(action: any): Generator<any, void, any> {
 // function* fetchVisitorsByProjectSaga(action: any): Generator<any, void, any> {
 //     try {
 //         const projectId = action.payload;
-//         console.log("Fetching visitors for project:", projectId);
 //         const endpoint = `${BASE_URL}${API_ENDPOINTS.VISITORBYPROJECT}${projectId}`;
 //         const response: ProjectApiResponse = yield call(getRequest, endpoint);
 
@@ -291,9 +290,6 @@ function* toggleProjectStatusSaga(action: any): Generator<any, void, any> {
 //         const projectId = action.payload;
 //         const endpoint = `${BASE_URL}${API_ENDPOINTS.BROKERBYPROJECT}${projectId}`;
 //         const response: ProjectApiResponse = yield call(getRequest, endpoint);
-
-//         console.log("Broker response:", response);
-
 //         yield put({
 //             type: GET_BROKER_BY_PROJECT_ID_SUCCESS,
 //             payload: response,
@@ -400,7 +396,6 @@ function* deleteProjectMediaSaga(action: any): Generator<any, void, any> {
     try {
         const { projectId, mediaId } = action.payload;
         const endpoint = `${BASE_URL}/api/projects/${projectId}/media/${mediaId}`;
-        console.log("Deleting media at endpoint:", endpoint);
         yield call(deleteRequest, endpoint);
 
         yield put({
