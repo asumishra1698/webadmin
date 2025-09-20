@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
   RESET_PASSWORD: "/api/auth/reset-password",
   GET_USER_PROFILE: "/api/auth/profile",
   GET_ALL_USERS: "/api/auth/all-users",
+  
   CREATE_BLOG_POST: "/api/blog/posts",
   GET_ALL_BLOG_POSTS: "/api/blog/posts",
   DELETE_BLOG_POST: "/api/blog/posts/",

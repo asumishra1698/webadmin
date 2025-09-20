@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../reuseable/Layout";
 import Select from "react-select";
 import { createProductRequest, getProductCategoriesRequest, getProductTagsRequest, getProductBrandsRequest } from "../../redux/actions/productActions";
+import CustomEditor from "../../reuseable/CustomEditor";
 
 
 const initialState = {
@@ -184,7 +185,7 @@ const AddProduct: React.FC = () => {
       >
 
         <div className="mb-4 flex gap-4">
-          <div className="w-1/2">
+          <div className="w-1/3">
             <label className="block mb-1 font-medium">Product Name</label>
             <input
               type="text"
@@ -195,7 +196,7 @@ const AddProduct: React.FC = () => {
               required
             />
           </div>
-          <div className="w-1/2">
+          <div className="w-1/3">
             <label className="block mb-1 font-medium">Slug</label>
             <input
               type="text"
@@ -204,30 +205,6 @@ const AddProduct: React.FC = () => {
               onChange={handleChange}
               className="border px-3 py-2 rounded w-full"
               required
-            />
-          </div>
-        </div>
-
-        <div className="mb-4 flex gap-4">
-          <div className="w-1/3">
-            <label className="block mb-1 font-medium">Price</label>
-            <input
-              type="number"
-              name="price"
-              value={form.price}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded w-full"
-              required
-            />
-          </div>
-          <div className="w-1/3">
-            <label className="block mb-1 font-medium">Sale Price</label>
-            <input
-              type="number"
-              name="salePrice"
-              value={form.salePrice}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded w-full"
             />
           </div>
           <div className="w-1/3">
@@ -242,8 +219,30 @@ const AddProduct: React.FC = () => {
             />
           </div>
         </div>
+
         <div className="mb-4 flex gap-4">
-          <div className="w-1/3">
+          <div className="w-1/4">
+            <label className="block mb-1 font-medium">Price</label>
+            <input
+              type="number"
+              name="price"
+              value={form.price}
+              onChange={handleChange}
+              className="border px-3 py-2 rounded w-full"
+              required
+            />
+          </div>
+          <div className="w-1/4">
+            <label className="block mb-1 font-medium">Sale Price</label>
+            <input
+              type="number"
+              name="salePrice"
+              value={form.salePrice}
+              onChange={handleChange}
+              className="border px-3 py-2 rounded w-full"
+            />
+          </div>
+          <div className="w-1/4">
             <label className="block mb-1 font-medium">SKU</label>
             <input
               type="text"
@@ -253,7 +252,7 @@ const AddProduct: React.FC = () => {
               className="border px-3 py-2 rounded w-full"
             />
           </div>
-          <div className="w-1/3">
+          <div className="w-1/4">
             <label className="block mb-1 font-medium">Barcode</label>
             <input
               type="text"
@@ -263,16 +262,15 @@ const AddProduct: React.FC = () => {
               className="border px-3 py-2 rounded w-full"
             />
           </div>
-          <div className="w-1/3">
-            <label className="block mb-1 font-medium">Description</label>
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded w-full"
-              rows={3}
-            />
-          </div>
+        </div>       
+        <div className="mb-4">
+          <label className="block font-medium mb-1">Description</label>
+          <CustomEditor
+            value={form.description}
+            onChange={(val) =>
+              setForm((prev) => ({ ...prev, description: val }))
+            }
+          />
         </div>
         <div className="mb-4 flex gap-4">
           <div className="w-1/3">
